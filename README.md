@@ -329,12 +329,10 @@
 ### 10-1. 使用予定の技術
 
 - フレームワーク：
-フロントエンド：Next.js(React/TypeScript)
-バックエンド：Next.js
-- DB：
-DB:PostgreSQL
-DB操作:Prisma
-- デプロイ先：Vercel
+フロントエンド：React/TypeScript
+バックエンド：Ruby on Rails
+- DB：PostgreSQL
+- デプロイ先：Render
 - 使用予定ライブラリ：shadcn/ui
 
 ---
