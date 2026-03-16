@@ -18,5 +18,15 @@ services:
     environment:
       DATABASE_URL: postgres://postgres:password@db:5432/app_development
 
+  front:
+    build: ./front
+    volumes:
+      - ./front:/app
+    ports:
+      - "5173:5173"
+    depends_on:
+      - api
+    tty: true
+
 volumes:
   postgres_data:
