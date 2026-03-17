@@ -1,0 +1,12 @@
+.DS_Store
+
+api/log/*
+api/tmp/*
+api/config/master.key
+api/.env
+
+front/node_modules/
+front/.vite/
+front/dist/
+
+.env
