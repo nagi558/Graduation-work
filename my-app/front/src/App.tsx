@@ -4,12 +4,15 @@ import { Login } from './pages/Login'
 import { Register } from './pages/Register'
 import { AuthProvider } from './context/AuthContext'
 import { Layout } from './components/Layout'
+import { ProtectedRoute } from './components/ProtectedRoute'
+import { PostList } from './pages/PostList'
 
 export default function App() {
   return (
     <AuthProvider>
       <BrowserRouter>
         <Routes>
+          {/* 認証不要 */}
           <Route path="/" element={
             <Layout><Top /></Layout>
           } />
@@ -18,6 +21,13 @@ export default function App() {
           } />
           <Route path="/register" element={
             <Layout><Register /></Layout>
+          } />
+
+          {/* 認証必要(今後追加していく) */}
+          <Route path="/posts" element={
+            <ProtectedRoute>
+              <Layout><PostList /></Layout>
+            </ProtectedRoute>
           } />
         </Routes>
       </BrowserRouter>
