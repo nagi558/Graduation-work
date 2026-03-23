@@ -21,7 +21,7 @@ export const Register = () => {
 
     // パスワードの長さチェック
     if (password.length < 6) {
-      setError('パスワードは6文字以上で入力してください')
+      setError('パスワードが一致しません')
       return false
     }
 
@@ -67,10 +67,14 @@ export const Register = () => {
 
       // ログインページに遷移
       navigate("/login")
-    } catch (err: any) {
+    } catch (err) {
       // エラー処理
+      if (err instanceof Error) {
+        setError(err.message)
+      } else {
       setError("アカウントを作成できませんでした")
-      } finally {
+      }
+    } finally {
       setLoading(false)
     }
   }
