@@ -55,13 +55,11 @@ export const Register = () => {
 
     try {
       // APIリクエスト
-      const response = await axiosInstance.post('/users', {
-        user: {
-          nickname,
-          email,
-          password,
-          password_confirmation
-        }
+      const response = await axiosInstance.post('/auth', {
+        nickname,
+        email,
+        password,
+        password_confirmation
       })
 
       // 成功時の処理
