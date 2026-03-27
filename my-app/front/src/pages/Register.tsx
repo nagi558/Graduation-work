@@ -19,7 +19,7 @@ export const Register = () => {
       return false
     }
 
-    // パスワードの長さチェック
+    // パスワードの長さをチェック
     if (password.length < 6) {
       setError('パスワードが一致しません')
       return false
