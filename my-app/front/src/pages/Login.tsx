@@ -31,4 +31,36 @@ export const Login = () => {
 
     return true
   }
+
+  // フォーム送信
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    setError(null)
+
+    // バリデーション実行
+    if (!validateForm()) {
+      return
+    }
+
+    try {
+    // APIリクエスト
+    const response = await axiosInstance.post('/auth/sign_in', {
+      email,
+      password
+    })
+
+    // 成功時の処理
+    alert('ログインしました')
+
+    localStorage.setItem('access-token', response.headers['access-token'])
+    localStorage.setItem('client', response.headers['client'])
+    localStorage.setItem('uid', response.headers['uid'])
+
+    // ログインページに遷移
+    navigate("/posts")
+
+    } catch (err: any) {
+        setError("メールアドレスまたはパスワードが正しくありません")
+    }
+  }
 }

@@ -64,9 +64,9 @@ export const Register = () => {
 
       // 成功時の処理
       alert('アカウントが作成されました')
-
       // ログインページに遷移
       navigate("/login")
+
     } catch (err) {
       // エラー処理
       if (err instanceof Error) {
