@@ -63,4 +63,81 @@ export const Login = () => {
         setError("メールアドレスまたはパスワードが正しくありません")
     }
   }
+
+  return (
+    <div className='min-h-screen flex flex-col items-center pt-8 bg-[#E8EEF1]'>
+      <div className="w-full max-w-md bg-white rounded-2xl shadow-md p-10">
+
+        {/* タイトル */}
+        <h1 className="!text-[38px] !font-bold !tracking-normal !text-[#444444] text-center mb-8 !font-sans">
+          ログイン
+        </h1>
+
+        {/* エラーメッセージ */}
+        {error && (
+          <div className="mb-4 p-3 bg-red-100 border-red-400 text-red-700 rounded">
+            {error}
+          </div>
+        )}
+
+        {/* 登録フォーム */}
+        <form onSubmit={handleSubmit} className="space-y-4">
+
+        {/* メール入力 */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1 text-left">
+              メールアドレス
+            </label>
+            <input
+              type="email"
+              placeholder="aaaaaa@aaa.com"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#A0B9C6]"
+            />
+          </div>
+
+          {/* パスワード入力 */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1 text-left">
+              パスワード
+            </label>
+            <input
+              type="password"
+              placeholder="******"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#A0B9C6]"
+            />
+          </div>
+
+          {/* パスワードを忘れた方 */}
+          <p className="text-right mt-3 text-sm">
+            <span className="text-gray-400 cursor-not-allowed">
+              パスワードを忘れた方はこちら(実装予定)
+            </span>
+          </p>
+
+          {/* ログイン */}
+          <button
+            type="submit"
+            className="w-full bg-[#4f8196] hover:bg-[#80949e] disabled:bg-gray-400 text-white font-bold py-3 px-4 rounded-xl shadow-lg transition duration-200 mt-2"
+          >
+            ログイン
+          </button>
+        </form>
+      </div>
+
+      {/* 新規登録画面へ誘導 */}
+      <p className="!mt-4 text-sm text-gray-500 text-center">
+        はじめての方は
+        <span
+          onClick={() => navigate('/register')}
+          className="text-gray-500 underline cursor-pointer ml-1 hover:text-[#4f8196]"
+        >
+          こちら
+        </span>
+      </p>
+    </div>
+  )
 }
