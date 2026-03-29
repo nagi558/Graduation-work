@@ -22,9 +22,20 @@ export const Header = () => {
       navigate('/')
     }
   }
+
   return (
-    <div className="p-3">
+    <div className="p-3 flex justify-between items-center">
       <img src="/logo.png" alt="ロゴ" className="h-12 pl-10" />
+
+      {/* ログイン済みの場合のみログアウトボタンを表示 */}
+      {isLoggedIn && (
+        <button
+          onClick={handleLogout}
+          className="mr-10 bg-[#4f8196] hover:bg-[#80949e] disabled:bg-gray-400 text-white font-bold py-2 px-2 rounded-xl shadow-lg cursor-pointer"
+        >
+          ログアウト
+        </button>
+      )}
     </div>
   )
 }
