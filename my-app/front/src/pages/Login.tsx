@@ -1,11 +1,13 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import axiosInstance from '@/lib/axios'
+import { useAuth } from '@/context/AuthContext'
 
 export const Login = () => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState<string | null>(null)
+  const { login } = useAuth()
 
   const navigate = useNavigate()
 
@@ -55,6 +57,8 @@ export const Login = () => {
     localStorage.setItem('access-token', response.headers['access-token'])
     localStorage.setItem('client', response.headers['client'])
     localStorage.setItem('uid', response.headers['uid'])
+    login()
+    navigate("/posts")
 
     // ログインページに遷移
     navigate("/posts")
