@@ -52,8 +52,6 @@ export const Login = () => {
     })
 
     // 成功時の処理
-    alert('ログインしました')
-
     localStorage.setItem('access-token', response.headers['access-token'])
     localStorage.setItem('client', response.headers['client'])
     localStorage.setItem('uid', response.headers['uid'])
