@@ -1,3 +1,9 @@
+import type { Post } from '@/types'
+
 export const PostList = () => {
-  return <div>投稿一覧画面（準備中）</div>
+  return (
+    <div>
+      {/* ここに伝えたいこと一覧コンポーネントを表示します。*/}
+    </div>
+  )
 }
