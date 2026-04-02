@@ -7,6 +7,10 @@ export const PostList = () => {
 
   useEffect(() => {
     const fetchPosts = async () => {
+      const accessToken = localStorage.getItem('access-token')
+      const client = localStorage.getItem('client')
+      const uid = localStorage.getItem('uid')
+
       const response = await axiosInstance.get('/api/v1/posts', {
         headers: {
           'access-token': localStorage.getItem('access-token'),

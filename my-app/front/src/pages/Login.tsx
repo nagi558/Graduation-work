@@ -52,9 +52,9 @@ export const Login = () => {
     })
 
     // 成功時の処理
-    localStorage.setItem('access-token', response.headers['access-token'])
-    localStorage.setItem('client', response.headers['client'])
-    localStorage.setItem('uid', response.headers['uid'])
+    localStorage.setItem('access-token', response.headers.get('access-token') || '')
+    localStorage.setItem('client', response.headers.get('client') || '')
+    localStorage.setItem('uid', response.headers.get('uid') || '')
     login()
     navigate("/posts")
 
