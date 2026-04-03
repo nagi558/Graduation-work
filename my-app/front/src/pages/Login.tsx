@@ -52,13 +52,10 @@ export const Login = () => {
     })
 
     // 成功時の処理
-    localStorage.setItem('access-token', response.headers.get('access-token') || '')
-    localStorage.setItem('client', response.headers.get('client') || '')
-    localStorage.setItem('uid', response.headers.get('uid') || '')
+    localStorage.setItem('access-token', (response.headers['access-token'] as string) || '')
+    localStorage.setItem('client', (response.headers['client'] as string) || '')
+    localStorage.setItem('uid', (response.headers['uid'] as string) || '')
     login()
-    navigate("/posts")
-
-    // ログインページに遷移
     navigate("/posts")
 
     } catch (err: any) {
