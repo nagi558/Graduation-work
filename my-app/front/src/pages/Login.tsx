@@ -52,9 +52,13 @@ export const Login = () => {
     })
 
     // 成功時の処理
-    localStorage.setItem('access-token', (response.headers['access-token'] as string) || '')
-    localStorage.setItem('client', (response.headers['client'] as string) || '')
-    localStorage.setItem('uid', (response.headers['uid'] as string) || '')
+    const accessToken = response.headers['access-token'] as string ?? ''
+    const client = response.headers['client'] as string ?? ''
+    const uid = response.headers['uid'] as string ?? ''
+
+    localStorage.setItem('access-token', accessToken)
+    localStorage.setItem('client', client)
+    localStorage.setItem('uid', uid)
     login()
     navigate("/posts")
 
