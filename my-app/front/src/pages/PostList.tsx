@@ -16,9 +16,9 @@ export const PostList = () => {
       // accessTokenが未使用の場合は削除
       const response = await axiosInstance.get('/api/v1/posts', {
         headers: {
-          'access-token': localStorage.getItem('access-token') || '',
-          'client': localStorage.getItem('client') || '',
-          'uid': localStorage.getItem('uid') || ''
+          'access-token': accessToken || '',
+          'client': client || '',
+          'uid': uid || ''
         }
       })
       setPosts(response.data)
