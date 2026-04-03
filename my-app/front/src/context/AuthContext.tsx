@@ -3,25 +3,29 @@ import type { ReactNode } from 'react'
 
 type AuthContextType =  {
   isLoggedIn: boolean
+  isLoading: boolean
   login: () => void
   logout: () => void
 }
 
 const AuthContext = createContext<AuthContextType>({
   isLoggedIn: false,
+  isLoading: true,
   login: () => {},
   logout: () => {}
 })
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false)
+  const [isLoading, setIsLoading] = useState(true)
 
   // ページ読み込み時にlocalStorageを確認
   useEffect(() => {
     const token = localStorage.getItem('access-token')
-    if (token) {
+    if (token && token.length > 0) {
       setIsLoggedIn(true)
     }
+    setIsLoading(false)
   }, [])
 
     const login = () => {
@@ -36,7 +40,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }
 
   return (
-    <AuthContext.Provider value={{ isLoggedIn, login, logout }}>
+    <AuthContext.Provider value={{ isLoggedIn, isLoading, login, logout }}>
       {children}
     </AuthContext.Provider>
   )
