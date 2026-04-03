@@ -18,9 +18,6 @@ export const PostList = () => {
           'access-token': accessToken || '',
           'client': client || '',
           'uid': uid || ''
-          'access-token': localStorage.getItem('access-token'),
-          'client': localStorage.getItem('client'),
-          'uid': localStorage.getItem('uid')
         }
       })
       setPosts(response.data)
