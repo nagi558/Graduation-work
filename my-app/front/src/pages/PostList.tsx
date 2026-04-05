@@ -29,11 +29,14 @@ export const PostList = () => {
     <div className="min-h-screen bg-[#E8EEF1] pb-20">
       
       {/* メインコンテンツ */}
-      <div className="max-w-2xl mx-auto pt-4 px-4">
+      <div className="max-w-4xl mx-auto pt-1 px-4">
+             <div className="bg-white rounded-2xl shadow-sm p-6">
 
         {/* タイトルと新規作成ボタン */}
         <div className="flex justify-between items-center mb-3">
-          <h1 className="text-2xl font-bold text-gray-700">伝えたいこと</h1>
+          <h1 className="!text-[38px] !font-bold !tracking-normal !text-[#444444] text-center mb-8 !font-sans">
+            伝えたいこと
+          </h1>
           <button
             onClick={() => navigate('/posts/new')}
             className="bg-[#4f8196] hover:bg-[#80949e] text-white text-sm font-bold py-2 px-4 rounded-xl shadow transition duration-200"
@@ -53,7 +56,7 @@ export const PostList = () => {
             {posts.map((post) => (
               <div
                 key={post.id}
-                className="bg-white rounded-2xl shadow-sm p-5 flex justify-between items-start"
+                className="bg-white rounded-2xl shadow-lg p-5 flex justify-between items-start"
               >
                 {/* 左側：タイトル・カテゴリ・本文 */}
                 <div className="flex-1">
@@ -92,6 +95,7 @@ export const PostList = () => {
             ))}
           </div>
         )}
+      </div>
       </div>
 
       {/* フッターナビゲーション */}
