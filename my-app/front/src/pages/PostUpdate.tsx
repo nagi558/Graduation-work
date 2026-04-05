@@ -66,4 +66,41 @@ export const PostUpdate = () => {
     }
     fetchPost()
   }, [id])
+
+  // フォーム送信
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    setError(null)
+
+    // バリデーション実行
+    if (!validateForm()) {
+      return
+    }
+
+    setLoading(true)
+
+    try {
+      //APIリクエスト
+      await axiosInstance.patch(`/api/v1/posts/${id}`, {
+        post: {
+          title,
+          body,
+          category_id: categoryId
+        }
+      }, {
+        headers: {
+          'access-token': localStorage.getItem('access-token') ?? '',
+          'client': localStorage.getItem('client') ?? '',
+          'uid': localStorage.getItem('uid') ?? ''
+        }
+      })
+
+      navigate('/posts')
+
+    } catch (err: any) {
+      setError('投稿を編集できませんでした')
+    } finally {
+      setLoading(false)
+    }
+  }
 }
