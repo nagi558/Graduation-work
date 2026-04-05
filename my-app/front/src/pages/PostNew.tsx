@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import axiosInstance from '@/lib/axios'
 import type { Category } from '@/types'
+import { Footer } from '@/components/Footer'
 
 export const PostNew = () => {
   const [title, setTitle] = useState('')
@@ -175,26 +176,7 @@ export const PostNew = () => {
       </div>
 
       {/* フッターナビゲーション */}
-      <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 flex justify-around py-4">
-        <button
-          onClick={() => navigate('/posts')}
-          className="text-sm text-[#4f8196] font-bold"
-        >
-          伝えたいこと
-        </button>
-        <button
-          onClick={() => navigate('/categories')}
-          className="text-sm text-gray-400 font-medium"
-        >
-          カテゴリ一覧
-        </button>
-        <button
-          onClick={() => navigate("/mypage")}
-          className="text-sm text-gray-400 font-medium"
-        >
-          マイページ
-        </button>
-      </div>
+      <Footer />
     </div>
   )
 }
