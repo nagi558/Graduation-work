@@ -6,6 +6,7 @@ import { AuthProvider } from './context/AuthContext'
 import { Layout } from './components/Layout'
 import { ProtectedRoute } from './components/ProtectedRoute'
 import { PostList } from './pages/PostList'
+import { PostNew } from './pages/PostNew'
 
 export default function App() {
   return (
@@ -27,6 +28,11 @@ export default function App() {
           <Route path="/posts" element={
             <ProtectedRoute>
               <Layout><PostList /></Layout>
+            </ProtectedRoute>
+          } />
+          <Route path="/posts/new" element={
+            <ProtectedRoute>
+              <Layout><PostNew /></Layout>
             </ProtectedRoute>
           } />
         </Routes>
