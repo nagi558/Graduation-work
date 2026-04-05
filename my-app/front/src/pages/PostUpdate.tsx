@@ -12,7 +12,7 @@ export const PostUpdate = () => {
   const [error, setError] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
 
-  const {id} = useParams
+  const {id} = useParams()
 
   const navigate = useNavigate()
 
@@ -25,4 +25,45 @@ export const PostUpdate = () => {
 
     return true
   }
+
+  // カテゴリ一覧を取得
+  useEffect(() => {
+    const fetchCategories = async () => {
+      const accessToken = localStorage.getItem('access-token')
+      const client = localStorage.getItem('client')
+      const uid = localStorage.getItem('uid')
+
+      const response = await axiosInstance.get('/api/v1/categories', {
+        headers: {
+          'access-token': accessToken || '',
+          'client': client || '',
+          'uid': uid || ''
+        }
+      })
+      setCategories(response.data)
+    }
+    fetchCategories()
+  }, [])
+
+  // 既存の投稿データをセット
+  useEffect(() => {
+    const fetchPost = async () => {
+      const accessToken = localStorage.getItem('access-token')
+      const client = localStorage.getItem('client')
+      const uid = localStorage.getItem('uid')
+
+      const response = await axiosInstance.get(`/api/v1/posts/${id}`, {
+        headers: {
+          'access-token': accessToken || '',
+          'client': client || '',
+          'uid': uid || ''
+        }
+      })
+      // フォームに初期値をセット
+      setTitle(response.data.title)
+      setBody(response.data.body)
+      setCategoryId(response.data.category.id)
+    }
+    fetchPost()
+  }, [id])
 }
