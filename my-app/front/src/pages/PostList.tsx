@@ -26,6 +26,25 @@ export const PostList = () => {
     fetchPosts()
   }, [])
 
+  const handleDelete = async (postId: number) => {
+    if (!confirm('削除しますか？')) return
+
+    try {
+      await axiosInstance.delete(`/api/v1/posts/${postId}`, {
+        headers: {
+          'access-token': localStorage.getItem('access-token') ?? '',
+          'client': localStorage.getItem('client') ?? '',
+          'uid': localStorage.getItem('uid') ?? ''
+        }
+      })
+      // 削除後に一覧を更新
+      setPosts(posts.filter((post) => post.id !== postId))
+    } catch (err: any) {
+      alert('削除できませんでした')
+    }
+
+  }
+
   return (
     <div className="min-h-screen bg-[#E8EEF1] pb-20">
       
@@ -87,6 +106,7 @@ export const PostList = () => {
                     修正
                   </button>
                   <button
+                      onClick={() => handleDelete(post.id)}
                       className="text-sm text-red-400 border border-red-400 px-3 py-1 rounded-lg hover:bg-red-400 hover:text-white transition duration-200"
                   >
                     削除
