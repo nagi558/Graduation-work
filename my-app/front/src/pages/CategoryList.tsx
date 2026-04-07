@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import axiosInstance from '@/lib/axios'
+import type { Category } from '@/types'
 import { Footer } from '@/components/Footer'
 
 export const CategoryList = () => {
