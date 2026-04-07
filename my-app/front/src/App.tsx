@@ -8,6 +8,7 @@ import { ProtectedRoute } from './components/ProtectedRoute'
 import { PostList } from './pages/PostList'
 import { PostNew } from './pages/PostNew'
 import { PostUpdate } from './pages/PostUpdate'
+import { CategoryList } from './pages/CategoryList'
 
 export default function App() {
   return (
@@ -43,6 +44,12 @@ export default function App() {
           <Route path="/posts/:id/edit" element={
             <ProtectedRoute>
               <Layout><PostUpdate /></Layout>
+            </ProtectedRoute>
+          } />
+
+          <Route path="/categories" element={
+            <ProtectedRoute>
+              <Layout><CategoryList /></Layout>
             </ProtectedRoute>
           } />
         </Routes>
