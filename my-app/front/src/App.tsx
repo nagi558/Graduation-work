@@ -9,6 +9,7 @@ import { PostList } from './pages/PostList'
 import { PostNew } from './pages/PostNew'
 import { PostUpdate } from './pages/PostUpdate'
 import { CategoryList } from './pages/CategoryList'
+import { CategoryNew } from './pages/CategoryNew'
 
 export default function App() {
   return (
@@ -52,7 +53,14 @@ export default function App() {
               <Layout><CategoryList /></Layout>
             </ProtectedRoute>
           } />
-        </Routes>
+
+          <Route path="/categories/new" element={
+            <ProtectedRoute>
+              <Layout><CategoryNew /></Layout>
+            </ProtectedRoute>
+          } />
+          </Routes>
+
       </BrowserRouter>
     </AuthProvider>
   )
