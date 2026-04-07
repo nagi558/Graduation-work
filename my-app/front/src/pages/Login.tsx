@@ -62,9 +62,6 @@ export const Login = () => {
     login()
     navigate("/posts")
 
-    // ログインページに遷移
-    navigate("/posts")
-
     } catch (err: any) {
         setError("メールアドレスまたはパスワードが正しくありません")
     }

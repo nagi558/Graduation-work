@@ -74,16 +74,16 @@ export const CategoryList = () => {
               {categories.map((category) => (
                 <div
                   key={category.id}
-                  className="bg-white rounded-2xl shadow-lg p-5 flex justify-between items-start"
+                  className="bg-white rounded-2xl shadow-lg p-5 flex justify-between items-star"
                 >
                   <div className="flex-1">
-                    <p className="text-gray-800 font-bold text-lg">
-                      {category.title}
-                    </p>
+                    <div className="text-gray-800 font-bold text-lg text-left">
+                      {category.name}
+                    </div>
                   </div>
 
                   {/* 修正・削除ボタン */}
-                  <div className="flex flex-col gap-2 ml-4">
+                  <div className="flex gap-2 ml-4">
                     <button
                       onClick={() => navigate(`/categories/${category.id}/edit`)}
                       className="text-sm text-[#4f8196] border border-[#4f8196] px-3 py-1 rounded-lg hover:bg-[#4f8196] hover:text-white transition duration-200"
