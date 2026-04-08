@@ -10,6 +10,7 @@ import { PostNew } from './pages/PostNew'
 import { PostUpdate } from './pages/PostUpdate'
 import { CategoryList } from './pages/CategoryList'
 import { CategoryNew } from './pages/CategoryNew'
+import { CategoryUpdate } from './pages/CategoryUpdate'
 
 export default function App() {
   return (
@@ -59,7 +60,13 @@ export default function App() {
               <Layout><CategoryNew /></Layout>
             </ProtectedRoute>
           } />
-          </Routes>
+
+          <Route path="/categories/:id/edit" element={
+            <ProtectedRoute>
+              <Layout><CategoryUpdate /></Layout>
+            </ProtectedRoute>
+          } />
+        </Routes>
 
       </BrowserRouter>
     </AuthProvider>
