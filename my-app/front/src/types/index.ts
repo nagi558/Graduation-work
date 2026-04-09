@@ -19,3 +19,15 @@ export interface User {
   nickname: string
   email: string
 }
+
+export type AuthTokens = {
+  accessToken: string | null
+  client: string | null
+  uid: string | null
+}
+
+export type ValidAuthTokens = {
+  accessToken: string
+  client: string
+  uid: string
+}

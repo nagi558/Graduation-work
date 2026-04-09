@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { tokenStorage } from './tokenStorage'
 
 const axiosInstance = axios.create({
   baseURL: import.meta.env.VITE_API_URL || 'http://localhost:3000',
@@ -7,28 +8,6 @@ const axiosInstance = axios.create({
   },
   timeout: 10000
 })
-
-const tokenStorage = {
-  get() {
-    return {
-      accessToken: localStorage.getItem('access-token'),
-      client: localStorage.getItem('client'),
-      uid: localStorage.getItem('uid')
-    }
-  },
-  set({ accessToken, client, uid }) {
-    if (accessToken && client && uid) {
-      localStorage.setItem('access-token', accessToken)
-      localStorage.setItem('client', client)
-      localStorage.setItem('uid', uid)
-    }
-  },
-  clear() {
-    localStorage.removeItem('access-token')
-    localStorage.removeItem('client')
-    localStorage.removeItem('uid')
-  }
-}
 
 axiosInstance.interceptors.request.use(
   (config) => {
