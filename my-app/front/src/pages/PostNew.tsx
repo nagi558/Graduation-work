@@ -27,17 +27,7 @@ export const PostNew = () => {
   // カテゴリ一覧を取得
   useEffect(() => {
     const fetchCategories = async () => {
-      const accessToken = localStorage.getItem('access-token')
-      const client = localStorage.getItem('client')
-      const uid = localStorage.getItem('uid')
-
-      const response = await axiosInstance.get('/api/v1/categories', {
-        headers: {
-          'access-token': accessToken || '',
-          'client': client || '',
-          'uid': uid || ''
-        }
-      })
+      const response = await axiosInstance.get('/api/v1/categories')
       setCategories(response.data)
     }
     fetchCategories()
