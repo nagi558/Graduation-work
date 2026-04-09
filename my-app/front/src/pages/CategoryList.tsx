@@ -30,13 +30,7 @@ export const CategoryList = () => {
     if (!confirm('削除しますか？')) return
 
     try {
-      await axiosInstance.delete(`/api/v1/categories/${categoryId}`, {
-        headers: {
-          'access-token': localStorage.getItem('access-token') ?? '',
-          'client': localStorage.getItem('client') ?? '',
-          'uid': localStorage.getItem('uid') ?? ''
-        }
-      })
+      await axiosInstance.delete(`/api/v1/categories/${categoryId}`)
       // 削除後に一覧を更新
       setCategories(categories.filter((category) => category.id !== categoryId))
     } catch (err: any) {

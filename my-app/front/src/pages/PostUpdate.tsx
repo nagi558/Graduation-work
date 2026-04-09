@@ -49,17 +49,7 @@ export const PostUpdate = () => {
   // 既存の投稿データをセット
   useEffect(() => {
     const fetchPost = async () => {
-      const accessToken = localStorage.getItem('access-token')
-      const client = localStorage.getItem('client')
-      const uid = localStorage.getItem('uid')
-
-      const response = await axiosInstance.get(`/api/v1/posts/${id}`, {
-        headers: {
-          'access-token': accessToken || '',
-          'client': client || '',
-          'uid': uid || ''
-        }
-      })
+      const response = await axiosInstance.get(`/api/v1/posts/${id}`)
       // フォームに初期値をセット
       setTitle(response.data.title)
       setBody(response.data.body)

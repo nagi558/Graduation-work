@@ -30,13 +30,7 @@ export const PostList = () => {
     if (!confirm('削除しますか？')) return
 
     try {
-      await axiosInstance.delete(`/api/v1/posts/${postId}`, {
-        headers: {
-          'access-token': localStorage.getItem('access-token') ?? '',
-          'client': localStorage.getItem('client') ?? '',
-          'uid': localStorage.getItem('uid') ?? ''
-        }
-      })
+      await axiosInstance.delete(`/api/v1/posts/${postId}`)
       // 削除後に一覧を更新
       setPosts(posts.filter((post) => post.id !== postId))
     } catch (err: any) {
