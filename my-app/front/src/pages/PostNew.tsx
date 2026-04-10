@@ -15,8 +15,7 @@ export const PostNew = () => {
   const navigate = useNavigate()
 
   const validateForm = (): boolean => {
-    // フォームの空チェック
-    if (title === "") {
+    if (title.trim() === "") {
       setError('タイトルを入力してください')
       return false
     }
@@ -54,16 +53,12 @@ export const PostNew = () => {
           category_id: categoryId
         }
       }, {
-        headers: {
-          'access-token': localStorage.getItem('access-token') ?? '',
-          'client': localStorage.getItem('client') ?? '',
-          'uid': localStorage.getItem('uid') ?? ''
-        }
+        skipGlobalError: true
       })
 
       navigate('/posts')
 
-    } catch (err: any) {
+    } catch {
       setError('投稿を作成できませんでした')
     } finally {
       setLoading(false)

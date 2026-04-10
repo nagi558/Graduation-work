@@ -39,6 +39,11 @@ axiosInstance.interceptors.response.use(
   (error) => {
     if(!error.response) {
       console.error('Network Error:', error)
+
+      window.dispatchEvent(new CustomEvent('api:error', {
+        detail: { message: 'ネットワークエラーが発生しました '}
+      }))
+
       return Promise.reject(error)
     }
 
@@ -54,6 +59,15 @@ axiosInstance.interceptors.response.use(
 
     if (status >= 500) {
       console.error('Server Error:', error.response)
+
+      if (!skipGlobalError) {
+        window.dispatchEvent(new CustomEvent('api:error', {
+          detail: {
+            message: 'サーバーエラーが発生しました',
+            status
+          }
+        }))
+      }
     }
 
     return Promise.reject(error)
