@@ -10,11 +10,10 @@ export const CategoryUpdate = () => {
   const [loading, setLoading] = useState(false)
 
   const {id} = useParams()
-
   const navigate = useNavigate()
 
   const validateForm = (): boolean => {
-    if (name === "") {
+    if (name.trim() === "") {
       setError('カテゴリを入力してください')
       return false
     }
@@ -24,17 +23,7 @@ export const CategoryUpdate = () => {
 
   useEffect(() => {
     const fetchCategories = async () => {
-      const accessToken = localStorage.getItem('access-token')
-      const client = localStorage.getItem('client')
-      const uid = localStorage.getItem('uid')
-
-      const response = await axiosInstance.get(`/api/v1/categories/${id}`, {
-        headers: {
-          'access-token': accessToken || '',
-          'client': client || '',
-          'uid': uid || ''
-        }
-      })
+      const response = await axiosInstance.get(`/api/v1/categories/${id}`)
       setName(response.data.name)
     }
     fetchCategories()
@@ -55,12 +44,15 @@ export const CategoryUpdate = () => {
         category: {
           name
         }
+      }, {
+        skipGlobalError: true
       })
 
       navigate('/categories')
 
-    } catch (err: any) {
+    } catch {
       setError('カテゴリを編集できませんでした')
+      window.scrollTo({ top: 0, behavior: 'smooth' })
     } finally {
       setLoading(false)
     }
