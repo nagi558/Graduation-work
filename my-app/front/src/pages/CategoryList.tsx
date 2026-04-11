@@ -6,22 +6,13 @@ import { Footer } from '@/components/Footer'
 
 export const CategoryList = () => {
   const [categories, setCategories] = useState<Category[]>([])
+  const [error, setError] = useState<string | null>(null)
   const navigate = useNavigate()
 
   useEffect(() => {
     const fetchCategories = async () => {
-      const accessToken = localStorage.getItem('access-token')
-      const client = localStorage.getItem('client')
-      const uid = localStorage.getItem('uid')
-
-      const response = await axiosInstance.get('/api/v1/categories', {
-        headers: {
-          'access-token': accessToken || '',
-          'client': client || '',
-          'uid': uid || ''
-        }
-      })
-    setCategories(response.data)
+      const response = await axiosInstance.get('/api/v1/categories')
+      setCategories(response.data)
     }
     fetchCategories()
   }, [])
@@ -30,11 +21,12 @@ export const CategoryList = () => {
     if (!confirm('削除しますか？')) return
 
     try {
-      await axiosInstance.delete(`/api/v1/categories/${categoryId}`)
-      // 削除後に一覧を更新
-      setCategories(categories.filter((category) => category.id !== categoryId))
-    } catch (err: any) {
-      alert('削除できませんでした')
+      await axiosInstance.delete(`/api/v1/categories/${categoryId}`, {
+        skipGlobalError: true
+      })
+    } catch {
+      setError('削除できませんでした')
+      window.scrollTo({ top: 0, behavior: 'smooth' })
     }
   }
 
@@ -57,6 +49,12 @@ export const CategoryList = () => {
               新規作成
             </button>
           </div>
+
+          {error && (
+            <div className="mb-4 p-3 rounded-lg bg-red-100 text-red-600 text-sm">
+              {error}
+            </div>
+          )}
 
           {/* カテゴリ一覧 */}
           {categories.length === 0 ? (

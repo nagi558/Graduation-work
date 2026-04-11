@@ -6,21 +6,12 @@ import { Footer } from '@/components/Footer'
 
 export const PostList = () => {
   const [posts, setPosts] = useState<Post[]>([])
+  const [error, setError] = useState<string | null>(null)
   const navigate = useNavigate()
 
   useEffect(() => {
     const fetchPosts = async () => {
-      const accessToken = localStorage.getItem('access-token')
-      const client = localStorage.getItem('client')
-      const uid = localStorage.getItem('uid')
-
-      const response = await axiosInstance.get('/api/v1/posts', {
-        headers: {
-          'access-token': accessToken || '',
-          'client': client || '',
-          'uid': uid || ''
-        }
-      })
+      const response = await axiosInstance.get('/api/v1/posts')
       setPosts(response.data)
     }
     fetchPosts()
@@ -30,13 +21,16 @@ export const PostList = () => {
     if (!confirm('削除しますか？')) return
 
     try {
-      await axiosInstance.delete(`/api/v1/posts/${postId}`)
-      // 削除後に一覧を更新
-      setPosts(posts.filter((post) => post.id !== postId))
-    } catch (err: any) {
-      alert('削除できませんでした')
-    }
+      await axiosInstance.delete(`/api/v1/posts/${postId}`, {
+        skipGlobalError: true
+      })
 
+      setPosts(posts.filter((post) => post.id !== postId))
+
+    } catch {
+      setError('削除できませんでした')
+      window.scrollTo({ top: 0, behavior: 'smooth' })
+    }
   }
 
   return (
@@ -58,6 +52,12 @@ export const PostList = () => {
             新規作成
           </button>
         </div>
+
+        {error && (
+          <div className="mb-4 p-3 rounded-lg bg-red-100 text-red-600 text-sm">
+            {error}
+          </div>
+        )}
 
         {/* 投稿一覧 */}
         {posts.length === 0 ? (

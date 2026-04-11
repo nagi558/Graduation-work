@@ -14,12 +14,10 @@ export const PostUpdate = () => {
   const [loading, setLoading] = useState(false)
 
   const {id} = useParams()
-
   const navigate = useNavigate()
 
   const validateForm = (): boolean => {
-    // フォームの空チェック
-    if (title === "") {
+    if (title.trim() === "") {
       setError('タイトルを入力してください')
       return false
     }
@@ -30,17 +28,7 @@ export const PostUpdate = () => {
   // カテゴリ一覧を取得
   useEffect(() => {
     const fetchCategories = async () => {
-      const accessToken = localStorage.getItem('access-token')
-      const client = localStorage.getItem('client')
-      const uid = localStorage.getItem('uid')
-
-      const response = await axiosInstance.get('/api/v1/categories', {
-        headers: {
-          'access-token': accessToken || '',
-          'client': client || '',
-          'uid': uid || ''
-        }
-      })
+      const response = await axiosInstance.get('/api/v1/categories')
       setCategories(response.data)
     }
     fetchCategories()
@@ -50,7 +38,6 @@ export const PostUpdate = () => {
   useEffect(() => {
     const fetchPost = async () => {
       const response = await axiosInstance.get(`/api/v1/posts/${id}`)
-      // フォームに初期値をセット
       setTitle(response.data.title)
       setBody(response.data.body)
       setCategoryId(response.data.category.id)
@@ -79,17 +66,14 @@ export const PostUpdate = () => {
           category_id: categoryId
         }
       }, {
-        headers: {
-          'access-token': localStorage.getItem('access-token') ?? '',
-          'client': localStorage.getItem('client') ?? '',
-          'uid': localStorage.getItem('uid') ?? ''
-        }
+        skipGlobalError: true
       })
 
       navigate('/posts')
 
-    } catch (err: any) {
+    } catch {
       setError('投稿を編集できませんでした')
+      window.scrollTo({ top: 0, behavior: 'smooth' })
     } finally {
       setLoading(false)
     }

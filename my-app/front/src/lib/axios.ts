@@ -37,17 +37,8 @@ axiosInstance.interceptors.response.use(
     return response
   },
   (error) => {
-    if(!error.response) {
-      console.error('Network Error:', error)
-
-      window.dispatchEvent(new CustomEvent('api:error', {
-        detail: { message: 'ネットワークエラーが発生しました '}
-      }))
-
-      return Promise.reject(error)
-    }
-
-    const status = error.response.status
+    const status = error.response?.status
+    const skipGlobalError = error.config?.skipGlobalError
 
     if (status === 401) {
       tokenStorage.clear()
@@ -57,19 +48,30 @@ axiosInstance.interceptors.response.use(
       }
     }
 
-    if (status >= 500) {
-      console.error('Server Error:', error.response)
-
-      if (!skipGlobalError) {
-        window.dispatchEvent(new CustomEvent('api:error', {
-          detail: {
-            message: 'サーバーエラーが発生しました',
-            status
-          }
-        }))
-      }
+    if (skipGlobalError) {
+      return Promise.reject(error)
     }
 
+    if (!error.response) {
+      console.error('Network Error:', error)
+
+      window.dispatchEvent(new CustomEvent('api:error', {
+        detail: { message: 'ネットワークエラーが発生しました'}
+      }))
+
+      return Promise.reject(error)
+    }
+
+    if (status >= 500) {
+      console.error('Server Error:', error.response)
+      
+      window.dispatchEvent(new CustomEvent('api:error', {
+        detail: {
+          message: 'サーバーエラーが発生しました',
+          status
+        }
+      }))
+    }
     return Promise.reject(error)
   }
 )

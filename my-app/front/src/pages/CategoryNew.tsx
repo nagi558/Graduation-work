@@ -11,7 +11,7 @@ export const CategoryNew = () => {
   const navigate = useNavigate()
 
   const validateForm = (): boolean => {
-    if (name === "") {
+    if (name.trim() === "") {
       setError('カテゴリを入力してください')
       return false
     }
@@ -34,12 +34,15 @@ export const CategoryNew = () => {
         category: {
           name
         }
+      }, {
+        skipGlobalError: true
       })
 
       navigate('/categories')
 
-    } catch (err: any) {
+    } catch {
       setError('カテゴリを作成できませんでした')
+      window.scrollTo({ top: 0, behavior: 'smooth' })
     } finally {
       setLoading(false)
     }

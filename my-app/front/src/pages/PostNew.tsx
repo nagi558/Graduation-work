@@ -60,6 +60,7 @@ export const PostNew = () => {
 
     } catch {
       setError('投稿を作成できませんでした')
+      window.scrollTo({ top: 0, behavior: 'smooth' })
     } finally {
       setLoading(false)
     }
