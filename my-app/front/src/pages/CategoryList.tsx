@@ -24,6 +24,10 @@ export const CategoryList = () => {
       await axiosInstance.delete(`/api/v1/categories/${categoryId}`, {
         skipGlobalError: true
       })
+
+      setCategories((prev) =>
+        prev.filter((category) => category.id !== categoryId)
+      )
     } catch {
       setError('削除できませんでした')
       window.scrollTo({ top: 0, behavior: 'smooth' })
