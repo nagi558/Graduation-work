@@ -8,7 +8,8 @@ import { ProtectedRoute } from './components/ProtectedRoute'
 import { PostList } from './pages/PostList'
 import { PostNew } from './pages/PostNew'
 import { PostUpdate } from './pages/PostUpdate'
-import { CategoryList } from './pages/CategoryList'
+import { CategoryList } from './pages/CategoryList.tsx'
+import { CategoryManage } from './pages/CategoryManage'
 import { CategoryNew } from './pages/CategoryNew'
 import { CategoryUpdate } from './pages/CategoryUpdate'
 import { ErrorProvider } from './context/ErrorProvider'
@@ -58,6 +59,12 @@ export default function App() {
             <Route path="/categories" element={
               <ProtectedRoute>
                 <Layout><CategoryList /></Layout>
+              </ProtectedRoute>
+            } />
+
+            <Route path="/categories/manage" element={
+              <ProtectedRoute>
+                <Layout><CategoryManage /></Layout>
               </ProtectedRoute>
             } />
 
