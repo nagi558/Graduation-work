@@ -123,7 +123,7 @@ export const PostNew = () => {
                 {/* カテゴリ編集ボタン */}
                 <button
                   type="button"
-                  onClick={() => navigate('/categories')}
+                  onClick={() => navigate('/categories/manage')}
                   className="text-sm font-bold text-white bg-[#4f8196] hover:bg-[#80949e] px-4 py-2 rounded-lg whitespace-nowrap"
                 >
                   カテゴリ編集
