@@ -3,11 +3,13 @@ import type { ReactNode } from 'react'
 
 export const Layout = ({ children }: { children: ReactNode }) => {
   return (
-    <div>
-      <header className="sticky top-0 z-50 bg-white shadow-sm">
+    <div className="h-screen flex flex-col">
+      <header className="sticky top-0 z-50 bg-white shadow-sm flex-shrink-0">
         <Header />
       </header>
-      <main>{children}</main>
+      <main className="flex-1 overflow-y-auto">
+        {children}
+      </main>
     </div>
   )
 }
