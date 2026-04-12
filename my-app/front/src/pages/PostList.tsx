@@ -25,7 +25,9 @@ export const PostList = () => {
         skipGlobalError: true
       })
 
-      setPosts(posts.filter((post) => post.id !== postId))
+      setPosts((prev) =>
+        prev.filter((post) => post.id !== postId)
+      )
 
     } catch {
       setError('削除できませんでした')
