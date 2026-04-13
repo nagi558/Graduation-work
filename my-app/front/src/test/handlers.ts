@@ -39,15 +39,19 @@ export const handlers = [
   // カテゴリ一覧
   http.get('/api/v1/categories', () => {
     return HttpResponse.json([
-      { id: 1, name: 'テストカテゴリ' }
+      { id: 1, name: 'テストカテゴリ1' },
+      { id: 2, name: 'テストカテゴリ2' }
     ])
   }),
 
   // カテゴリ詳細
-  http.get('/api/v1/categories/:id', () => {
-    return HttpResponse.json(
-      { id: 1, name: 'テストカテゴリ' }
-    )
+  http.get('/api/v1/categories/:id', ({ params }) => {
+    const id = Number(params.id)
+    
+    return HttpResponse.json({
+        id,
+        name: 'テストカテゴリ${id}'
+    })
   }),
 
   // カテゴリ作成

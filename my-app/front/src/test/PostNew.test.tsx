@@ -31,7 +31,7 @@ describe('PostNew', () => {
 
   it('カテゴリ一覧が表示される', async () => {
     renderPostNew()
-    expect(await screen.findByText('テストカテゴリ')).toBeInTheDocument()
+    expect(await screen.findAllByText(/テストカテゴリ/)).toHaveLength(2)
   })
 
   it('タイトルが空の場合エラーメッセージが表示される', async () => {
