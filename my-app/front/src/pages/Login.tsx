@@ -88,10 +88,11 @@ export const Login = () => {
 
         {/* メール入力 */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1 text-left">
+            <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1 text-left">
               メールアドレス
             </label>
             <input
+              id="email"
               type="email"
               placeholder="aaaaaa@aaa.com"
               value={email}
@@ -102,10 +103,11 @@ export const Login = () => {
 
           {/* パスワード入力 */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1 text-left">
+            <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1 text-left">
               パスワード
             </label>
             <input
+              id="password"
               type="password"
               placeholder="******"
               value={password}

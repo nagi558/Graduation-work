@@ -48,7 +48,7 @@ export const CategoryUpdate = () => {
         skipGlobalError: true
       })
 
-      navigate('/categories')
+      navigate('/categories/manage')
 
     } catch {
       setError('カテゴリを編集できませんでした')

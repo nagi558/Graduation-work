@@ -38,7 +38,7 @@ export const CategoryNew = () => {
         skipGlobalError: true
       })
 
-      navigate('/categories')
+      navigate('/categories/manage')
 
     } catch {
       setError('カテゴリを作成できませんでした')
