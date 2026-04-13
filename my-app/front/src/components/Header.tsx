@@ -25,7 +25,12 @@ export const Header = () => {
 
   return (
     <div className="p-3 flex justify-between items-center">
-      <img src="/logo.png" alt="ロゴ" className="h-12 pl-10" />
+      <img
+        src="/logo.png"
+        alt="ロゴ"
+        className="h-12 pl-10" cursor-pointer
+        onClick={() => isLoggedIn ? navigate('/posts') : navigate('/')}
+      />
 
       {/* ログイン済みの場合のみログアウトボタンを表示 */}
       {isLoggedIn && (
