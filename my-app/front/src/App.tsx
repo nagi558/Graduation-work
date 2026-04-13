@@ -12,6 +12,7 @@ import { CategoryList } from './pages/CategoryList.tsx'
 import { CategoryManage } from './pages/CategoryManage'
 import { CategoryNew } from './pages/CategoryNew'
 import { CategoryUpdate } from './pages/CategoryUpdate'
+import { CategoryPostList } from './pages/CategoryPostList'
 import { MyPage } from './pages/MyPage'
 import { ErrorProvider } from './context/ErrorProvider'
 import ErrorBanner from './components/ErrorBanner'
@@ -84,6 +85,12 @@ export default function App() {
             <Route path="/mypage" element={
               <ProtectedRoute>
                 <Layout><MyPage /></Layout>
+              </ProtectedRoute>
+            } />
+
+            <Route path="/categories/:id/posts" element={
+              <ProtectedRoute>
+                <Layout><CategoryPostList /></Layout>
               </ProtectedRoute>
             } />
           </Routes>
