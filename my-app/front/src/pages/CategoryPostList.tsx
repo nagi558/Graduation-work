@@ -32,16 +32,10 @@ export const CategoryPostList = () => {
         <div className="bg-white rounded-2xl shadow-sm p-6">
 
           {/* タイトル */}
-          <div className="flex items-center gap-2 mb-4">
-            <button
-              onClick={() => navigate('/categories')}
-              className="text-gray-400 hover:text-[#4f8196] transition duration-200"
-            >
-              ← 戻る
-            </button>
-            <h1 className="text-2xl font-bold text-gray-700">
-              {category?.name}
-            </h1>
+          <div className="flex justify-between items-center mb-3">
+          <h1 className="!text-[38px] !font-bold !tracking-normal !text-[#444444] text-center mb-8 !font-sans">
+            {category?.name}
+          </h1>
           </div>
 
           {error && (
@@ -60,22 +54,39 @@ export const CategoryPostList = () => {
               {posts.map((post) => (
                 <div
                   key={post.id}
-                  className="border-b border-gray-100 last:border-none pb-4"
+                  className="bg-white rounded-2xl shadow-lg p-5 flex justify-between items-start"
                 >
-                  <p className="text-gray-800 font-bold text-lg mb-2">
+                  <div className="flex-1">
+                    <div className="flex items-center gap-2 mb-3">
+                      <p className="text-gray-800 font-bold text-lg">
                     {post.title}
                   </p>
-                  <p className="text-gray-500 text-sm text-left">
-                    {post.body}
-                  </p>
+                  <span className="text-xs text-white bg-[#A0B9C6] px-2 py-1 rounded-full">
+                    {post.category.name}
+                  </span>
                 </div>
-              ))}
+                <p className="text-gray-500 text-sm text-left">
+                  {post.body}
+                </p>
+              </div>
             </div>
-          )}
+          ))}
         </div>
-      </div>
+      )}
 
-      <Footer />
+      {/* 戻るボタン */}
+      <div className="flex justify-end mt-6">
+        <button
+          onClick={() => navigate('/categories')}
+          className="text-sm font-bold text-white bg-[#4f8196] hover:bg-[#80949e] px-4 py-2 rounded-lg transition duration-200"
+        >
+          ← 戻る
+        </button>
+      </div>
     </div>
-  )
+  </div>
+
+  <Footer />
+</div>
+)
 }
