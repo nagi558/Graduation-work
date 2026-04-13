@@ -40,7 +40,7 @@ export const PostList = () => {
       
       {/* メインコンテンツ */}
       <div className="max-w-4xl mx-auto pt-1 px-4">
-             <div className="bg-white rounded-2xl shadow-sm p-6">
+        <div className="bg-white rounded-2xl shadow-sm p-6">
 
         {/* タイトルと新規作成ボタン */}
         <div className="flex justify-between items-center mb-3">

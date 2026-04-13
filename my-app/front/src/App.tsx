@@ -12,6 +12,7 @@ import { CategoryList } from './pages/CategoryList.tsx'
 import { CategoryManage } from './pages/CategoryManage'
 import { CategoryNew } from './pages/CategoryNew'
 import { CategoryUpdate } from './pages/CategoryUpdate'
+import { MyPage } from './pages/MyPage'
 import { ErrorProvider } from './context/ErrorProvider'
 import ErrorBanner from './components/ErrorBanner'
 
@@ -77,6 +78,12 @@ export default function App() {
             <Route path="/categories/:id/edit" element={
               <ProtectedRoute>
                 <Layout><CategoryUpdate /></Layout>
+              </ProtectedRoute>
+            } />
+
+            <Route path="/mypage" element={
+              <ProtectedRoute>
+                <Layout><MyPage /></Layout>
               </ProtectedRoute>
             } />
           </Routes>
