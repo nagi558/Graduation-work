@@ -99,10 +99,11 @@ export const Register = () => {
         <form onSubmit={handleSubmit} className="space-y-4">
           {/* ニックネーム入力 */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1 text-left">
+            <label htmlFor="nickname" className="block text-sm font-medium text-gray-700 mb-1 text-left">
               ニックネーム
             </label>
             <input
+              id="nickname"
               type="text"
               placeholder="ヤマダ"
               value={nickname}
@@ -114,10 +115,11 @@ export const Register = () => {
 
           {/* メール入力 */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1 text-left">
+            <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1 text-left">
               メールアドレス
             </label>
             <input
+              id="email"
               type="input"
               placeholder="aaaaaa@aaa.com"
               value={email}
@@ -129,10 +131,11 @@ export const Register = () => {
 
           {/* パスワード入力 */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1 text-left">
+            <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1 text-left">
               パスワード
             </label>
             <input
+              id="password"
               type="password"
               placeholder="6文字以上"
               value={password}
@@ -144,10 +147,11 @@ export const Register = () => {
 
           {/* パスワード確認入力 */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1 text-left">
+            <label htmlFor="password_confirmation" className="block text-sm font-medium text-gray-700 mb-1 text-left">
               パスワード（確認）
             </label>
             <input
+              id="password_confirmation"
               type="password"
               placeholder="パスワードを再入力"
               value={password_confirmation}
