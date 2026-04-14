@@ -16,12 +16,28 @@ import { CategoryPostList } from './pages/CategoryPostList'
 import { MyPage } from './pages/MyPage'
 import { ErrorProvider } from './context/ErrorProvider'
 import ErrorBanner from './components/ErrorBanner'
+import { useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
+
+
+const UnauthorizedHandler = () => {
+  const navigate = useNavigate()
+
+  useEffect(() => {
+    const handler = () => navigate('/login')
+    window.addEventListener('auth:unauthorized', handler)
+    return () => window.removeEventListener('auth:unauthorized', handler)
+  }, [navigate])
+
+  return null
+}
 
 export default function App() {
   return (
     <ErrorProvider>
       <AuthProvider>
         <BrowserRouter>
+          <UnauthorizedHandler />
 
           <ErrorBanner />
 

@@ -44,7 +44,7 @@ axiosInstance.interceptors.response.use(
       tokenStorage.clear()
 
       if (window.location.pathname !== '/login') {
-        window.location.href = '/login'
+        window.dispatchEvent(new CustomEvent('auth:unauthorized'))
       }
     }
 
