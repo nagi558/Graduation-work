@@ -6,7 +6,7 @@ const axiosInstance = axios.create({
   headers: {
     'Content-Type': 'application/json'
   },
-  timeout: 10000
+  timeout: 30000
 })
 
 axiosInstance.interceptors.request.use(
@@ -41,6 +41,10 @@ axiosInstance.interceptors.response.use(
     const skipGlobalError = error.config?.skipGlobalError
 
     if (status === 401) {
+      const url = error.config?.url || ''
+      if (url.includes('/auth/sign_in') || url.includes('/auth')) {
+        return Promise.reject(error)
+      }
       tokenStorage.clear()
 
       if (window.location.pathname !== '/login') {
