@@ -3,11 +3,14 @@ import { useNavigate } from 'react-router-dom'
 import axiosInstance from '@/lib/axios'
 import { useParams } from 'react-router-dom'
 import { Footer } from '@/components/Footer'
+import { Spinner } from '@/components/Spinner'
 
 export const CategoryUpdate = () => {
   const [name, setName] = useState('')
   const [error, setError] = useState<string | null>(null)
-  const [loading, setLoading] = useState(false)
+
+  const [isFetching, setIsFetching] = useState(true)
+  const [isSubmitting, setIsSubmitting] = useState(false)
 
   const {id} = useParams()
   const navigate = useNavigate()
@@ -23,11 +26,25 @@ export const CategoryUpdate = () => {
 
   useEffect(() => {
     const fetchCategories = async () => {
-      const response = await axiosInstance.get(`/api/v1/categories/${id}`)
-      setName(response.data.name)
+      try {
+        const response = await axiosInstance.get(`/api/v1/categories/${id}`)
+        setName(response.data.name)
+      } catch {
+        setError('カテゴリの取得に失敗しました')
+      } finally {
+        setIsFetching(false)
+      }
     }
     fetchCategories()
   }, [id])
+
+  if (isFetching) {
+    return (
+      <div className="min-h-screen flex justify-center items-center bg-[#E8EEF1]">
+        <Spinner size='lg' />
+      </div>
+    )
+  }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -37,7 +54,7 @@ export const CategoryUpdate = () => {
       return
     }
 
-    setLoading(true)
+    setIsSubmitting(true)
 
     try {
       await axiosInstance.patch(`/api/v1/categories/${id}`, {
@@ -54,7 +71,7 @@ export const CategoryUpdate = () => {
       setError('カテゴリを編集できませんでした')
       window.scrollTo({ top: 0, behavior: 'smooth' })
     } finally {
-      setLoading(false)
+      setIsSubmitting(false)
     }
   }
 
@@ -84,17 +101,17 @@ export const CategoryUpdate = () => {
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#A0B9C6]"
-                disabled={loading}
+                disabled={isSubmitting}
               />
             </div>
 
             <div className="flex justify-end">
               <button
                 type="submit"
-                disabled={loading}
+                disabled={isSubmitting}
                 className="text-sm font-bold text-white bg-[#4f8196] hover:bg-[#80949e] disabled:bg-gray-400 px-7 py-2 rounded-lg shadow transition duration-200"
               >
-                {loading ? '更新中...' : '更新する'}
+                {isSubmitting ? <Spinner size="sm" /> : '更新する'}
               </button>
             </div>
           </form>
