@@ -3,17 +3,26 @@ import { useNavigate } from 'react-router-dom'
 import axiosInstance from '@/lib/axios'
 import type { Post } from '@/types'
 import { Footer } from '@/components/Footer'
+import { Spinner } from '@/components/Spinner'
 
 export const PostList = () => {
   const [posts, setPosts] = useState<Post[]>([])
   const [error, setError] = useState<string | null>(null)
+  const [isFetching, setIsFetching] = useState(true)
   const navigate = useNavigate()
 
   useEffect(() => {
     const fetchPosts = async () => {
-      const response = await axiosInstance.get('/api/v1/posts')
-      setPosts(response.data)
+      try {
+        const response = await axiosInstance.get('/api/v1/posts')
+        setPosts(response.data)
+      } catch(err) {
+        setError('投稿の取得に失敗しました')
+      } finally {
+        setIsFetching(false)
+      }
     }
+
     fetchPosts()
   }, [])
 
@@ -33,6 +42,14 @@ export const PostList = () => {
       setError('削除できませんでした')
       window.scrollTo({ top: 0, behavior: 'smooth' })
     }
+  }
+
+  if (isFetching) {
+    return (
+      <div className="min-h-screen flex justify-center items-center bg-[#E8EEF1]">
+        <Spinner size='lg' />
+      </div>
+    )
   }
 
   return (
