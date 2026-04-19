@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import axiosInstance from '@/lib/axios'
+import { Spinner } from '@/components/Spinner'
 
 export const Register = () => {
   const [nickname, setNickname] = useState('')
@@ -8,7 +9,7 @@ export const Register = () => {
   const [password, setPassword] = useState('')
   const [password_confirmation, setPasswordConfirmation] = useState('')
   const [error, setError] = useState<string | null>(null)
-  const [loading, setLoading] = useState(false)
+  const [isSubmitting, setIsSubmitting] = useState(false)
 
   const navigate = useNavigate()
 
@@ -51,7 +52,7 @@ export const Register = () => {
       return
     }
 
-    setLoading(true)
+    setIsSubmitting(true)
 
     try {
       // APIリクエスト
@@ -75,7 +76,7 @@ export const Register = () => {
       setError("アカウントを作成できませんでした")
       }
     } finally {
-      setLoading(false)
+      setIsSubmitting(false)
     }
   }
 
@@ -109,7 +110,7 @@ export const Register = () => {
               value={nickname}
               onChange={(e) => setNickname(e.target.value)}
               className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#A0B9C6]"
-              disabled={loading}
+              disabled={isSubmitting}
             />
           </div>
 
@@ -125,7 +126,7 @@ export const Register = () => {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#A0B9C6]"
-              disabled={loading}
+              disabled={isSubmitting}
             />
           </div>
 
@@ -141,7 +142,7 @@ export const Register = () => {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#A0B9C6]"
-              disabled={loading}
+              disabled={isSubmitting}
             />
           </div>
 
@@ -157,17 +158,17 @@ export const Register = () => {
               value={password_confirmation}
               onChange={(e) => setPasswordConfirmation(e.target.value)}
               className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#A0B9C6]"
-              disabled={loading}
+              disabled={isSubmitting}
             />
           </div>
 
           {/* 登録ボタン */}
           <button
             type="submit"
-            disabled={loading}
+            disabled={isSubmitting}
             className="w-full bg-[#4f8196] hover:bg-[#80949e] disabled:bg-gray-400 text-white font-bold py-3 px-4 rounded-xl shadow-lg transition duration-200 mt-2"
           >
-            {loading ? '登録中...' : '登録'}
+            {isSubmitting ? <Spinner size="sm" /> : '登録'}
           </button>
         </form>
       </div>
