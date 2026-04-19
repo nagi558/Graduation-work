@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import axiosInstance from '@/lib/axios'
 import type { Category } from '@/types'
 import { Footer } from '@/components/Footer'
+import { Spinner } from '@/components/Spinner'
 
 export const PostNew = () => {
   const [title, setTitle] = useState('')
@@ -10,7 +11,7 @@ export const PostNew = () => {
   const [categoryId, setCategoryId] = useState<number | null>(null)
   const [categories, setCategories] = useState<Category[]>([])
   const [error, setError] = useState<string | null>(null)
-  const [loading, setLoading] = useState(false)
+  const [isSubmitting, setIsSubmitting] = useState(false)
 
   const navigate = useNavigate()
 
@@ -26,8 +27,12 @@ export const PostNew = () => {
   // カテゴリ一覧を取得
   useEffect(() => {
     const fetchCategories = async () => {
-      const response = await axiosInstance.get('/api/v1/categories')
-      setCategories(response.data)
+      try {
+        const response = await axiosInstance.get('/api/v1/categories')
+        setCategories(response.data)
+      } catch {
+        setError('カテゴリの取得に失敗しました')
+      }
     }
     fetchCategories()
   }, [])
@@ -42,7 +47,7 @@ export const PostNew = () => {
         return
     }
 
-    setLoading(true)
+    setIsSubmitting(true)
 
     try {
     // APIリクエスト
@@ -62,7 +67,7 @@ export const PostNew = () => {
       setError('投稿を作成できませんでした')
       window.scrollTo({ top: 0, behavior: 'smooth' })
     } finally {
-      setLoading(false)
+      setIsSubmitting(false)
     }
   }
 
@@ -97,7 +102,7 @@ export const PostNew = () => {
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
                 className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#A0B9C6]"
-                disabled={loading}
+                disabled={isSubmitting}
               />
             </div>
 
@@ -125,6 +130,7 @@ export const PostNew = () => {
                   type="button"
                   onClick={() => navigate('/categories/manage')}
                   className="text-sm font-bold text-white bg-[#4f8196] hover:bg-[#80949e] px-4 py-2 rounded-lg whitespace-nowrap"
+                  disabled={isSubmitting}
                 >
                   カテゴリ編集
                 </button>
@@ -141,7 +147,7 @@ export const PostNew = () => {
                 value={body}
                 onChange={(e) => setBody(e.target.value)}
                 className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#A0B9C6] resize-none"
-                disabled={loading}
+                disabled={isSubmitting}
                 rows={6}
               />
             </div>
@@ -150,10 +156,10 @@ export const PostNew = () => {
               <div className="flex justify-end">
                 <button
                   type="submit"
-                  disabled={loading}
+                  disabled={isSubmitting}
                   className="text-sm font-bold text-white bg-[#4f8196] hover:bg-[#80949e] disabled:bg-gray-400 px-7 py-2 rounded-lg shadow transition duration-200"
                 >
-                  {loading ? '追加中...' : '追加する'}
+                  {isSubmitting ? <Spinner size="sm" /> : '追加する'}
                 </button>
               </div>
 
