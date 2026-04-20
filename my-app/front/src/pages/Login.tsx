@@ -79,7 +79,7 @@ export const Login = () => {
       <div className="w-full max-w-md bg-white rounded-2xl shadow-md p-10">
 
         {/* タイトル */}
-        <h1 className="!text-[38px] !font-bold !tracking-normal !text-[#444444] text-center mb-8 !font-sans">
+        <h1 className="text-[38px] font-bold tracking-normal text-[#444444] text-center mb-8 font-sans pt-7">
           ログイン
         </h1>
 
