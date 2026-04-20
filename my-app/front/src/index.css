@@ -262,3 +262,41 @@ code {
     @apply bg-background text-foreground;}
   html {
     @apply font-sans;}}
+
+/* ============================
+   Mobile UX Improvements (Safe)
+   ============================ */
+
+/* タップ領域（アクセシビリティ） */
+button,
+input[type="button"],
+input[type="submit"] {
+  min-height: 48px;
+}
+
+/* iOSズーム対策（フォームのフォントサイズ） */
+input,
+textarea {
+  font-size: 16px;
+}
+
+/* 画像のはみ出し防止 */
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* box-sizing（既にあるが保険としてOK） */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* スマホ時の左右余白（あなたの構造に合わせた最適解） */
+@media (max-width: 768px) {
+  #root {
+    padding-inline: 16px;
+  }
+}
