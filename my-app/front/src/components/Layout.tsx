@@ -1,4 +1,5 @@
 import { Header } from './Header'
+import { Footer } from './Footer'
 import type { ReactNode } from 'react'
 
 export const Layout = ({ children }: { children: ReactNode }) => {
@@ -10,6 +11,7 @@ export const Layout = ({ children }: { children: ReactNode }) => {
       <main className="flex-1 overflow-y-auto">
         {children}
       </main>
+      <Footer />
     </div>
   )
 }

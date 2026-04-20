@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import axiosInstance from '@/lib/axios'
 import type { Post, Category } from '@/types'
-import { Footer } from '@/components/Footer'
 
 export const CategoryPostList = () => {
   const { id } = useParams()
@@ -33,7 +32,7 @@ export const CategoryPostList = () => {
 
           {/* タイトル */}
           <div className="flex justify-between items-center mb-3">
-          <h1 className="!text-[38px] !font-bold !tracking-normal !text-[#444444] text-center mb-8 !font-sans">
+          <h1 className="text-[38px] font-bold tracking-normal text-[#444444] text-center mb-8 font-sans pt-7">
             {category?.name}
           </h1>
           </div>
@@ -85,8 +84,6 @@ export const CategoryPostList = () => {
       </div>
     </div>
   </div>
-
-  <Footer />
 </div>
 )
 }

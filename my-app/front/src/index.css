@@ -114,7 +114,6 @@
   width: 100%;
   max-width: 100%;
   margin: 0 auto;
-  text-align: center;
   min-height: 100svh;
   display: flex;
   flex-direction: column;
@@ -133,12 +132,15 @@ h2 {
 }
 
 h1 {
-  font-size: 56px;
-  letter-spacing: -1.68px;
-  margin: 32px 0;
+  font-size: 38px;
+  font-weight: 700;
+  letter-spacing: normal;
+  color: #444444;
+  margin: 0 0 2rem;
+
   @media (max-width: 1024px) {
-    font-size: 36px;
-    margin: 20px 0;
+    font-size: 28px;
+    margin: 0 0 1.5rem;
   }
 }
 h2 {
@@ -262,3 +264,30 @@ code {
     @apply bg-background text-foreground;}
   html {
     @apply font-sans;}}
+
+/* ============================
+   Mobile UX Improvements (Safe)
+   ============================ */
+
+/* タップ領域（アクセシビリティ） */
+@media (max-width: 768px) {
+  button,
+  input[type="button"],
+  input[type="submit"]
+  .touch-button {
+  min-height: 48px;
+  }
+}
+
+/* iOSズーム対策（フォームのフォントサイズ） */
+input,
+textarea {
+  font-size: 16px;
+}
+
+/* box-sizing（既にあるが保険としてOK） */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}

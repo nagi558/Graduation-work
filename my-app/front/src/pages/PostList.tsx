@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import axiosInstance from '@/lib/axios'
 import type { Post } from '@/types'
-import { Footer } from '@/components/Footer'
 import { Spinner } from '@/components/Spinner'
 
 export const PostList = () => {
@@ -53,7 +52,7 @@ export const PostList = () => {
   }
 
   return (
-    <div className="min-h-screen bg-[#E8EEF1] pb-20">
+    <div className="bg-[#E8EEF1] pb-20">
       
       {/* メインコンテンツ */}
       <div className="max-w-4xl mx-auto pt-1 px-4">
@@ -61,7 +60,7 @@ export const PostList = () => {
 
         {/* タイトルと新規作成ボタン */}
         <div className="flex justify-between items-center mb-3">
-          <h1 className="!text-[38px] !font-bold !tracking-normal !text-[#444444] text-center mb-8 !font-sans">
+          <h1 className="text-[38px] font-bold tracking-normal text-[#444444] text-center mb-8 font-sans pt-7">
             伝えたいこと
           </h1>
           <button
@@ -92,7 +91,7 @@ export const PostList = () => {
                 className="bg-white rounded-2xl shadow-lg p-5 flex justify-between items-start"
               >
                 {/* 左側：タイトル・カテゴリ・本文 */}
-                <div className="flex-1">
+                <div className="flex-1 min-w-0">
 
                   {/* タイトルとカテゴリ */}
                   <div className="flex items-center gap-2 mb-3">
@@ -131,9 +130,6 @@ export const PostList = () => {
         )}
       </div>
       </div>
-
-      {/* フッターナビゲーション */}
-      <Footer />
     </div>
   )
 }

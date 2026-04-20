@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom'
 import axiosInstance from '@/lib/axios'
 import type { Category } from '@/types'
 import { useParams } from 'react-router-dom'
-import { Footer } from '@/components/Footer'
 import { Spinner } from '@/components/Spinner'
 
 export const PostUpdate = () => {
@@ -116,7 +115,7 @@ export const PostUpdate = () => {
           <form onSubmit={handleSubmit} className="space-y-4">
             
             {/* タイトル */}
-            <h1 className="!text-[38px] !font-bold !tracking-normal !text-[#444444] text-center mb-8 !font-sans">
+            <h1 className="text-[38px] font-bold tracking-normal text-[#444444] text-center mb-8 font-sans pt-7">
               投稿編集
             </h1>
 
@@ -193,9 +192,6 @@ export const PostUpdate = () => {
           </form>
         </div>
       </div>
-
-      {/* フッターナビゲーション */}
-      <Footer />
     </div>
   )
 }

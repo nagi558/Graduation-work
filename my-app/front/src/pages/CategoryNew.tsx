@@ -1,7 +1,6 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import axiosInstance from '@/lib/axios'
-import { Footer } from '@/components/Footer'
 import { Spinner } from '@/components/Spinner'
 
 export const CategoryNew = () => {
@@ -62,7 +61,7 @@ export const CategoryNew = () => {
         <div className="bg-white rounded-2xl shadow-sm p-10">
           <form onSubmit={handleSubmit} className="space-y-4">
 
-            <h1 className="!text-[38px] !font-bold !tracking-normal !text-[#444444] text-center mb-8 !font-sans">
+            <h1 className="text-[38px] font-bold tracking-normal text-[#444444] text-center mb-8 font-sans pt-7">
               新規作成
             </h1>
 
@@ -92,9 +91,6 @@ export const CategoryNew = () => {
           </form>
         </div>
       </div>
-
-      {/* フッターナビゲーション */}
-      <Footer />
     </div>
   )
 }

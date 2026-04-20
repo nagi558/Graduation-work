@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import axiosInstance from '@/lib/axios'
 import type { Category } from '@/types'
-import { Footer } from '@/components/Footer'
 import { Spinner } from '@/components/Spinner'
 
 export const CategoryManage = () => {
@@ -66,7 +65,7 @@ export const CategoryManage = () => {
 
           {/* タイトルと新規作成ボタン */}
           <div className="flex justify-between items-center mb-3">
-            <h1 className="!text-[38px] !font-bold !tracking-normal !text-[#444444] text-center mb-8 !font-sans">
+            <h1 className="text-[38px] font-bold tracking-normal text-[#444444] text-center mb-8 font-sans pt-7">
               カテゴリ管理
             </h1>
             <button
@@ -130,9 +129,6 @@ export const CategoryManage = () => {
           )}
         </div>
       </div>
-
-      {/* フッターナビゲーション */}
-      <Footer />
     </div>
   )
 }
