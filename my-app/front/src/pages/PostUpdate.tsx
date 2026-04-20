@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom'
 import axiosInstance from '@/lib/axios'
 import type { Category } from '@/types'
 import { useParams } from 'react-router-dom'
-import { Footer } from '@/components/Footer'
 import { Spinner } from '@/components/Spinner'
 
 export const PostUpdate = () => {
@@ -193,9 +192,6 @@ export const PostUpdate = () => {
           </form>
         </div>
       </div>
-
-      {/* フッターナビゲーション */}
-      <Footer />
     </div>
   )
 }

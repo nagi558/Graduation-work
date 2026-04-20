@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import axiosInstance from '@/lib/axios'
 import { useParams } from 'react-router-dom'
-import { Footer } from '@/components/Footer'
 import { Spinner } from '@/components/Spinner'
 
 export const CategoryUpdate = () => {
@@ -117,8 +116,6 @@ export const CategoryUpdate = () => {
           </form>
         </div>
       </div>
-
-      <Footer />
     </div>
   )
 }

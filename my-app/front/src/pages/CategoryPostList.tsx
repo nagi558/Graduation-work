@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import axiosInstance from '@/lib/axios'
 import type { Post, Category } from '@/types'
-import { Footer } from '@/components/Footer'
 
 export const CategoryPostList = () => {
   const { id } = useParams()
@@ -85,8 +84,6 @@ export const CategoryPostList = () => {
       </div>
     </div>
   </div>
-
-  <Footer />
 </div>
 )
 }

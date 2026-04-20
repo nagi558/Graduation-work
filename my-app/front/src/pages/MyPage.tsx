@@ -1,5 +1,3 @@
-import { Footer } from "@/components/Footer"
-
 export const MyPage = () => {
 
   return (
@@ -32,8 +30,6 @@ export const MyPage = () => {
           </div>
         </div>
       </div>
-
-      <Footer />
     </div>
   )
 }

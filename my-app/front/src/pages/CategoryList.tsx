@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react'
 import type { Category } from '@/types'
 import { useNavigate } from 'react-router-dom'
 import axiosInstance from '@/lib/axios'
-import { Footer } from '@/components/Footer'
 
 export const CategoryList = () => {
   const [categories, setCategories] = useState<Category[]>([])
@@ -61,8 +60,6 @@ export const CategoryList = () => {
           )}
         </div>
       </div>
-
-      <Footer />
     </div>
   )
 }

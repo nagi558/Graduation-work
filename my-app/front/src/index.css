@@ -114,10 +114,7 @@
   width: 100%;
   max-width: 100%;
   margin: 0 auto;
-  text-align: center;
   min-height: 100svh;
-  display: flex;
-  flex-direction: column;
   box-sizing: border-box;
 }
 
@@ -292,11 +289,4 @@ img {
 *::before,
 *::after {
   box-sizing: border-box;
-}
-
-/* スマホ時の左右余白（あなたの構造に合わせた最適解） */
-@media (max-width: 768px) {
-  #root {
-    padding-inline: 16px;
-  }
 }
