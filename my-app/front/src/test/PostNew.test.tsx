@@ -5,8 +5,12 @@ import { AuthProvider } from '@/context/AuthContext'
 import { PostNew } from '@/pages/PostNew'
 import { PostList } from '@/pages/PostList'
 import { CategoryManage } from '@/pages/CategoryManage'
-import { server } from './server'
-import { http, HttpResponse } from 'msw'
+import axiosInstance from '@/lib/axios'
+
+vi.mock('@/lib/axios')
+
+const mockGet = vi.mocked(axiosInstance.get)
+const mockPost = vi.mocked(axiosInstance.post)
 
 const renderPostNew = () => {
   render(
@@ -23,6 +27,44 @@ const renderPostNew = () => {
 }
 
 describe('PostNew', () => {
+
+  beforeEach(() => {
+    mockGet.mockImplementation((url) => {
+      if (url === '/api/v1/categories') {
+        return Promise.resolve({
+          data: [
+            { id: 1, name: 'テストカテゴリ' },
+            { id: 2, name: 'テストカテゴリ2' }
+          ]
+        })
+      }
+
+      if (url === '/api/v1/posts') {
+        return Promise.resolve({
+          data: [
+            {
+              id: 1,
+              title: 'テストタイトル',
+              body: 'テスト本文',
+              category: { id: 1, name: 'テストカテゴリ' }
+            }
+          ]
+        })
+      }
+
+      return Promise.reject(new Error('not mocked'))
+    })
+
+    mockPost.mockResolvedValue({
+      data: {
+        id: 1,
+        title: 'テストタイトル',
+        body: 'テスト本文',
+        category: { id: 1, name: 'テストカテゴリ' }
+      }
+    })
+  })
+
   it('新規作成フォームが表示される', async () => {
     renderPostNew()
     expect(await screen.findByText('新規作成')).toBeInTheDocument()
@@ -43,30 +85,17 @@ describe('PostNew', () => {
 
   it('正常に投稿を作成すると一覧画面に遷移する', async () => {
     const user = userEvent.setup()
-
-    server.use(
-      http.post('/api/v1/posts', async ({ request }) => {
-        const body = await request.json() as { post: { title: string, body: string } }
-        return HttpResponse.json({
-          id: 1,
-          title: body.post.title,
-          body: body.post.body,
-          category: { id: 1, name: 'テストカテゴリ' }
-        })
-      })
-    )
-
     renderPostNew()
-    await screen.findByText('新規作成')
 
     await user.type(screen.getByPlaceholderText('月1,000円でも投資に回す'), 'テストタイトル')
     await user.selectOptions(screen.getByRole('combobox'), '1')
-    await user.type(screen.getByPlaceholderText('投資は長く続けるほど複利が大きくなっていくので、早く始めるほど将来的なリターンも大きくなっていく（15年以上の長期投資を前提とする）'), 'テスト本文')
+    await user.type(
+      screen.getByPlaceholderText('投資は長く続けるほど複利が大きくなっていくので、早く始めるほど将来的なリターンも大きくなっていく（15年以上の長期投資を前提とする）'),
+      'テスト本文'
+    )
 
-    const submitButton = screen.getByRole('button', {name: '追加する' })
+    await user.click(screen.getByRole('button', { name: '追加する' }))
 
-    await user.click(submitButton)
-    
     expect(await screen.findByText('テストタイトル')).toBeInTheDocument()
   })
 

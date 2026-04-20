@@ -1,42 +1,48 @@
-import { render, screen,} from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { MemoryRouter } from 'react-router-dom'
+import { MemoryRouter, Routes, Route } from 'react-router-dom'
 import { CategoryNew } from '../pages/CategoryNew'
-import { server } from './msw/server'
-import { http, HttpResponse } from 'msw'
-import { fireEvent } from '@testing-library/react'
+import { CategoryManage } from '../pages/CategoryManage'
+import axiosInstance from '@/lib/axios'
 
+// navigate モック
+const mockNavigate = vi.fn()
 vi.mock('react-router-dom', async () => {
-  const actual = await vi.importActual('react-router-dom')
+  const actual = await vi.importActual<any>('react-router-dom')
   return {
     ...actual,
-    useNavigate: () => vi.fn(),
+    useNavigate: () => mockNavigate,
   }
 })
 
+vi.mock('@/lib/axios')
+const mockPost = vi.mocked(axiosInstance.post)
+
 const renderCategoryNew = () => {
   render(
-    <MemoryRouter>
-      <CategoryNew />
+    <MemoryRouter initialEntries={['/categories/new']}>
+      <Routes>
+        <Route path="/categories/new" element={<CategoryNew />} />
+        <Route path="/categories/manage" element={<CategoryManage />} />
+      </Routes>
     </MemoryRouter>
   )
 }
 
-server.use(
-  http.post('http://localhost:3000/api/v1/categories', async ({ request }) => {
-    const body = await request.json() as { category: { name: string } }
-    return HttpResponse.json({
-      id: 1,
-      name: body.category.name,
+describe('CategoryNew', () => {
+
+  beforeEach(() => {
+    mockPost.mockResolvedValue({
+      data: {
+        id: 1,
+        name: 'テストカテゴリ'
+      }
     })
   })
-)
 
-describe('CategoryNew', () => {
   test('カテゴリ作成フォームが表示される', () => {
     renderCategoryNew()
 
-    // 修正
     expect(screen.getByText('新規作成')).toBeInTheDocument()
     expect(screen.getByPlaceholderText('恋愛 など')).toBeInTheDocument()
   })
@@ -50,25 +56,26 @@ describe('CategoryNew', () => {
     expect(input).toHaveValue('テストカテゴリ')
   })
 
-  test('追加ボタンを押すと送信中になり、その後カテゴリ管理画面に遷移する', async () => {
+  test('追加ボタンを押すとカテゴリ管理画面に遷移する', async () => {
+    const user = userEvent.setup()
     renderCategoryNew()
 
     const input = screen.getByPlaceholderText('恋愛 など')
-    await userEvent.type(input, 'テストカテゴリ')
+    await user.type(input, 'テストカテゴリ')
 
     const button = screen.getByRole('button', { name: '追加する' })
-    fireEvent.submit(button.closest('form')!)
+    await user.click(button)
 
-    expect(await screen.findByText('カテゴリ一覧')).toBeInTheDocument()
+    expect(mockNavigate).toHaveBeenCalledWith('/categories/manage')
   })
 
   test('カテゴリ名が空の場合エラーメッセージが表示される', async () => {
+    const user = userEvent.setup()
     renderCategoryNew()
 
     const button = screen.getByRole('button', { name: '追加する' })
-    await userEvent.click(button)
+    await user.click(button)
 
-    // 修正
     expect(await screen.findByText('カテゴリを入力してください')).toBeInTheDocument()
   })
 })
