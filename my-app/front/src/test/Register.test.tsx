@@ -14,20 +14,6 @@ const renderRegister = () => {
   )
 }
 
-const fillForm = async (user: ReturnType<typeof userEvent.setup>, overrides = {}) => {
-  const values = {
-    nickname: 'テスト',
-    email: 'test@test.com',
-    password: 'password123',
-    password_confirmation: 'password123',
-    ...overrides
-  }
-  await user.type(screen.getByLabelText('ニックネーム'), values.nickname)
-  await user.type(screen.getByLabelText('メールアドレス'), values.email)
-  await user.type(screen.getByLabelText('パスワード'), values.password)
-  await user.type(screen.getByLabelText('パスワード（確認）'), values.password_confirmation)
-}
-
 describe('Register', () => {
   it('登録フォームが表示される', () => {
     renderRegister()
