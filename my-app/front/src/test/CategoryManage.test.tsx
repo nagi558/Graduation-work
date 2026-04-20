@@ -5,8 +5,12 @@ import { AuthProvider } from '@/context/AuthContext'
 import { CategoryManage } from '@/pages/CategoryManage'
 import { CategoryUpdate } from '@/pages/CategoryUpdate'
 import { CategoryNew } from '@/pages/CategoryNew'
-import { server } from './server'
-import { http, HttpResponse } from 'msw'
+import axiosInstance from '@/lib/axios'
+
+vi.mock('@/lib/axios')
+
+const mockGet = vi.mocked(axiosInstance.get)
+const mockDelete = vi.mocked(axiosInstance.delete)
 
 const renderCategoryManage = () => {
   render(
@@ -23,12 +27,32 @@ const renderCategoryManage = () => {
 }
 
 describe('CategoryManage', () => {
+
+  beforeEach(() => {
+    mockGet.mockImplementation((url) => {
+      if (url === '/api/v1/categories') {
+        return Promise.resolve({
+          data: [
+            { id: 1, name: 'テストカテゴリ1' },
+            { id: 2, name: 'テストカテゴリ2' }
+          ]
+        })
+      }
+      return Promise.reject(new Error('not mocked'))
+    })
+
+    mockDelete.mockResolvedValue({
+      data: { message: '削除しました' }
+    })
+  })
+
   it('カテゴリ一覧が表示される', async () => {
     renderCategoryManage()
 
     await waitFor(() => {
       expect(screen.queryByTestId('spinner')).not.toBeInTheDocument()
     })
+
     expect(await screen.findByText('テストカテゴリ1')).toBeInTheDocument()
     expect(await screen.findByText('テストカテゴリ2')).toBeInTheDocument()
   })
@@ -38,7 +62,6 @@ describe('CategoryManage', () => {
     renderCategoryManage()
 
     await user.click(await screen.findByRole('button', { name: '新規作成' }))
-
     expect(await screen.findByText('新規作成')).toBeInTheDocument()
   })
 
@@ -56,18 +79,11 @@ describe('CategoryManage', () => {
     const user = userEvent.setup()
     vi.spyOn(window, 'confirm').mockReturnValue(true)
 
-    server.use(
-      http.delete('/api/v1/categories/1', () => {
-        return HttpResponse.json({ message: '削除しました' })
-      })
-    )
-
     renderCategoryManage()
 
     await screen.findByText('テストカテゴリ1')
 
     const deleteButton = screen.getAllByRole('button', { name: '削除' })[0]
-
     await user.click(deleteButton)
 
     expect(screen.queryByText('テストカテゴリ1')).not.toBeInTheDocument()
