@@ -11,6 +11,8 @@ export const Spinner = ({ size = "md" }: SpinnerProps) => {
 
   return (
     <div
+      role="status"
+      aria-label="loading"
       className={`animate-spin rounded-full border-gray-300 border-t-transparent ${spinnerSize[size]}`}
     />
   )

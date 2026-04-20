@@ -62,8 +62,11 @@ describe('PostNew', () => {
     await user.type(screen.getByPlaceholderText('月1,000円でも投資に回す'), 'テストタイトル')
     await user.selectOptions(screen.getByRole('combobox'), '1')
     await user.type(screen.getByPlaceholderText('投資は長く続けるほど複利が大きくなっていくので、早く始めるほど将来的なリターンも大きくなっていく（15年以上の長期投資を前提とする）'), 'テスト本文')
-    await user.click(screen.getByRole('button', { name: '追加する' }))
 
+    const submitButton = screen.getByRole('button', {name: '追加する' })
+
+    await user.click(submitButton)
+    
     expect(await screen.findByText('テストタイトル')).toBeInTheDocument()
   })
 

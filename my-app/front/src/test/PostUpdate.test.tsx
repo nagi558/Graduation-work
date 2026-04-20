@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react'
+import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { MemoryRouter, Routes, Route } from 'react-router-dom'
 import { AuthProvider } from '@/context/AuthContext'
@@ -23,14 +23,32 @@ const renderPostUpdate = () => {
 }
 
 describe('PostUpdate', () => {
-  it('編集フォームが表示される', async () => {
+  it('初回ロード中はスピナーが表示される', () => {
     renderPostUpdate()
-    expect(await screen.findByText('投稿編集')).toBeInTheDocument()
-    expect(await screen.findByRole('button', { name: '更新する' })).toBeInTheDocument()
+    expect(screen.getByRole('status')).toBeInTheDocument()
   })
+
+  it('ロード完了後に編集フォームが表示される', async () => {
+    renderPostUpdate()
+
+    // スピナーが消えるのを待つ
+    await waitFor(() => {
+    expect(screen.queryByTestId('spinner')).not.toBeInTheDocument()
+  })
+
+  // フォームが表示される
+    expect(await screen.findByText('投稿編集')).toBeInTheDocument()
+  })
+
 
   it('既存データがフォームに表示される', async () => {
     renderPostUpdate()
+
+    // スピナーが消えるのを待つ
+    await waitFor(() => {
+      expect(screen.queryByTestId('spinner')).not.toBeInTheDocument()
+    })
+
     expect(await screen.findByDisplayValue('テストタイトル')).toBeInTheDocument()
     expect(await screen.findByDisplayValue('テスト本文')).toBeInTheDocument()
   })

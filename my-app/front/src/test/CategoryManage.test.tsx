@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react'
+import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { MemoryRouter, Routes, Route } from 'react-router-dom'
 import { AuthProvider } from '@/context/AuthContext'
@@ -25,6 +25,10 @@ const renderCategoryManage = () => {
 describe('CategoryManage', () => {
   it('カテゴリ一覧が表示される', async () => {
     renderCategoryManage()
+
+    await waitFor(() => {
+      expect(screen.queryByTestId('spinner')).not.toBeInTheDocument()
+    })
     expect(await screen.findByText('テストカテゴリ1')).toBeInTheDocument()
     expect(await screen.findByText('テストカテゴリ2')).toBeInTheDocument()
   })
@@ -62,7 +66,9 @@ describe('CategoryManage', () => {
 
     await screen.findByText('テストカテゴリ1')
 
-    await user.click(screen.getAllByRole('button', { name: '削除' })[0])
+    const deleteButton = screen.getAllByRole('button', { name: '削除' })[0]
+
+    await user.click(deleteButton)
 
     expect(screen.queryByText('テストカテゴリ1')).not.toBeInTheDocument()
   })

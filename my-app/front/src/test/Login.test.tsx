@@ -27,6 +27,11 @@ describe('Login', () => {
     renderLogin()
     const button = screen.getByRole('button', { name: 'ログイン' })
     await user.click(button)
+
+    expect(button).not.toBeDisabled()
+
+    expect(screen.queryByTestId('spinner')).not.toBeInTheDocument()
+
     expect(await screen.findByText('メールアドレスを入力してください')).toBeInTheDocument()
   })
 
@@ -34,7 +39,12 @@ describe('Login', () => {
     const user = userEvent.setup()
     renderLogin()
     await user.type(screen.getByLabelText('メールアドレス'), 'test@test.com')
-    await user.click(screen.getByRole('button', { name: 'ログイン' }))
+
+    const button = screen.getByRole('button', { name: 'ログイン' })
+    await user.click(button)
+
+    expect(screen.queryByTestId('spinner')).not.toBeInTheDocument()
+
     expect(await screen.findByText('パスワードを入力してください')).toBeInTheDocument()
   })
 })
