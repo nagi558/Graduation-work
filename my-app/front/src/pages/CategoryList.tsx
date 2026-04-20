@@ -28,7 +28,7 @@ export const CategoryList = () => {
     <div className="min-h-screen bg-[#E8EEF1] pb-20">
       <div className="max-w-4xl mx-auto pt-1 px-4">
         <div className="bg-white rounded-2xl shadow-sm p-6">
-          <h1 className="!text-[38px] !font-bold !tracking-normal !text-[#444444] text-center mb-8 !font-sans">
+          <h1 className="text-[38px] font-bold tracking-normal text-[#444444] text-center mb-8 font-sans pt-7">
             カテゴリ一覧
           </h1>
 

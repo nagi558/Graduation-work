@@ -32,7 +32,7 @@ export const CategoryPostList = () => {
 
           {/* タイトル */}
           <div className="flex justify-between items-center mb-3">
-          <h1 className="!text-[38px] !font-bold !tracking-normal !text-[#444444] text-center mb-8 !font-sans">
+          <h1 className="text-[38px] font-bold tracking-normal text-[#444444] text-center mb-8 font-sans pt-7">
             {category?.name}
           </h1>
           </div>

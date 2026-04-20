@@ -28,7 +28,7 @@ export const Header = () => {
       <img
         src="/logo.png"
         alt="ロゴ"
-        className="h-8 md:h-7 cursor-pointer"
+        className="h-12 pl-10" cursor-pointer
         onClick={() => isLoggedIn ? navigate('/posts') : navigate('/')}
       />
 

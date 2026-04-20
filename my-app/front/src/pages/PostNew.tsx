@@ -86,7 +86,7 @@ export const PostNew = () => {
           <form onSubmit={handleSubmit} className="space-y-4">
 
             {/* タイトル */}
-            <h1 className="!text-[38px] !font-bold !tracking-normal !text-[#444444] text-center mb-8 !font-sans">
+            <h1 className="text-[38px] font-bold tracking-normal text-[#444444] text-center mb-8 font-sans pt-7">
               新規作成
             </h1>
 

@@ -115,7 +115,7 @@ export const PostUpdate = () => {
           <form onSubmit={handleSubmit} className="space-y-4">
             
             {/* タイトル */}
-            <h1 className="!text-[38px] !font-bold !tracking-normal !text-[#444444] text-center mb-8 !font-sans">
+            <h1 className="text-[38px] font-bold tracking-normal text-[#444444] text-center mb-8 font-sans pt-7">
               投稿編集
             </h1>
 
