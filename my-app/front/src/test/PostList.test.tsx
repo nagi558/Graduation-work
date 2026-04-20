@@ -1,13 +1,14 @@
-import { render, screen } from '@testing-library/react'
+import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { MemoryRouter, Routes, Route } from 'react-router-dom'
 import { AuthProvider } from '@/context/AuthContext'
 import { PostList } from '@/pages/PostList'
 import { PostNew } from '@/pages/PostNew'
 import { PostUpdate } from '@/pages/PostUpdate'
-import { server } from './server'
-import { http, HttpResponse } from 'msw'
+import axiosInstance from '@/lib/axios'
 import { vi } from 'vitest'
+
+vi.mock('@/lib/axios')
 
 const renderPostList = () => {
   render(
@@ -23,25 +24,47 @@ const renderPostList = () => {
   )
 }
 
+const mockPosts = [
+  {
+    id: 1,
+    title: 'テストタイトル',
+    body: 'テスト本文',
+    category: { name: 'テストカテゴリ' }
+  }
+]
+
 describe('PostList', () => {
+
+  afterEach(() => {
+    vi.clearAllMocks()
+  })
+
   it('投稿一覧が表示される', async () => {
+    vi.mocked(axiosInstance.get).mockResolvedValue({
+      data: mockPosts
+    } as any)
+
     renderPostList()
+
     expect(await screen.findByText('テストタイトル')).toBeInTheDocument()
     expect(await screen.findByText('テスト本文')).toBeInTheDocument()
   })
 
   it('投稿が0件の場合メッセージが表示される', async () => {
-    server.use(
-      http.get('/api/v1/posts', () => {
-        return HttpResponse.json([])
-      })
-    )
+    vi.mocked(axiosInstance.get).mockResolvedValue({
+      data: []
+    } as any)
 
     renderPostList()
+
     expect(await screen.findByText('まだ投稿がありません')).toBeInTheDocument()
   })
 
   it('新規作成ボタンをクリックすると新規画面に遷移する', async () => {
+    vi.mocked(axiosInstance.get).mockResolvedValue({
+      data: mockPosts
+    } as any)
+
     const user = userEvent.setup()
     renderPostList()
 
@@ -51,6 +74,10 @@ describe('PostList', () => {
   })
 
   it('修正ボタンをクリックすると編集画面に遷移する', async () => {
+    vi.mocked(axiosInstance.get).mockResolvedValue({
+      data: mockPosts
+    } as any)
+
     const user = userEvent.setup()
     renderPostList()
 
@@ -60,15 +87,14 @@ describe('PostList', () => {
   })
 
   it('削除ボタンをクリックすると投稿が削除される', async () => {
+    vi.mocked(axiosInstance.get).mockResolvedValue({
+      data: mockPosts
+    } as any)
+
+    vi.mocked(axiosInstance.delete).mockResolvedValue({} as any)
+
     const user = userEvent.setup()
-
     vi.spyOn(window, 'confirm').mockReturnValue(true)
-
-    server.use(
-      http.delete('/api/v1/posts/1', () => {
-        return HttpResponse.json({ message: '投稿を削除しました' })
-      })
-    )
 
     renderPostList()
 
@@ -76,6 +102,8 @@ describe('PostList', () => {
 
     await user.click(screen.getByRole('button', { name: '削除' }))
 
-    expect(screen.queryByText('テストタイトル')).not.toBeInTheDocument()
+    await waitFor(() => {
+      expect(screen.queryByText('テストタイトル')).not.toBeInTheDocument()
+    })
   })
 })

@@ -2,11 +2,13 @@ import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import axiosInstance from '@/lib/axios'
 import { useAuth } from '@/context/AuthContext'
+import { Spinner } from '@/components/Spinner'
 
 export const Login = () => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState<string | null>(null)
+  const [isSubmitting, setIsSubmitting] = useState(false)
   const { login } = useAuth()
 
   const navigate = useNavigate()
@@ -45,6 +47,9 @@ export const Login = () => {
     }
 
     try {
+    // ローディングかいし
+    setIsSubmitting(true)
+
     // APIリクエスト
     const response = await axiosInstance.post('/auth/sign_in', {
       email,
@@ -64,6 +69,8 @@ export const Login = () => {
 
     } catch (err: any) {
         setError("メールアドレスまたはパスワードが正しくありません")
+    } finally {
+      setIsSubmitting(false)
     }
   }
 
@@ -126,9 +133,14 @@ export const Login = () => {
           {/* ログイン */}
           <button
             type="submit"
+            disabled={isSubmitting}
             className="w-full bg-[#4f8196] hover:bg-[#80949e] disabled:bg-gray-400 text-white font-bold py-3 px-4 rounded-xl shadow-lg transition duration-200 mt-2"
           >
-            ログイン
+            {isSubmitting ? (
+              <Spinner size="sm" />
+            ): (
+              "ログイン"
+            )}
           </button>
         </form>
       </div>

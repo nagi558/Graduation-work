@@ -2,11 +2,12 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import axiosInstance from '@/lib/axios'
 import { Footer } from '@/components/Footer'
+import { Spinner } from '@/components/Spinner'
 
 export const CategoryNew = () => {
   const [name, setName] = useState('')
   const [error, setError] = useState<string | null>(null)
-  const [loading, setLoading] = useState(false)
+  const [isSubmitting, setIsSubmitting] = useState(false)
 
   const navigate = useNavigate()
 
@@ -27,7 +28,7 @@ export const CategoryNew = () => {
       return
     }
 
-    setLoading(true)
+    setIsSubmitting(true)
     
     try {
       await axiosInstance.post('/api/v1/categories', {
@@ -44,7 +45,7 @@ export const CategoryNew = () => {
       setError('カテゴリを作成できませんでした')
       window.scrollTo({ top: 0, behavior: 'smooth' })
     } finally {
-      setLoading(false)
+      setIsSubmitting(false)
     }
   }
 
@@ -75,17 +76,17 @@ export const CategoryNew = () => {
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#A0B9C6]"
-                disabled={loading}
+                disabled={isSubmitting}
               />
             </div>
 
             <div className="flex justify-end">
               <button
                 type="submit"
-                disabled={loading}
+                disabled={isSubmitting}
                 className="text-sm font-bold text-white bg-[#4f8196] hover:bg-[#80949e] disabled:bg-gray-400 px-7 py-2 rounded-lg shadow transition duration-200"
               >
-                {loading ? '追加中...' : '追加する'}
+                {isSubmitting ? <Spinner size="sm" /> : '追加する'}
               </button>
             </div>
           </form>

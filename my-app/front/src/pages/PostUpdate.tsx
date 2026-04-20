@@ -4,6 +4,7 @@ import axiosInstance from '@/lib/axios'
 import type { Category } from '@/types'
 import { useParams } from 'react-router-dom'
 import { Footer } from '@/components/Footer'
+import { Spinner } from '@/components/Spinner'
 
 export const PostUpdate = () => {
   const [title, setTitle] = useState('')
@@ -11,7 +12,9 @@ export const PostUpdate = () => {
   const [categoryId, setCategoryId] = useState<number | null>(null)
   const [categories, setCategories] = useState<Category[]>([])
   const [error, setError] = useState<string | null>(null)
-  const [loading, setLoading] = useState(false)
+  
+  const [isFetching, setIsFetching] = useState(true)
+  const [isSubmitting, setIsSubmitting] = useState(false)
 
   const {id} = useParams()
   const navigate = useNavigate()
@@ -28,8 +31,12 @@ export const PostUpdate = () => {
   // カテゴリ一覧を取得
   useEffect(() => {
     const fetchCategories = async () => {
-      const response = await axiosInstance.get('/api/v1/categories')
-      setCategories(response.data)
+      try {
+        const response = await axiosInstance.get('/api/v1/categories')
+        setCategories(response.data)
+      } catch {
+        setError('カテゴリの取得に失敗しました')
+      }
     }
     fetchCategories()
   }, [])
@@ -37,13 +44,27 @@ export const PostUpdate = () => {
   // 既存の投稿データをセット
   useEffect(() => {
     const fetchPost = async () => {
-      const response = await axiosInstance.get(`/api/v1/posts/${id}`)
-      setTitle(response.data.title)
-      setBody(response.data.body)
-      setCategoryId(response.data.category.id)
+      try {
+        const response = await axiosInstance.get(`/api/v1/posts/${id}`)
+        setTitle(response.data.title)
+        setBody(response.data.body)
+        setCategoryId(response.data.category.id)
+      } catch {
+        setError('投稿の取得に失敗しました')
+      } finally {
+        setIsFetching(false)
+      }
     }
     fetchPost()
   }, [id])
+
+  if (isFetching) {
+    return (
+       <div className="min-h-screen flex justify-center items-center bg-[#E8EEF1]">
+        <Spinner size ="lg" />
+       </div>
+    )
+  }
 
   // フォーム送信
   const handleSubmit = async (e: React.FormEvent) => {
@@ -55,7 +76,7 @@ export const PostUpdate = () => {
       return
     }
 
-    setLoading(true)
+    setIsSubmitting(true)
 
     try {
       //APIリクエスト
@@ -75,7 +96,7 @@ export const PostUpdate = () => {
       setError('投稿を編集できませんでした')
       window.scrollTo({ top: 0, behavior: 'smooth' })
     } finally {
-      setLoading(false)
+      setIsSubmitting(false)
     }
   }
 
@@ -109,7 +130,7 @@ export const PostUpdate = () => {
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
                 className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#A0B9C6]"
-                disabled={loading}
+                disabled={isSubmitting}
               />
             </div>
 
@@ -137,6 +158,7 @@ export const PostUpdate = () => {
                   type="button"
                   onClick={() => navigate('/categories/manage')}
                   className="text-sm font-bold text-white bg-[#4f8196] hover:bg-[#80949e] px-4 py-2 rounded-lg whitespace-nowrap"
+                  disabled={isSubmitting}
                 >
                   カテゴリ編集
                 </button>
@@ -153,7 +175,7 @@ export const PostUpdate = () => {
                 value={body}
                 onChange={(e) => setBody(e.target.value)}
                 className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#A0B9C6] resize-none"
-                disabled={loading}
+                disabled={isSubmitting}
                 rows={6}
               />
             </div>
@@ -162,10 +184,10 @@ export const PostUpdate = () => {
             <div className="flex justify-end">
               <button
                 type="submit"
-                disabled={loading}
+                disabled={isSubmitting}
                 className="text-sm font-bold text-white bg-[#4f8196] hover:bg-[#80949e] disabled:bg-gray-400 px-7 py-2 rounded-lg shadow transition duration-200"
               >
-                {loading ? '更新中...' : '更新する'}
+                {isSubmitting ? <Spinner size="sm" /> : '更新する'}
               </button>
             </div>
           </form>

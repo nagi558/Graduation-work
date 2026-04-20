@@ -3,22 +3,35 @@ import { useNavigate } from 'react-router-dom'
 import axiosInstance from '@/lib/axios'
 import type { Category } from '@/types'
 import { Footer } from '@/components/Footer'
+import { Spinner } from '@/components/Spinner'
 
 export const CategoryManage = () => {
   const [categories, setCategories] = useState<Category[]>([])
   const [error, setError] = useState<string | null>(null)
+
+  const [isFetching, setIsFetching] = useState(true)
+  const [deletingId, setDeletingId] = useState<number | null>(null)
+
   const navigate = useNavigate()
 
   useEffect(() => {
     const fetchCategories = async () => {
-      const response = await axiosInstance.get('/api/v1/categories')
-      setCategories(response.data)
+      try {
+        const response = await axiosInstance.get('/api/v1/categories')
+        setCategories(response.data)
+      } catch {
+        setError('カテゴリの取得に失敗しました')
+      } finally {
+        setIsFetching(false)
+      }
     }
     fetchCategories()
   }, [])
 
   const handleDelete = async (categoryId: number) => {
     if (!confirm('削除しますか？')) return
+
+    setDeletingId(categoryId)
 
     try {
       await axiosInstance.delete(`/api/v1/categories/${categoryId}`, {
@@ -31,7 +44,17 @@ export const CategoryManage = () => {
     } catch {
       setError('削除できませんでした')
       window.scrollTo({ top: 0, behavior: 'smooth' })
+    } finally {
+      setDeletingId(null)
     }
+  }
+
+  if (isFetching) {
+    return (
+      <div className="min-h-screen flex justify-center items-center bg-[#E8EEF1]">
+        <Spinner size='lg' />
+      </div>
+    )
   }
 
   return (
@@ -84,14 +107,21 @@ export const CategoryManage = () => {
                     <button
                       onClick={() => navigate(`/categories/${category.id}/edit`)}
                       className="text-sm text-[#4f8196] border border-[#4f8196] px-3 py-1 rounded-lg hover:bg-[#4f8196] hover:text-white transition duration-200"
+                      disabled={deletingId === category.id}
                     >
                       修正
                     </button>
+
                     <button
                       onClick={() => handleDelete(category.id)}
                       className="text-sm text-red-400 border border-red-400 px-3 py-1 rounded-lg hover:bg-red-400 hover:text-white transition duration-200"
+                      disabled={deletingId === category.id}
                     >
-                      削除
+                      {deletingId === category.id ? (
+                        <Spinner size='sm' />
+                      ) : (
+                        '削除'
+                      )}
                     </button>
                   </div>
                 </div>
