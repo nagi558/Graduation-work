@@ -24,7 +24,7 @@ export const Header = () => {
   }
 
   return (
-    <div className="p-3 flex justify-between items-center">
+    <header className="sticky top-0 z-50 bg-white w-full px-4 py-3 flex justify-between items-center will-change-transform">
       <img
         src="/logo.png"
         alt="ロゴ"
@@ -36,11 +36,11 @@ export const Header = () => {
       {isLoggedIn && (
         <button
           onClick={handleLogout}
-          className="mr-10 bg-[#4f8196] hover:bg-[#80949e] disabled:bg-gray-400 text-white font-bold py-2 px-2 rounded-xl shadow-lg cursor-pointer"
+          className="bg-[#4f8196] hover:bg-[#80949e] text-white font-bold px-3 py-2 rounded-xl shadow-lg"
         >
           ログアウト
         </button>
       )}
-    </div>
+    </header>
   )
 }
