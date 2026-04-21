@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import axiosInstance from '@/lib/axios'
+import { useAuth } from '@/context/AuthContext'
 import { Spinner } from '@/components/Spinner'
 
 export const Register = () => {
@@ -10,6 +11,7 @@ export const Register = () => {
   const [password_confirmation, setPasswordConfirmation] = useState('')
   const [error, setError] = useState<string | null>(null)
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const { login } = useAuth()
 
   const navigate = useNavigate()
 
@@ -56,17 +58,24 @@ export const Register = () => {
 
     try {
       // APIリクエスト
-      await axiosInstance.post('/auth', {
+      const response = await axiosInstance.post('/auth', {
         nickname,
         email,
         password,
         password_confirmation
       })
 
-      // 成功時の処理
+      const accessToken = response.headers['access-token'] as string ?? ''
+      const client = response.headers['client'] as string ?? ''
+      const uid = response.headers['uid'] as string ?? ''
+
+      localStorage.setItem('access-token', accessToken)
+      localStorage.setItem('client', client)
+      localStorage.setItem('uid', uid)
+
+      login()
       alert('アカウントが作成されました')
-      // ログインページに遷移
-      navigate("/login")
+      navigate("/posts")
 
     } catch (err) {
       // エラー処理
