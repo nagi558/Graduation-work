@@ -131,6 +131,6 @@ describe('PostUpdate', () => {
     renderPostUpdate()
 
     await user.click(await screen.findByRole('button', { name: 'カテゴリ編集' }))
-    expect(await screen.findByText('カテゴリ一覧')).toBeInTheDocument()
+    expect(await screen.findByText('カテゴリ管理')).toBeInTheDocument()
   })
 })

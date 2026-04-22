@@ -1,5 +1,4 @@
 Rails.application.routes.draw do
-  mount_devise_token_auth_for 'User', at: 'auth'
 
   namespace :api do
     namespace :v1 do
@@ -11,6 +10,14 @@ Rails.application.routes.draw do
   end
 
   get "up" => "rails/health#show", as: :rails_health_check
+
+  if Rails.env.development?
+    mount LetterOpenerWeb::Engine, at: "/letter_opener"
+  end
+
+  mount_devise_token_auth_for 'User', at: 'auth', controllers: {
+    passwords: 'auth/passwords'
+  }
 
   # Defines the root path route ("/")
   # root "posts#index"

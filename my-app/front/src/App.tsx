@@ -18,6 +18,11 @@ import { ErrorProvider } from './context/ErrorProvider'
 import ErrorBanner from './components/ErrorBanner'
 import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { ForgotPassword } from '@/pages/ForgotPassword'
+import { ForgotPasswordSent } from '@/pages/ForgotPasswordSent'
+import { ResetPassword } from '@/pages/ResetPassword'
+import { ResetPasswordComplete } from '@/pages/ResetPasswordComplete'
+
 
 
 const UnauthorizedHandler = () => {
@@ -53,6 +58,22 @@ export default function App() {
           
             <Route path="/register" element={
               <Layout><Register /></Layout>
+            } />
+
+            <Route path="/forgot-password" element={
+                <Layout><ForgotPassword /></Layout>
+            } />
+
+            <Route path="/forgot-password/sent" element={
+                <Layout><ForgotPasswordSent /></Layout>
+            } />
+
+            <Route path="/reset-password" element={
+                <Layout><ResetPassword /></Layout>
+            } />
+
+            <Route path="/reset-password/complete" element={
+                <Layout><ResetPasswordComplete /></Layout>
             } />
 
             {/* 認証必要 */}
