@@ -125,8 +125,10 @@ export const Login = () => {
 
           {/* パスワードを忘れた方 */}
           <p className="text-right mt-3 text-sm">
-            <span className="text-gray-400 cursor-not-allowed">
-              パスワードを忘れた方はこちら(実装予定)
+            <span
+              onClick={() => navigate('/forgot-password')}
+              className="text-gray-500 underline cursor-pointer ml-1 hover:text-[#4f8196]">
+              パスワードを忘れた方はこちら
             </span>
           </p>
 
