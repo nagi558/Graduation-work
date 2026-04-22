@@ -39,19 +39,16 @@ export const ForgotPassword = () => {
   }
 
   return (
-    <div className="h-full bg-[#E8EEF1] flex items-start justify-center pt-20">
-      <div className="w-full max-w-2xl px-4">
-        <div className="bg-white rounded-2xl shadow-sm p-6">
-          
-          <div className="flex justify-between items-center mb-3">
-            <h1 className="text-[38px] font-bold tracking-normal text-[#444444] text-center mb-8 font-sans pt-7">
+    <div className='min-h-screen flex flex-col items-center pt-8 bg-[#E8EEF1]'>
+      <div className="w-full max-w-md bg-white rounded-2xl shadow-md p-10">
+            <h1 className="text-[32px] font-bold text-[#444444] text-center mb-4 font-sans pt-7">
               パスワード再設定
             </h1>
 
-            <p className="text-sm text-gray-500 text-center mb-8">
+            <div className="text-sm text-gray-500 text-center mb-5">
               登録したメールアドレスを入力してください。 <br />
               再設定用のリンクをお送りします。
-            </p>
+            </div>
 
             {error && (
               <div className="mb-4 p-3 bg-red-100 border-red-400 text-red-700 rounded">
@@ -59,7 +56,7 @@ export const ForgotPassword = () => {
               </div>
             )}
 
-            <form onSubmit={handleSubmit} className="space-y-4">
+            <form onSubmit={handleSubmit} className="space-y-6">
               <div>
                 <label htmlFor='email' className="block text-sm font-medium text-gray-700 mb-1 text-left">
                   メールアドレス
@@ -83,17 +80,15 @@ export const ForgotPassword = () => {
               </button>
             </form>
 
-            <p className='mt-6 text-sm text-gray-500 text-center'>
+            <div className='mt-6 text-sm text-gray-500 text-center'>
               <span
                 onClick={() => navigate('/login')}
                 className='underline cursor-pointer hover:text-[#4f8196]'
               >
                 ログイン画面へ戻る
               </span>
-            </p>
+            </div>
           </div>
         </div>
-      </div>
-    </div>
   )
 }
