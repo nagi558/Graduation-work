@@ -75,7 +75,7 @@ export const Login = () => {
   }
 
   return (
-    <div className='min-h-screen flex flex-col items-center pt-8 bg-[#E8EEF1]'>
+    <div className='h-full flex flex-col items-center justify-center bg-[#E8EEF1]'>
       <div className="w-full max-w-md bg-white rounded-2xl shadow-md p-10">
 
         {/* タイトル */}

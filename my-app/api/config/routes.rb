@@ -1,5 +1,4 @@
 Rails.application.routes.draw do
-  mount_devise_token_auth_for 'User', at: 'auth'
 
   namespace :api do
     namespace :v1 do
@@ -17,7 +16,7 @@ Rails.application.routes.draw do
   end
 
   mount_devise_token_auth_for 'User', at: 'auth', controllers: {
-    password: 'auth/passwords'
+    passwords: 'auth/passwords'
   }
 
   # Defines the root path route ("/")

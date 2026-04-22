@@ -117,7 +117,7 @@ export const ResetPassword = () => {
     <div className='min-h-screen flex flex-col items-center pt-8 bg-[#E8EEF1]'>
       <div className="w-full max-w-md bg-white rounded-2xl shadow-md p-10">
         <h1 className="text-[32px] font-bold text-[#444444] text-center mb-8 font-sans pt-7">
-          新しいパスワードの設定
+          パスワード再設定
         </h1>
 
         {error && (

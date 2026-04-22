@@ -15,7 +15,6 @@ DeviseTokenAuth.setup do |config|
   # your test suite dramatically. The possible cost value is within range from 4
   # to 31. It is recommended to not use a value more than 10 in other environments.
   config.token_cost = Rails.env.test? ? 4 : 10
-  config.reset_password_within = 6.hours
 
   config.bypass_sign_in = false
 

@@ -307,6 +307,7 @@ Devise.setup do |config|
   # Note: These might become the new default in future versions of Devise.
   config.responder.error_status = :unprocessable_content
   config.responder.redirect_status = :see_other
+  config.reset_password_within = 6.hours
 
   # ==> Configuration for :registerable
 
