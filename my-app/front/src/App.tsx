@@ -22,6 +22,8 @@ import { ForgotPassword } from '@/pages/ForgotPassword'
 import { ForgotPasswordSent } from '@/pages/ForgotPasswordSent'
 import { ResetPassword } from '@/pages/ResetPassword'
 import { ResetPasswordComplete } from '@/pages/ResetPasswordComplete'
+import { TermsOfService } from '@/pages/TermsOfService'
+import { PrivacyPolicy } from '@/pages/PrivacyPolicy'
 
 
 
@@ -74,6 +76,15 @@ export default function App() {
 
             <Route path="/reset-password/complete" element={
                 <Layout><ResetPasswordComplete /></Layout>
+            } />
+
+            {/* 未ログインでも閲覧可能 */}
+            <Route path="/terms" element={
+              <Layout><TermsOfService /></Layout>
+            } />
+
+            <Route path="/privacy-policy" element={
+              <Layout><PrivacyPolicy /></Layout>
             } />
 
             {/* 認証必要 */}
