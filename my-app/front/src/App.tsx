@@ -60,6 +60,22 @@ export default function App() {
               <Layout><Register /></Layout>
             } />
 
+            <Route path="/forgot-password" element={
+                <Layout><ForgotPassword /></Layout>
+            } />
+
+            <Route path="/forgot-password/sent" element={
+                <Layout><ForgotPasswordSent /></Layout>
+            } />
+
+            <Route path="/reset-password" element={
+                <Layout><ResetPassword /></Layout>
+            } />
+
+            <Route path="/reset-password/complete" element={
+                <Layout><ResetPasswordComplete /></Layout>
+            } />
+
             {/* 認証必要 */}
             <Route path="/posts" element={
               <ProtectedRoute>
@@ -114,31 +130,6 @@ export default function App() {
                 <Layout><CategoryPostList /></Layout>
               </ProtectedRoute>
             } />
-
-            <Route path="/forgot-password" element={
-              <ProtectedRoute>
-                <Layout><ForgotPassword /></Layout>
-              </ProtectedRoute>
-            } />
-
-            <Route path="/forgot-password/sent" element={
-              <ProtectedRoute>
-                <Layout><ForgotPasswordSent /></Layout>
-              </ProtectedRoute>
-            } />
-
-            <Route path="/reset-password" element={
-              <ProtectedRoute>
-                <Layout><ResetPassword /></Layout>
-              </ProtectedRoute>
-            } />
-
-            <Route path="/reset-password/complete" element={
-              <ProtectedRoute>
-                <Layout><ResetPasswordComplete /></Layout>
-              </ProtectedRoute>
-            } />
-
           </Routes>
         </BrowserRouter>
       </AuthProvider>
