@@ -1,4 +1,7 @@
+import { useNavigate } from 'react-router-dom'
+
 export const MyPage = () => {
+  const navigate = useNavigate()
 
   return (
     <div className="h-full bg-[#E8EEF1] flex items-start justify-center pt-20">
@@ -12,21 +15,23 @@ export const MyPage = () => {
           </div>
 
           <div className="flex flex-col gap-4">
-          <button
-            className="bg-white rounded-2xl shadow-lg p-5 flex justify-between items-start"
+            <button
+              onClick={() => navigate('/privacy-policy')}
+              className="bg-white rounded-2xl shadow-lg p-5 flex justify-between items-start"
             >
-            プライバシーポリシー(準備中)
-          </button>
-          <button
-            className="bg-white rounded-2xl shadow-lg p-5 flex justify-between items-start"
-          >
-            利用規約（準備中）
-          </button>
-          <button
-            className="bg-white rounded-2xl shadow-lg p-5 flex justify-between items-start"
-          >
-            お問い合わせ（準備中）
-          </button>
+              プライバシーポリシー
+            </button>
+            <button
+              onClick={() => navigate('/terms')}
+              className="bg-white rounded-2xl shadow-lg p-5 flex justify-between items-start"
+            >
+              利用規約
+            </button>
+            <button
+              className="bg-white rounded-2xl shadow-lg p-5 flex justify-between items-start"
+            >
+              お問い合わせ（準備中）
+            </button>
           </div>
         </div>
       </div>

@@ -3,10 +3,18 @@ class Auth::PasswordsController < DeviseTokenAuth::PasswordsController
     super
   end
 
+  def update
+    super
+  end
+
   private
 
   def resource_params
-    params.permit(:email, :redirect_url)
+    if action_name == 'create'
+      params.permit(:email, :redirect_url)
+    else
+      params.permit(:password, :password_confirmation, :reset_password_token)
+    end
   end
 
   def render_create_error_missing_email
