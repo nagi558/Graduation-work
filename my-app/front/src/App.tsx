@@ -18,6 +18,11 @@ import { ErrorProvider } from './context/ErrorProvider'
 import ErrorBanner from './components/ErrorBanner'
 import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { ForgotPassword } from '@/pages/ForgotPassword'
+import { ForgotPasswordSent } from '@/pages/ForgotPasswordSent'
+import { ResetPassword } from '@/pages/ResetPassword'
+import { ResetPasswordComplete } from '@/pages/ResetPasswordComplete'
+
 
 
 const UnauthorizedHandler = () => {
@@ -109,6 +114,31 @@ export default function App() {
                 <Layout><CategoryPostList /></Layout>
               </ProtectedRoute>
             } />
+
+            <Route path="/forgot-password" element={
+              <ProtectedRoute>
+                <Layout><ForgotPassword /></Layout>
+              </ProtectedRoute>
+            } />
+
+            <Route path="/forgot-password/sent" element={
+              <ProtectedRoute>
+                <Layout><ForgotPasswordSent /></Layout>
+              </ProtectedRoute>
+            } />
+
+            <Route path="/reset-password" element={
+              <ProtectedRoute>
+                <Layout><ResetPassword /></Layout>
+              </ProtectedRoute>
+            } />
+
+            <Route path="/reset-password/complete" element={
+              <ProtectedRoute>
+                <Layout><ResetPasswordComplete /></Layout>
+              </ProtectedRoute>
+            } />
+
           </Routes>
         </BrowserRouter>
       </AuthProvider>

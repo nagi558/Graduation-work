@@ -38,7 +38,7 @@ export const ForgotPassword = () => {
     }
   }
 
-  return
+  return (
     <div className="h-full bg-[#E8EEF1] flex items-start justify-center pt-20">
       <div className="w-full max-w-2xl px-4">
         <div className="bg-white rounded-2xl shadow-sm p-6">
@@ -95,4 +95,5 @@ export const ForgotPassword = () => {
         </div>
       </div>
     </div>
+  )
 }
