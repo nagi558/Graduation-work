@@ -24,8 +24,8 @@ import { ResetPassword } from '@/pages/ResetPassword'
 import { ResetPasswordComplete } from '@/pages/ResetPasswordComplete'
 import { TermsOfService } from '@/pages/TermsOfService'
 import { PrivacyPolicy } from '@/pages/PrivacyPolicy'
-
-
+import { PublicLayout } from './components/PublicLayout'
+import { NoFooterLayout } from './components/NoFooterLayout'
 
 const UnauthorizedHandler = () => {
   const navigate = useNavigate()
@@ -49,33 +49,42 @@ export default function App() {
           <ErrorBanner />
 
           <Routes>
-            {/* 認証不要 */}
-            <Route path="/" element={
-              <Layout><Top /></Layout>
+            {/* 認証不要・PublicFooterあり */}
+              <Route path="/" element={
+  <PublicLayout><Top /></PublicLayout>
             } />
-          
+
+            <Route path="/terms" element={
+              <PublicLayout><TermsOfService /></PublicLayout>
+            } />
+
+            <Route path="/privacy-policy" element={
+              <PublicLayout><PrivacyPolicy /></PublicLayout>
+            } />
+
+            {/* 認証不要・フッターなし */}
             <Route path="/login" element={
-              <Layout><Login /></Layout>
+              <NoFooterLayout><Login /></NoFooterLayout>
             } />
-          
+
             <Route path="/register" element={
-              <Layout><Register /></Layout>
+              <NoFooterLayout><Register /></NoFooterLayout>
             } />
 
             <Route path="/forgot-password" element={
-                <Layout><ForgotPassword /></Layout>
+              <NoFooterLayout><ForgotPassword /></NoFooterLayout>
             } />
 
             <Route path="/forgot-password/sent" element={
-                <Layout><ForgotPasswordSent /></Layout>
+              <NoFooterLayout><ForgotPasswordSent /></NoFooterLayout>
             } />
 
             <Route path="/reset-password" element={
-                <Layout><ResetPassword /></Layout>
+              <NoFooterLayout><ResetPassword /></NoFooterLayout>
             } />
 
             <Route path="/reset-password/complete" element={
-                <Layout><ResetPasswordComplete /></Layout>
+              <NoFooterLayout><ResetPasswordComplete /></NoFooterLayout>
             } />
 
             {/* 未ログインでも閲覧可能 */}
