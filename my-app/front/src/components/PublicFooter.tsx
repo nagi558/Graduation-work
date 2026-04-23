@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom"
 
 export const PublicFooter = () => {
-  const navigate = useNavigate
+  const navigate = useNavigate()
 
   return (
     <footer className='w-full py-4 flex justify-center gap-6'>
