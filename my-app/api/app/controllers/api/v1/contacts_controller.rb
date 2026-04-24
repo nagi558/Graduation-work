@@ -9,7 +9,7 @@ module Api
             ContactMailer.confirmation_to_user(@contact).deliver_now
             ContactMailer.notification_to_admin(@contact).deliver_now
           rescue => e
-            Rails.logger.error "メール送信に失敗しました": #{e.message}"
+            Rails.logger.error "メール送信に失敗しました: #{e.message}"
           end
 
           render json: { message: 'お問い合わせを受け付けました' }, status: :created

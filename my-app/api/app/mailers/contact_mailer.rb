@@ -1,4 +1,4 @@
-class ContactMailer < Application
+class ContactMailer < ApplicationMailer
   def confirmation_to_user(contact)
     @contact = contact
     mail(
