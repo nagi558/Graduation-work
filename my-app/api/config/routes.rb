@@ -7,6 +7,7 @@ Rails.application.routes.draw do
       resources :categories, only: [:index, :show, :create, :update, :destroy] do
         resources :posts, only: [:index], controller: 'category_posts'
       end
+      resources :contacts, only: [:create]
     end
   end
 
