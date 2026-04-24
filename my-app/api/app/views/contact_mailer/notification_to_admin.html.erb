@@ -1,0 +1,7 @@
+<p>新しいお問い合わせが届きました。</p>
+
+<hr>
+<p><strong>メールアドレス：</strong><%= @contact.email %></p>
+<p><strong>お問い合わせ内容：</strong></p>
+<p><%= simple_format(@contact.body) %></p>
+<hr>
