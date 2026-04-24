@@ -28,9 +28,10 @@ export const MyPage = () => {
               利用規約
             </button>
             <button
+              onClick={() => navigate('/contact')}
               className="bg-white rounded-2xl shadow-lg p-5 flex justify-between items-start"
             >
-              お問い合わせ（準備中）
+              お問い合わせ
             </button>
           </div>
         </div>
