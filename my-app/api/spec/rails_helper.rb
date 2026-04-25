@@ -75,4 +75,8 @@ RSpec.configure do |config|
 
   config.include FactoryBot::Syntax::Methods
   config.include AuthHelper, type: :request
+
+  config.before(:each) do
+    ActionMailer::Base.deliveries.clear
+  end
 end

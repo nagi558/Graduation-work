@@ -26,6 +26,7 @@ import { TermsOfService } from '@/pages/TermsOfService'
 import { PrivacyPolicy } from '@/pages/PrivacyPolicy'
 import { PublicLayout } from './components/PublicLayout'
 import { NoFooterLayout } from './components/NoFooterLayout'
+import { Contact } from './pages/Contact'
 
 const UnauthorizedHandler = () => {
   const navigate = useNavigate()
@@ -60,6 +61,10 @@ export default function App() {
 
             <Route path="/privacy-policy" element={
               <PublicLayout><PrivacyPolicy /></PublicLayout>
+            } />
+
+            <Route path ="/contact" element={
+              <PublicLayout><Contact /></PublicLayout>
             } />
 
             {/* 認証不要・フッターなし */}
