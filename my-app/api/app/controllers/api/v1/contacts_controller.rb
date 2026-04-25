@@ -14,7 +14,7 @@ module Api
 
           render json: { message: 'お問い合わせを受け付けました' }, status: :created
         else
-          render json: { error: @contact.errors.full_messages }, status: :unprocessable_entity
+          render json: { errors: @contact.errors.full_messages }, status: :unprocessable_entity
         end
       end
 
