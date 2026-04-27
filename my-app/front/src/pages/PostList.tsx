@@ -8,35 +8,43 @@ export const PostList = () => {
   const [posts, setPosts] = useState<Post[]>([])
   const [error, setError] = useState<string | null>(null)
   const [isFetching, setIsFetching] = useState(true)
+  const [titleQuery, setTitleQuery] = useState('')
+  const [bodyQuery, setBodyQuery] = useState('')
   const navigate = useNavigate()
 
-  useEffect(() => {
-    const fetchPosts = async () => {
-      try {
-        const response = await axiosInstance.get('/api/v1/posts')
-        setPosts(response.data)
-      } catch(err) {
-        setError('投稿の取得に失敗しました')
-      } finally {
-        setIsFetching(false)
-      }
+  const fetchPosts = async (title = '', body = '' ) => {
+    setIsFetching(true)
+    try {
+      const response = await axiosInstance.get('/api/v1/posts', {
+        params: {
+          ...(title && { title }),
+          ...(body && { body }),
+        },
+      })
+      setPosts(response.data)
+    } catch {
+      setError('投稿の取得に失敗しました')
+    } finally {
+      setIsFetching(false)
     }
+  }
 
+  useEffect(() => {
     fetchPosts()
   }, [])
+
+  const handleSearch = () => {
+    fetchPosts(titleQuery, bodyQuery)
+  }
 
   const handleDelete = async (postId: number) => {
     if (!confirm('削除しますか？')) return
 
     try {
       await axiosInstance.delete(`/api/v1/posts/${postId}`, {
-        skipGlobalError: true
+        skipGlobalError: true,
       })
-
-      setPosts((prev) =>
-        prev.filter((post) => post.id !== postId)
-      )
-
+      setPosts((prev) => prev.filter((post) => post.id !== postId))
     } catch {
       setError('削除できませんでした')
       window.scrollTo({ top: 0, behavior: 'smooth' })
@@ -53,8 +61,6 @@ export const PostList = () => {
 
   return (
     <div className="bg-[#E8EEF1] pb-20">
-      
-      {/* メインコンテンツ */}
       <div className="max-w-4xl mx-auto pt-1 px-4">
         <div className="bg-white rounded-2xl shadow-sm p-6">
 
@@ -76,6 +82,30 @@ export const PostList = () => {
             {error}
           </div>
         )}
+
+        {/* 検索エリア */}
+        <div className='flex gap-2 mb-6'>
+          <input
+            type='text'
+            placeholder='タイトル検索'
+            value={titleQuery}
+            onChange={(e) => setTitleQuery(e.target.value)}
+            className='flex-1 border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#4f8196]'
+          />
+          <input
+            type='text'
+            placeholder='本文検索'
+            value={bodyQuery}
+            onChange={(e) => setBodyQuery(e.target.value)}
+            className='flex-1 border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#4f8196]'
+          />
+          <button
+            onClick={handleSearch}
+            className='bg-[#4f8196] hover:bg-[#80949e] text-white text-sm font-bold py-2 px-4 rounded-xl shadow transition duration-200'
+          >
+            検索
+          </button>
+        </div>
 
         {/* 投稿一覧 */}
         {posts.length === 0 ? (
