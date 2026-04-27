@@ -10,6 +10,7 @@ export const PostList = () => {
   const [isFetching, setIsFetching] = useState(true)
   const [titleQuery, setTitleQuery] = useState('')
   const [bodyQuery, setBodyQuery] = useState('')
+  const [isSearching, setIsSearching] = useState(false)
   const navigate = useNavigate()
 
   const fetchPosts = async (title = '', body = '' ) => {
@@ -34,6 +35,7 @@ export const PostList = () => {
   }, [])
 
   const handleSearch = () => {
+    setIsSearching(true)
     fetchPosts(titleQuery, bodyQuery)
   }
 
@@ -110,8 +112,14 @@ export const PostList = () => {
         {/* 投稿一覧 */}
         {posts.length === 0 ? (
           <div className="text-center text-gray-400 mt-20">
-            <p>まだ投稿がありません</p>
-            <p className="text-sm mt-2">新規作成ボタンから投稿してみましょう</p>
+            {isSearching ? (
+              <p data-testid="empty-message">投稿が見つかりませんでした</p>
+            ) : (
+              <>
+                <p>まだ投稿がありません</p>
+                <p className='text-sm mt-2'>新規作成ボタンから投稿してみましょう</p>
+              </>
+            )}
           </div>
         ) : (
           <div className="flex flex-col gap-4">
