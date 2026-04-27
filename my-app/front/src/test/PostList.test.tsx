@@ -106,4 +106,131 @@ describe('PostList', () => {
       expect(screen.queryByText('テストタイトル')).not.toBeInTheDocument()
     })
   })
+
+  it('タイトル検索で一致する投稿のみ表示される', async () => {
+    vi.mocked(axiosInstance.get).mockImplementation((_url, config: any) => {
+      const params = config?.params ?? {}
+
+      if (params.title === 'テスト' && params.body === undefined) {
+        return Promise.resolve({
+          data: [{ id: 1, title: 'テストタイトル', body: 'テスト本文', category: { name: 'テストカテゴリ' } }]
+        } as any)
+      }
+
+      return Promise.resolve({ data: mockPosts } as any)
+    })
+
+    const user = userEvent.setup()
+    renderPostList()
+
+    await screen.findByText('テストタイトル')
+
+    await user.type(screen.getByPlaceholderText('タイトル検索'), 'テスト')
+    await user.click(screen.getByRole('button', { name: '検索' }))
+
+    expect(await screen.findByText('テストタイトル')).toBeInTheDocument()
+  })
+
+  it('本文検索で一致する投稿のみ表示される', async () => {
+    vi.mocked(axiosInstance.get).mockImplementation((_url, config: any) => {
+      const params = config?.params ?? {}
+
+      if (params.body === 'テスト' && params.title === undefined) {
+        return Promise.resolve({
+          data: [{ id: 1, title: 'テストタイトル', body: 'テスト本文', category: { name: 'テストカテゴリ' } }]
+        } as any)
+      }
+
+      return Promise.resolve({ data: mockPosts } as any)
+    })
+
+    const user = userEvent.setup()
+    renderPostList()
+
+    await screen.findByText('テストタイトル')
+
+    await user.type(screen.getByPlaceholderText('本文検索'), 'テスト')
+    await user.click(screen.getByRole('button', { name: '検索' }))
+
+    expect(await screen.findByText('テスト本文')).toBeInTheDocument()
+  })
+
+  it('検索結果が0件の場合メッセージが表示される', async () => {
+    vi.mocked(axiosInstance.get).mockImplementation((_url, config: any) => {
+      const params = config?.params ?? {}
+
+      if (params.title === '存在しないタイトル') {
+        return Promise.resolve({ data: [] } as any)
+      }
+
+      return Promise.resolve({ data: mockPosts } as any)
+    })
+
+    const user = userEvent.setup()
+    renderPostList()
+
+    await screen.findByText('テストタイトル')
+
+    await user.type(screen.getByPlaceholderText('タイトル検索'), '存在しないタイトル')
+    await user.click(screen.getByRole('button', { name: '検索' }))
+
+    expect(await screen.findByTestId('empty-message')).toBeInTheDocument()
+  })
+
+  it('検索時に正しいクエリパラメータでAPIが1回だけ呼ばれる', async () => {
+    vi.mocked(axiosInstance.get).mockResolvedValue({ data: mockPosts } as any)
+
+    const user = userEvent.setup()
+    renderPostList()
+
+    await screen.findByText('テストタイトル')
+
+    await user.type(screen.getByPlaceholderText('タイトル検索'), 'テスト')
+    await user.click(screen.getByRole('button', { name: '検索' }))
+
+    await waitFor(() => {
+      const calls = vi.mocked(axiosInstance.get).mock.calls
+      const searchCalls = calls.filter(([, config]: any) => config?.params?.title === 'テスト')
+      expect(searchCalls).toHaveLength(1)
+      const searchCallParams = searchCalls[0]?.[1]
+      expect(searchCallParams).toBeDefined()
+      expect(searchCallParams?.params).toEqual({ title: 'テスト' })
+    })
+  })
+
+  it('タイトルと本文を両方入力して検索すると両方のパラメータでAPIが呼ばれ結果が表示される', async () => {
+    vi.mocked(axiosInstance.get).mockImplementation((_url, config: any) => {
+      const params = config?.params ?? {}
+
+      if (params.title === 'テスト' && params.body === 'テスト本文') {
+        return Promise.resolve({
+          data: [{ id: 1, title: 'テストタイトル', body: 'テスト本文', category: { name: 'テストカテゴリ' } }]
+        } as any)
+      }
+
+      return Promise.resolve({ data: mockPosts } as any)
+    })
+
+    const user = userEvent.setup()
+    renderPostList()
+
+    await screen.findByText('テストタイトル')
+
+    await user.type(screen.getByPlaceholderText('タイトル検索'), 'テスト')
+    await user.type(screen.getByPlaceholderText('本文検索'), 'テスト本文')
+    await user.click(screen.getByRole('button', { name: '検索' }))
+
+    await waitFor(() => {
+      const calls = vi.mocked(axiosInstance.get).mock.calls
+      const searchCalls = calls.filter(([, config]: any) =>
+        config?.params?.title === 'テスト' && config?.params?.body === 'テスト本文'
+      )
+      expect(searchCalls).toHaveLength(1)
+      const searchCallParams = searchCalls[0]?.[1]
+      expect(searchCallParams).toBeDefined()
+      expect(searchCallParams?.params).toEqual({ title: 'テスト', body: 'テスト本文' })
+    })
+
+    expect(await screen.findByText('テスト本文')).toBeInTheDocument()
+  })
 })
