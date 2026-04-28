@@ -1,3 +1,4 @@
+import { useCallback } from "react"
 import { useAuth } from "@/context/AuthContext"
 import { tokenStorage } from "@/lib/tokenStorage"
 import axiosInstance from "@/lib/axios"
@@ -5,7 +6,7 @@ import axiosInstance from "@/lib/axios"
 export const useGoogleLogin = () => {
   const { login } = useAuth()
 
-  const handleCredentialResponse = async (response: { credential: string }) => {
+  const handleCredentialResponse = useCallback(async (response: { credential: string }) => {
     try {
       const res = await axiosInstance.post('/api/v1/auth/google', {
         id_token: response.credential
@@ -22,14 +23,14 @@ export const useGoogleLogin = () => {
     } catch (error) {
       console.error('Googleログイン失敗:', error)
     }
-  }
+  }, [login])
 
-  const initializeGoogleLogin = () => {
+  const initializeGoogleLogin = useCallback(() => {
     window.google?.accounts.id.initialize({
       client_id: import.meta.env.VITE_GOOGLE_CLIENT_ID,
       callback: handleCredentialResponse
     })
-  }
+  }, [handleCredentialResponse])
 
   return { initializeGoogleLogin, handleCredentialResponse }
 }
