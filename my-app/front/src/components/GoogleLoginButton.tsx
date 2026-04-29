@@ -28,7 +28,7 @@ const GoogleLoginButton = () => {
     }
   }, [initializeGoogleLogin])
 
-  return <div ref={buttonRef} />
+  return <div ref={buttonRef} data-testid="google-login-button" />
 }
 
 export default GoogleLoginButton
