@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import axiosInstance from '@/lib/axios'
 import { useAuth } from '@/context/AuthContext'
 import { Spinner } from '@/components/Spinner'
+import GoogleLoginButton from '@/components/GoogleLoginButton'
 
 export const Login = () => {
   const [email, setEmail] = useState('')
@@ -145,6 +146,15 @@ export const Login = () => {
             )}
           </button>
         </form>
+
+        <div className="flex items-center my-4">
+          <div className="flex-grow border-t border-gray-300"></div>
+          <span className="mx-3 text-gray-500 text-sm">or</span>
+          <div className="flex-grow border-t border-gray-300"></div>
+        </div>
+
+        <GoogleLoginButton />
+
       </div>
 
       {/* 新規登録画面へ誘導 */}

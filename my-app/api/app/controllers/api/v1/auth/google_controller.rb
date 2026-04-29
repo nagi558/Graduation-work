@@ -19,13 +19,14 @@ module Api
 
           if user.persisted?
             token = user.create_new_auth_token
+            response.headers.merge!(token)
             render json: {
               data: {
                 id:    user.id,
-                email: user.email
+                email: user.email,
                 name:  user.name
               }
-            }, status: :ok, headers: token
+            }, status: :ok
           else
             render json: { message: 'ユーザーの作成に失敗しました', errors: user.errors.full_messages }, status: :unprocessable_entity
           end

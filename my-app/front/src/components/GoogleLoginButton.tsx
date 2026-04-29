@@ -6,16 +6,25 @@ const GoogleLoginButton = () => {
   const { initializeGoogleLogin } = useGoogleLogin()
 
   useEffect(() => {
-    initializeGoogleLogin()
+    const renderButton = () => {
+      if (!buttonRef.current) return
 
-    if (buttonRef.current) {
-      window.google?.account.id.renderButton(buttonRef.current, {
+      initializeGoogleLogin()
+      window.google?.accounts.id.renderButton(buttonRef.current, {
         type: 'standard',
         theme: 'outline',
         size: 'large',
         text: 'signin_with',
         locale: 'ja'
       })
+    }
+
+    if (window.google) {
+      renderButton()
+    } else {
+      const script = document.querySelector('script[src="https://accounts.google.com/gsi/client"]')
+      script?.addEventListener('load', renderButton)
+      return () => script?.removeEventListener('load', renderButton)
     }
   }, [initializeGoogleLogin])
 
