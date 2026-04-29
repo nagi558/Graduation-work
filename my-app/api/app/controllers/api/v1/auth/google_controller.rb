@@ -1,4 +1,4 @@
-require 'googleauth/id_tokens'
+require 'googleauth'
 
 module Api
   module V1
