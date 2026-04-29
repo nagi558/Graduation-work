@@ -8,6 +8,10 @@ Rails.application.routes.draw do
         resources :posts, only: [:index], controller: 'category_posts'
       end
       resources :contacts, only: [:create]
+
+      namespace :auth do
+        post 'google', to: 'google#create'
+      end
     end
   end
 
