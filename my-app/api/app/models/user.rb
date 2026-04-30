@@ -5,6 +5,8 @@ class User < ApplicationRecord
 
   has_many :categories, dependent: :destroy
   has_many :posts, dependent: :destroy
+  has_one :pair_membership, dependent: :destroy
+  has_one :pair, through: :pair_membership
 
   after_create :create_default_categories
 
