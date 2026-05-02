@@ -27,6 +27,7 @@ import { PrivacyPolicy } from '@/pages/PrivacyPolicy'
 import { PublicLayout } from './components/PublicLayout'
 import { NoFooterLayout } from './components/NoFooterLayout'
 import { Contact } from './pages/Contact'
+import { InviteJoin } from './pages/InviteJoin'
 
 const UnauthorizedHandler = () => {
   const navigate = useNavigate()
@@ -153,6 +154,12 @@ export default function App() {
             <Route path="/categories/:id/posts" element={
               <ProtectedRoute>
                 <Layout><CategoryPostList /></Layout>
+              </ProtectedRoute>
+            } />
+
+            <Route path="/invite/:token" element={
+              <ProtectedRoute>
+                <Layout><InviteJoin /></Layout>
               </ProtectedRoute>
             } />
           </Routes>

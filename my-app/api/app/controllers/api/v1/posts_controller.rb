@@ -58,4 +58,15 @@ class Api::V1::PostsController < ApplicationController
                  post.build_post_permission(pair: current_user.pair)
     permission.update!(can_view: params[:post][:can_view])
   end
+
+  def post_json(post)
+    {
+      id: post.id,
+      title: post.title,
+      body: post.body,
+      category: { id: post.category.id, name: post.category.name },
+      can_view: post.post_permission&.can_view || false,
+      created_at: post.created_at
+    }
+  end
 end

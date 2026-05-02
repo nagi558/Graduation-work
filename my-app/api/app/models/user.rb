@@ -30,6 +30,15 @@ class User < ApplicationRecord
     )
   end
 
+  def paired?
+    pair.present?
+  end
+
+  def partner
+    return nil unless paired?
+    pair.users.where.not(id: id).first
+  end
+
   private
 
   def create_default_categories

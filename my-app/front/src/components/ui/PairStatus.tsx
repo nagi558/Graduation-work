@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { pairAPI } from "@/lib/pairApi"
+import { pairApi } from "@/lib/pairApi"
 import type { PairStatus } from '@/types'
 import { Spinner } from "../Spinner"
 
@@ -14,7 +14,7 @@ export const PairStatusCard = () => {
   useEffect(() => {
     const fetchStatus = async () => {
       try {
-        const res = await pairAPI.getStatus()
+        const res = await pairApi.getStatus()
         setStatus(res.data)
       } catch {
         setError('状態の取得に失敗しました')
@@ -29,7 +29,7 @@ export const PairStatusCard = () => {
     setIsLoading(true)
     setError(null)
     try {
-      const res = await pairAPI.invite()
+      const res = await pairApi.invite()
       setInviteUrl(res.data.invitation_url)
     } catch {
       setError('招待URLの発行に失敗しました')
@@ -48,7 +48,7 @@ export const PairStatusCard = () => {
   const handleDisconnect = async () => {
     if (!confirm('パートナー接続を解除しますか？')) return
     try {
-      await pairAPI.destroy()
+      await pairApi.destroy()
       setStatus({ paired: false })
       setInviteUrl(null)
     } catch {

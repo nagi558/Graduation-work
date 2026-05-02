@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { pairAPI } from '@/lib/pairApi'
+import { pairApi } from '@/lib/pairApi'
 import { MyPostList } from '@/components/posts/MyPostList'
 import { PartnerPostList } from '@/components/posts/PartnerPostList'
 
@@ -10,7 +10,7 @@ export const PostList = () => {
   useEffect(() => {
     const fetchPairStatus = async () => {
       try {
-        const res = await pairAPI.getStatus()
+        const res = await pairApi.getStatus()
         setIsPaired(res.data.paired)
       } catch {}
     }
@@ -28,6 +28,16 @@ export const PostList = () => {
 
           {isPaired && (
             <div className='flex border-b border-gray-200 mb-6'>
+              <button
+                onClick={() => setActiveTab('mine')}
+                className={`px-6 py-2 text-sm font-bold transition duration-200 ${
+                  activeTab === 'mine'
+                    ? 'border-b-2 border-[#4f8196] text-[#4f8196]'
+                    : 'text-gray-400 hover:text-gray-600'
+                }`}
+              >
+                自分の投稿
+              </button>
               <button
                 onClick={() => setActiveTab('partner')}
                 className={`px-6 py-2 text-sm font-bold transition duration-200 ${

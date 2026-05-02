@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import axiosInstance from '@/lib/axios'
-import { pairAPI } from '@/lib/pairApi'
+import { pairApi } from '@/lib/pairApi'
 import type { Category } from '@/types'
 import { Spinner } from '@/components/Spinner'
 
@@ -37,7 +37,7 @@ export const PostNew = () => {
     }
     const fetchPairStatus = async () => {
       try {
-        const res = await pairAPI.getStatus()
+        const res = await pairApi.getStatus()
         setIsPaired(res.data.paired)
       } catch {
         console.error('Pair状態の取得に失敗しました')
