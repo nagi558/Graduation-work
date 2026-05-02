@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import { useParams, useNavigate } from 'react-router-dom';
-import { pairAPI } from "@/lib/pairApi"
+import { pairApi } from "@/lib/pairApi"
 import { Spinner } from "@/components/Spinner"
 
 export const InviteJoin = () => {
@@ -14,7 +14,7 @@ export const InviteJoin = () => {
   useEffect(() => {
     const verify = async () => {
       try {
-        const res = await pairAPI.verifyToken(token!)
+        const res = await pairApi.verifyToken(token!)
         setPartnerName(res.data.partner_name)
       } catch {
         setError('招待URLが無効または期限切れです')
@@ -28,7 +28,7 @@ export const InviteJoin = () => {
   const handleJoin = async () => {
     setIsJoining(true)
     try {
-      await pairAPI.join(token!)
+      await pairApi.join(token!)
       navigate('/posts')
     } catch (e: any) {
       setError(e.response?.data?.errors?.[0] || '参加に失敗しました')

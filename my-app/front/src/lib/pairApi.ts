@@ -1,7 +1,7 @@
 import axiosInstance from "./axios"
 import type { PairStatus } from "@/types"
 
-export const pairAPI = {
+export const pairApi = {
   getStatus: () =>
     axiosInstance.get<PairStatus>('/api/v1/pair'),
 
