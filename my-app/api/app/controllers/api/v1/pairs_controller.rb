@@ -32,7 +32,7 @@ class Api::V1::PairsController < ApplicationController
   end
 
   def join
-    if current_user.paired?
+    if current_user.paired? || current_user.pending?
       return render json: { errors: ['すでにパートナーと接続済みです'] }, status: :unprocessable_entity
     end
 
@@ -46,6 +46,7 @@ class Api::V1::PairsController < ApplicationController
     pair.pair_memberships.create!(user: current_user)
     pair.update!(invitation_token: nil, invitation_token_expires_at: nil)
 
+    current_user.reload
     render json: pair_json, status: :ok
   end
 
