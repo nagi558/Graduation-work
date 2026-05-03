@@ -17,6 +17,7 @@ services:
       - db
     environment:
       DATABASE_URL: postgres://postgres:password@db:5432/app_development
+      FRONTEND_URL: http://localhost:5173
 
   front:
     build: ./front
