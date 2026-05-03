@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2026_04_28_035359) do
+ActiveRecord::Schema[7.2].define(version: 2026_04_29_141542) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -27,6 +27,35 @@ ActiveRecord::Schema[7.2].define(version: 2026_04_28_035359) do
     t.text "body"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "pair_memberships", force: :cascade do |t|
+    t.bigint "pair_id", null: false
+    t.bigint "user_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["pair_id", "user_id"], name: "index_pair_memberships_on_pair_id_and_user_id", unique: true
+    t.index ["pair_id"], name: "index_pair_memberships_on_pair_id"
+    t.index ["user_id"], name: "index_pair_memberships_on_user_id", unique: true
+  end
+
+  create_table "pairs", force: :cascade do |t|
+    t.string "invitation_token"
+    t.datetime "invitation_token_expires_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["invitation_token"], name: "index_pairs_on_invitation_token", unique: true
+  end
+
+  create_table "post_permissions", force: :cascade do |t|
+    t.bigint "post_id", null: false
+    t.bigint "pair_id", null: false
+    t.boolean "can_view", default: false, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["pair_id"], name: "index_post_permissions_on_pair_id"
+    t.index ["post_id", "pair_id"], name: "index_post_permissions_on_post_id_and_pair_id", unique: true
+    t.index ["post_id"], name: "index_post_permissions_on_post_id"
   end
 
   create_table "posts", force: :cascade do |t|
@@ -63,6 +92,10 @@ ActiveRecord::Schema[7.2].define(version: 2026_04_28_035359) do
   end
 
   add_foreign_key "categories", "users"
+  add_foreign_key "pair_memberships", "pairs"
+  add_foreign_key "pair_memberships", "users"
+  add_foreign_key "post_permissions", "pairs"
+  add_foreign_key "post_permissions", "posts"
   add_foreign_key "posts", "categories"
   add_foreign_key "posts", "users"
 end

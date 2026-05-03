@@ -10,6 +10,7 @@ export interface Post {
   title: string
   body: string
   category: Category
+  can_view: boolean
   created_at: string
   updated_at: string
 }
@@ -30,4 +31,9 @@ export type ValidAuthTokens = {
   accessToken: string
   client: string
   uid: string
+}
+
+export type PairStatus = {
+  paired: boolean
+  partner_name?: string
 }

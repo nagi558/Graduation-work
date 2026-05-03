@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import axiosInstance from '@/lib/axios'
+import { pairApi } from '@/lib/pairApi'
 import type { Category } from '@/types'
-import { useParams } from 'react-router-dom'
 import { Spinner } from '@/components/Spinner'
 
 export const PostUpdate = () => {
@@ -10,8 +10,9 @@ export const PostUpdate = () => {
   const [body, setBody] =useState('')
   const [categoryId, setCategoryId] = useState<number | null>(null)
   const [categories, setCategories] = useState<Category[]>([])
+  const [canView, setCanView] = useState(false)
+  const [isPaired, setIsPaired] = useState(false)
   const [error, setError] = useState<string | null>(null)
-  
   const [isFetching, setIsFetching] = useState(true)
   const [isSubmitting, setIsSubmitting] = useState(false)
 
@@ -27,7 +28,6 @@ export const PostUpdate = () => {
     return true
   }
 
-  // カテゴリ一覧を取得
   useEffect(() => {
     const fetchCategories = async () => {
       try {
@@ -37,24 +37,30 @@ export const PostUpdate = () => {
         setError('カテゴリの取得に失敗しました')
       }
     }
-    fetchCategories()
-  }, [])
-
-  // 既存の投稿データをセット
-  useEffect(() => {
     const fetchPost = async () => {
       try {
         const response = await axiosInstance.get(`/api/v1/posts/${id}`)
         setTitle(response.data.title)
         setBody(response.data.body)
         setCategoryId(response.data.category.id)
+        setCanView(response.data.can_view)
       } catch {
         setError('投稿の取得に失敗しました')
       } finally {
         setIsFetching(false)
       }
     }
+    const fetchPairStatus = async () => {
+      try {
+        const res = await pairApi.getStatus()
+        setIsPaired(res.data.paired)
+      } catch {
+        console.error('Pair状態の取得に失敗しました')
+      }
+    }
+    fetchCategories()
     fetchPost()
+    fetchPairStatus()
   }, [id])
 
   if (isFetching) {
@@ -103,23 +109,19 @@ export const PostUpdate = () => {
     <div className="min-h-screen bg-[#E8EEF1] pb-20">
       <div className="max-w-2xl mx-auto pt-4 px-4">
 
-        {/* エラーメッセージ */}
         {error && (
           <div className="mb-4 p-3 bg-red-100 border-red-400 text-red-700 rounded">
             {error}
           </div>
         )}
 
-        {/* 白いカードで全体を覆う */}
         <div className="bg-white rounded-2xl shadow-sm p-10">
           <form onSubmit={handleSubmit} className="space-y-4">
-            
-            {/* タイトル */}
+
             <h1 className="text-[38px] font-bold tracking-normal text-[#444444] text-center mb-8 font-sans pt-7">
               投稿編集
             </h1>
 
-            {/* 伝えたいこと */}
             <div>
               <label className="block text-lg font-medium text-gray-700 mb-1 text-left">
                 伝えたいこと
@@ -133,7 +135,6 @@ export const PostUpdate = () => {
               />
             </div>
 
-            {/* カテゴリの選択 */}
             <div>
               <label className="block text-lg font-medium text-gray-700 mb-1 text-left">
                 カテゴリ
@@ -152,7 +153,6 @@ export const PostUpdate = () => {
                   ))}
                 </select>
 
-                {/* カテゴリ編集ボタン */}
                 <button
                   type="button"
                   onClick={() => navigate('/categories/manage')}
@@ -164,7 +164,6 @@ export const PostUpdate = () => {
               </div>
             </div>
 
-            {/* 詳細 */}
             <div>
               <label className="block text-lg font-medium text-gray-700 mb-1 text-left">
                 詳細
@@ -179,7 +178,28 @@ export const PostUpdate = () => {
               />
             </div>
 
-            {/* 更新するボタン */}
+            {isPaired && (
+              <div className='flex items-center justify-between py-3 border-t border-gray-100'>
+                <div>
+                  <div className='text-sm font-medium text-gray-700'>パートナーに見せる</div>
+                  <div className='text-xs text-gray-400'>オンにするとパートナーが閲覧できます</div>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setCanView((prev) => !prev)}
+                  className={`relative w-12 h-6 rounded-full transition-colors duration-200 ${
+                    canView ? 'bg-[#4f8196]' : 'bg-gray-200'
+                  }`}
+                >
+                  <span
+                    className={`absolute top-1 w-4 h-4 bg-white rounded-full shadow transition-transform duration-200 ${
+                      canView ? 'translate-x-7' : 'translate-x-1'
+                    }`}
+                  />
+                </button>
+              </div>
+            )}
+
             <div className="flex justify-end">
               <button
                 type="submit"

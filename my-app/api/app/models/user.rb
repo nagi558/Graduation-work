@@ -5,6 +5,8 @@ class User < ApplicationRecord
 
   has_many :categories, dependent: :destroy
   has_many :posts, dependent: :destroy
+  has_one :pair_membership, dependent: :destroy
+  has_one :pair, through: :pair_membership
 
   after_create :create_default_categories
 
@@ -26,6 +28,15 @@ class User < ApplicationRecord
       provider:   'email',
       password:   Devise.friendly_token[0, 20]
     )
+  end
+
+  def paired?
+    pair.present?
+  end
+
+  def partner
+    return nil unless paired?
+    pair.users.where.not(id: id).first
   end
 
   private

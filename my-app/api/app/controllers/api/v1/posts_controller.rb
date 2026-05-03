@@ -4,30 +4,32 @@ class Api::V1::PostsController < ApplicationController
 
   def index
     posts = current_user.posts
-      .includes(:category)
+      .includes(:category, :post_permission)
       .order(created_at: :desc)
       .search_title(params[:title])
       .search_body(params[:body])
 
-    render json: posts, status: :ok
+    render json: posts.map { |post| post_json(post) }, status: :ok
   end
 
   def create
     post = current_user.posts.build(post_params)
     if post.save
-      render json: post, status: :created
+      save_post_permission(post)
+      render json: post_json(post), status: :created
     else
       render json: { errors: post.errors.full_messages }, status: :unprocessable_entity
     end
   end
 
   def show
-    render json: @post, status: :ok
+    render json: post_json(@post), status: :ok
   end
 
   def update
     if @post.update(post_params)
-      render json: @post, status: :ok
+      save_post_permission(@post)
+      render json: post_json(@post), status: :ok
     else
       render json: { errors: @post.errors.full_messages}, status: :unprocessable_entity
     end
@@ -46,5 +48,25 @@ class Api::V1::PostsController < ApplicationController
 
   def post_params
     params.require(:post).permit(:title, :body, :category_id)
+  end
+
+  def save_post_permission(post)
+    return unless current_user.paired?
+    return if params.dig(:post, :can_view).nil?
+
+    permission = post.post_permission ||
+                 post.build_post_permission(pair: current_user.pair)
+    permission.update!(can_view: params[:post][:can_view])
+  end
+
+  def post_json(post)
+    {
+      id: post.id,
+      title: post.title,
+      body: post.body,
+      category: { id: post.category.id, name: post.category.name },
+      can_view: post.post_permission&.can_view || false,
+      created_at: post.created_at
+    }
   end
 end

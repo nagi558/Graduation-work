@@ -9,6 +9,16 @@ Rails.application.routes.draw do
       end
       resources :contacts, only: [:create]
 
+      resource :pair, only: [:show, :destroy] do
+        post :invite
+        get  'join/:token', to: 'pairs#verify_token', as: :verify_token
+        post 'join/:token', to: 'pairs#join',         as: :join
+      end
+
+      namespace :partner do
+        resources :posts, only: [:index, :show]
+      end
+
       namespace :auth do
         post 'google', to: 'google#create'
       end
