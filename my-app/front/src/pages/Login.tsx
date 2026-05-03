@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useLocation } from 'react-router-dom'
 import axiosInstance from '@/lib/axios'
 import { useAuth } from '@/context/AuthContext'
 import { Spinner } from '@/components/Spinner'
@@ -13,6 +13,8 @@ export const Login = () => {
   const { login } = useAuth()
 
   const navigate = useNavigate()
+  const location = useLocation()
+  const from = (location.state as { from?: Location })?.from ?? '/posts'
 
   const validateForm = (): boolean => {
     // メールアドレスの空チェック
@@ -66,7 +68,7 @@ export const Login = () => {
     localStorage.setItem('client', client)
     localStorage.setItem('uid', uid)
     login()
-    navigate("/posts")
+    navigate(from)
 
     } catch (err: any) {
         setError("メールアドレスまたはパスワードが正しくありません")
