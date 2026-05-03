@@ -89,7 +89,8 @@ export const PostUpdate = () => {
         post: {
           title,
           body,
-          category_id: categoryId
+          category_id: categoryId,
+          can_view: canView,
         }
       }, {
         skipGlobalError: true
@@ -187,14 +188,14 @@ export const PostUpdate = () => {
                 <button
                   type="button"
                   onClick={() => setCanView((prev) => !prev)}
-                  className={`relative w-12 h-6 rounded-full transition-colors duration-200 ${
+                  style={{ minHeight: 'unset', lineHeight: '1' }}
+                  className={`relative w-12 h-6 rounded-full transition-colors duration-200 overflow-hidden ${
                     canView ? 'bg-[#4f8196]' : 'bg-gray-200'
                   }`}
                 >
                   <span
-                    className={`absolute top-1 w-4 h-4 bg-white rounded-full shadow transition-transform duration-200 ${
-                      canView ? 'translate-x-7' : 'translate-x-1'
-                    }`}
+                    className="absolute top-1 left-1 w-4 h-4 bg-white rounded-full shadow transition-transform duration-200"
+                    style={{ transform: canView ? 'translateX(24px)' : 'translateX(0px)' }}
                   />
                 </button>
               </div>

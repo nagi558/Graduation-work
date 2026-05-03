@@ -155,14 +155,14 @@ export const PostNew = () => {
                 <button
                   type='button'
                   onClick={() => setCanView((prev) => !prev)}
-                  className={`relative w-12 h-6 rounded-full transition-colors duration-200 ${
+                  style={{ minHeight: 'unset', lineHeight: '1' }}
+                  className={`relative w-12 h-6 rounded-full transition-colors duration-200 overflow-hidden ${
                     canView ? 'bg-[#4f8196]' : 'bg-gray-200'
                   }`}
                 >
                   <span
-                    className={`relative w-12 h-6 rounded-full transition-colors duration-200 ${
-                      canView ? 'bg-[#4f8196]' : 'bg-gray-200'
-                    }`}
+                    className="absolute top-1 left-1 w-4 h-4 bg-white rounded-full shadow transition-transform duration-200"
+                    style={{ transform: canView ? 'translateX(24px)' : 'translateX(0px)' }}
                   />
                 </button>
               </div>
