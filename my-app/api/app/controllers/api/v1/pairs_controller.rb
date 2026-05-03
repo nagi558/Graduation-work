@@ -28,7 +28,7 @@ class Api::V1::PairsController < ApplicationController
     end
 
     partner = pair.users.first
-    render json: { partner_name: partner&.name }, status: :ok
+    render json: { partner_name: partner&.nickname || partner&.name }, status: :ok
   end
 
   def join
@@ -72,7 +72,7 @@ class Api::V1::PairsController < ApplicationController
       {
         paired: true,
         pending: false,
-        partner_name: current_user.partner&.name,
+        partner_name: current_user.partner&.nickname || current_user.partner&.name,
         invitation_url: nil
       }
     elsif current_user.pending?
