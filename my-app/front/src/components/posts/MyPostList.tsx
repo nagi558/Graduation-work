@@ -82,7 +82,7 @@ export const MyPostList = ({ isPaired }: Props) => {
         </div>
       )}
 
-      <div className="flex gap-2 mb-6">
+      <div className="flex gap-2 mb-2">
         <input
           type="text"
           placeholder="タイトル検索"
@@ -104,6 +104,17 @@ export const MyPostList = ({ isPaired }: Props) => {
           検索
         </button>
       </div>
+
+      {!isPaired && (
+        <div className="flex justify-end mb-4">
+          <button
+            onClick={() => navigate('/mypage')}
+            className="text-xs text-gray-400 hover:text-[#4f8196] underline"
+          >
+            パートナーと共有する
+          </button>
+        </div>
+      )}
 
       {posts.length === 0 ? (
         <div className="text-center text-gray-400 mt-20">

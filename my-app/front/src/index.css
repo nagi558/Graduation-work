@@ -271,7 +271,7 @@ code {
 
 /* タップ領域（アクセシビリティ） */
 @media (max-width: 768px) {
-  button,
+  button:not(.toggle-button),
   input[type="button"],
   input[type="submit"]
   .touch-button {

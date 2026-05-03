@@ -35,5 +35,7 @@ export type ValidAuthTokens = {
 
 export type PairStatus = {
   paired: boolean
+  pending: boolean
   partner_name?: string
+  invitation_url?: string
 }

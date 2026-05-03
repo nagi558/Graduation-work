@@ -1,4 +1,5 @@
 import { useNavigate } from 'react-router-dom'
+import { PairStatusCard } from '@/components/ui/PairStatus'
 
 export const MyPage = () => {
   const navigate = useNavigate()
@@ -15,6 +16,9 @@ export const MyPage = () => {
           </div>
 
           <div className="flex flex-col gap-4">
+
+            <PairStatusCard />
+
             <button
               onClick={() => navigate('/privacy-policy')}
               className="bg-white rounded-2xl shadow-lg p-5 flex justify-between items-start"

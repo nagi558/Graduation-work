@@ -6,8 +6,11 @@ import { PostUpdate } from '@/pages/PostUpdate'
 import { PostList } from '@/pages/PostList'
 import { CategoryManage } from '@/pages/CategoryManage'
 import axiosInstance from '@/lib/axios'
+import { pairApi } from '@/lib/pairApi'
+import { vi } from 'vitest'
 
 vi.mock('@/lib/axios')
+vi.mock('@/lib/pairApi')
 
 const mockGet = vi.mocked(axiosInstance.get)
 const mockPatch = vi.mocked(axiosInstance.patch)
@@ -27,59 +30,68 @@ const renderPostUpdate = () => {
 }
 
 describe('PostUpdate', () => {
-
-  // ★ 全テスト共通のモックをここに置く
   beforeEach(() => {
-  mockGet.mockImplementation((url) => {
+    vi.mocked(pairApi.getStatus).mockResolvedValue({
+      data: { paired: false, pending: false }
+    } as any)
 
-    // カテゴリ一覧（PostUpdate と PostList 両方で使う）
-    if (url === '/api/v1/categories') {
-      return Promise.resolve({
-        data: [
-          { id: 1, name: 'テストカテゴリ' },
-          { id: 2, name: 'テストカテゴリ2' }
-        ]
-      })
-    }
+    vi.mocked(pairApi.getPartnerPosts).mockResolvedValue({
+      data: []
+    } as any)
 
-    // 投稿詳細（PostUpdate 用）
-    if (url === '/api/v1/posts/1') {
-      return Promise.resolve({
-        data: {
-          id: 1,
-          title: 'テストタイトル',
-          body: 'テスト本文',
-          category: { id: 1, name: 'テストカテゴリ' }
-        }
-      })
-    }
+    mockGet.mockImplementation((url) => {
+      if (url === '/api/v1/categories') {
+        return Promise.resolve({
+          data: [
+            { id: 1, name: 'テストカテゴリ' },
+            { id: 2, name: 'テストカテゴリ2' }
+          ]
+        })
+      }
 
-    // ★ 投稿一覧（更新後に PostList が呼ぶ）
-    if (url === '/api/v1/posts') {
-      return Promise.resolve({
-        data: [
-          {
+      if (url === '/api/v1/posts/1') {
+        return Promise.resolve({
+          data: {
             id: 1,
-            title: '更新タイトル',
+            title: 'テストタイトル',
             body: 'テスト本文',
-            category: { id: 1, name: 'テストカテゴリ' }
+            category: { id: 1, name: 'テストカテゴリ' },
+            can_view: false,
           }
-        ]
-      })
-    }
+        })
+      }
 
-    return Promise.reject(new Error('not mocked'))
+      if (url === '/api/v1/posts') {
+        return Promise.resolve({
+          data: [
+            {
+              id: 1,
+              title: '更新タイトル',
+              body: 'テスト本文',
+              category: { id: 1, name: 'テストカテゴリ' },
+              can_view: false,
+            }
+          ]
+        })
+      }
+
+      return Promise.reject(new Error('not mocked'))
+    })
+
+    mockPatch.mockResolvedValue({
+      data: {
+        id: 1,
+        title: '更新タイトル',
+        body: 'テスト本文',
+        category: { id: 1, name: 'テストカテゴリ' },
+        can_view: false,
+      }
+    })
   })
 
-  mockPatch.mockResolvedValue({
-    data: {
-      id: 1,
-      title: '更新タイトル',
-      body: 'テスト本文',
-      category: { id: 1, name: 'テストカテゴリ' }
-    }
+  afterEach(() => {
+    vi.clearAllMocks()
   })
-})
 
   it('初回ロード中はスピナーが表示される', () => {
     renderPostUpdate()
@@ -132,5 +144,42 @@ describe('PostUpdate', () => {
 
     await user.click(await screen.findByRole('button', { name: 'カテゴリ編集' }))
     expect(await screen.findByText('カテゴリ管理')).toBeInTheDocument()
+  })
+
+  describe('Pair機能', () => {
+    it('Pair未接続の場合パートナーに見せるトグルが表示されない', async () => {
+      renderPostUpdate()
+      await screen.findByText('投稿編集')
+      expect(screen.queryByText('パートナーに見せる')).not.toBeInTheDocument()
+    })
+
+    it('Pair接続済みの場合パートナーに見せるトグルが表示される', async () => {
+      vi.mocked(pairApi.getStatus).mockResolvedValue({
+        data: { paired: true, pending: false, partner_name: 'パートナー' }
+      } as any)
+
+      renderPostUpdate()
+      expect(await screen.findByText('パートナーに見せる')).toBeInTheDocument()
+    })
+
+    it('can_viewをtrueにして更新するとcan_view: trueが送信される', async () => {
+      vi.mocked(pairApi.getStatus).mockResolvedValue({
+        data: { paired: true, pending: false, partner_name: 'パートナー' }
+      } as any)
+
+      const user = userEvent.setup()
+      renderPostUpdate()
+
+      await user.click(await screen.findByRole('button', { name: 'パートナーに見せる' }))
+      await user.click(screen.getByRole('button', { name: '更新する' }))
+
+      expect(axiosInstance.patch).toHaveBeenCalledWith(
+        '/api/v1/posts/1',
+        expect.objectContaining({
+          post: expect.objectContaining({ can_view: true })
+        }),
+        expect.any(Object)
+      )
+    })
   })
 })
