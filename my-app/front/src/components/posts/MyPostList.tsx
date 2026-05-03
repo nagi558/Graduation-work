@@ -99,7 +99,7 @@ export const MyPostList = ({ isPaired }: Props) => {
         />
         <button
           onClick={handleSearch}
-          className="g-[#4f8196] hover:bg-[#80949e] text-white text-sm font-bold py-2 px-4 rounded-xl shadow transition duration-200"
+          className="bg-[#4f8196] hover:bg-[#80949e] text-white text-sm font-bold py-2 px-4 rounded-xl shadow transition duration-200"
         >
           検索
         </button>

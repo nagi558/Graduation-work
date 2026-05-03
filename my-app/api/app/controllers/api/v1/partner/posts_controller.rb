@@ -18,7 +18,7 @@ class Api::V1::Partner::PostsController < ApplicationController
       .where(post_permissions: { can_view: true })
       .find(params[:id])
 
-    render json: post_json(post). status: :ok
+    render json: post_json(post), status: :ok
   rescue ActiveRecord::RecordNotFound
     render json: { errors: ['閲覧権限がありません'] }, status: :forbidden
   end
