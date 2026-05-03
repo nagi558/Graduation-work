@@ -31,6 +31,23 @@ RSpec.describe 'Api::V1::Pairs', type: :request do
       end
     end
 
+    context 'Pair招待中（pending）の場合' do
+      let!(:pair) { create(:pair, :with_invitation_token) }
+      let!(:_membership) { create(:pair_membership, pair: pair, user: user) }
+
+      it 'pending: true を返す' do
+        get '/api/v1/pair', headers: headers
+        expect(response).to have_http_status(:ok)
+        expect(json['paired']).to eq(false)
+        expect(json['pending']).to eq(true)
+      end
+
+      it 'invitation_urlを返す' do
+        get '/api/v1/pair', headers: headers
+        expect(json['invitation_url']).to be_present
+      end
+    end
+
     context '未認証の場合' do
       it '401を返す' do
         get '/api/v1/pair'
@@ -231,6 +248,22 @@ RSpec.describe 'Api::V1::Pairs', type: :request do
           delete '/api/v1/pair', headers: headers
           expect(response).to have_http_status(:not_found)
         end
+      end
+    end
+
+    context 'Pair招待中（pending）の場合' do
+      let!(:pair) { create(:pair, :with_invitation_token) }
+      let!(:_membership) { create(:pair_membership, pair: pair, user: user) }
+
+      it '200を返す' do
+        delete '/api/v1/pair', headers: headers
+        expect(response).to have_http_status(:ok)
+      end
+
+      it 'Pairが削除される' do
+        expect {
+          delete '/api/v1/pair', headers: headers
+        }.to change(Pair, :count).by(-1)
       end
     end
 
