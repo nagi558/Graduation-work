@@ -2,11 +2,7 @@ class Api::V1::PairsController < ApplicationController
   before_action :authenticate_user!
 
   def show
-    if current_user.paired?
-      render json: pair_json, status: :ok
-    else
-      render json: { paired: false }, status: :ok
-    end
+    render json: pair_json, status: :ok
   end
 
   def invite
@@ -54,7 +50,7 @@ class Api::V1::PairsController < ApplicationController
   end
 
   def destroy
-    unless current_user.paired?
+    unless current_user.paired? || current_user.pending?
       return render json: { errors: ['接続中のパートナーがいません'] }, status: :not_found
     end
 
@@ -71,9 +67,27 @@ class Api::V1::PairsController < ApplicationController
   end
 
   def pair_json
-    {
-      paired: true,
-      partner_name: current_user.partner&.name
-    }
+    if current_user.paired?
+      {
+        paired: true,
+        pending: false,
+        partner_name: current_user.partner&.name,
+        invitation_url: nil
+      }
+    elsif current_user.pending?
+      {
+        paired: false,
+        pending: true,
+        partner_name: nil,
+        invitation_url: "#{ENV['FRONTEND_URL']}/invite/#{current_user.pair.invitation_token}"
+      }
+    else
+      {
+        paired: false,
+        pending: false,
+        partner_name: nil,
+        invitation_url: nil
+      }
+    end
   end
 end

@@ -31,7 +31,11 @@ class User < ApplicationRecord
   end
 
   def paired?
-    pair.present?
+    pair.present? && pair.pair_memberships.count == 2
+  end
+
+  def pending?
+    pair.present? && pair.pair_memberships.count == 1
   end
 
   def partner
