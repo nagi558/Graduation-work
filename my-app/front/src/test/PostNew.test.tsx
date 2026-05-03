@@ -6,8 +6,10 @@ import { PostNew } from '@/pages/PostNew'
 import { PostList } from '@/pages/PostList'
 import { CategoryManage } from '@/pages/CategoryManage'
 import axiosInstance from '@/lib/axios'
+import { pairApi } from '@/lib/pairApi'
 
 vi.mock('@/lib/axios')
+vi.mock('@/lib/pairApi')
 
 const mockGet = vi.mocked(axiosInstance.get)
 const mockPost = vi.mocked(axiosInstance.post)
@@ -63,6 +65,37 @@ describe('PostNew', () => {
         category: { id: 1, name: 'テストカテゴリ' }
       }
     })
+  })
+
+  vi.mocked(pairApi.getStatus).mockResolvedValue({
+    data: { paired: false, pending: false }
+  } as any)
+
+  it('Pair未接続の場合パートナーに見せるトグルが表示されない', async () => {
+    renderPostNew()
+    await screen.findByText('新規作成')
+    expect(screen.queryByText('パートナーに見せる')).not.toBeInTheDocument()
+  })
+
+  it('can_viewをtrueにして投稿するとcan_view: trueが送信される', async () => {
+    vi.mocked(pairApi.getStatus).mockResolvedValue({
+      data: { paired: true, pending: false, partner_name: 'パートナー'}
+    } as any)
+
+    const user = userEvent.setup()
+    renderPostNew()
+
+    await user.type(screen.getByPlaceholderText('月1,000円でも投資に回す'), 'テストスタイル')
+    await user.click(await screen.findByRole('button', { name: 'パートナーに見せる' }))
+    await user.click(screen.getByRole('button', { name: '追加する' }))
+
+    expect(axiosInstance.post).toHaveBeenCalledWith(
+      '/api/v1/posts',
+      expect.objectContaining({
+        post: expect.objectContaining({ can_view: true})
+      }),
+      expect.any(Object)
+    )
   })
 
   it('新規作成フォームが表示される', async () => {

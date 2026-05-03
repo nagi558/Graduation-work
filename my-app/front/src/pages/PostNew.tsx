@@ -154,6 +154,7 @@ export const PostNew = () => {
                 </div>
                 <button
                   type='button'
+                  aria-label='パートナーに見せる'
                   onClick={() => setCanView((prev) => !prev)}
                   style={{ minHeight: 'unset', lineHeight: '1' }}
                   className={`relative w-12 h-6 rounded-full transition-colors duration-200 overflow-hidden ${
