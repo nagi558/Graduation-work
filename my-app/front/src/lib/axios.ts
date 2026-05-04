@@ -68,7 +68,7 @@ axiosInstance.interceptors.response.use(
 
     if (status >= 500) {
       console.error('Server Error:', error.response)
-      
+
       window.dispatchEvent(new CustomEvent('api:error', {
         detail: {
           message: 'サーバーエラーが発生しました',

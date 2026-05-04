@@ -4,7 +4,7 @@ type Props = {
   onClose: () => void
 }
 
-export const GuideModel = ({ onClose }: Props) => {
+export const GuideModal = ({ onClose }: Props) => {
   const [step, setStep] = useState(0)
 
   useEffect(() => {
@@ -39,9 +39,14 @@ export const GuideModel = ({ onClose }: Props) => {
 
   const isLast = step === contents.length - 1
 
+  const handleClose = () => {
+    localStorage.setItem('hasSeenGuide', 'true')
+    onClose()
+  }
+
   return (
     <div
-      className='fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50'
+      className='fixed inset-0 bg-gray-900/20 backdrop-blur-sm flex items-center justify-center z-50'
       role='dialog'
       aria-modal='true'
     >
@@ -56,7 +61,7 @@ export const GuideModel = ({ onClose }: Props) => {
 
         <div className='flex justify-between items-center'>
           <button
-            onClick={onClose}
+            onClick={handleClose}
             className='text-gray-500 text-sm px-3 py-2'
           >
             スキップ
@@ -71,7 +76,7 @@ export const GuideModel = ({ onClose }: Props) => {
             </button>
           ) : (
             <button
-              onClick={onClose}
+              onClick={handleClose}
               className='bg-blue-600 text-white px-5 py-2 rounded-lg'
             >
               はじめる

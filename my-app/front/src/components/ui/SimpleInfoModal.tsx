@@ -17,11 +17,11 @@ export const SimpleInfoModal = ({ onClose }: Props) => {
 
   return (
     <div
-      className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-40"
+      className="fixed inset-0 bg-gray-900/20 backdrop-blur-sm flex items-center justify-center z-50"
       role="dialog"
       aria-modal='true'
     >
-      <div className="bg-white rounded-2xl p-6 w-full max-w-md shadow-lg text-center">
+      <div className="bg-white/90 backdrop-blur rounded-2xl p-6 w-full max-w-md shadow-lg text-center">
         <h2 className="text-lg font-bold mb-4">
           思いついた今が、残しどきです
         </h2>
