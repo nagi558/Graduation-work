@@ -10,7 +10,7 @@ export const GuideModal = ({ onClose }: Props) => {
   useEffect(() => {
     document.body.style.overflow = 'hidden'
     return () => {
-      document.body.style.overflow = 'auto'
+      document.body.style.overflow = ''
     }
   }, [])
 
