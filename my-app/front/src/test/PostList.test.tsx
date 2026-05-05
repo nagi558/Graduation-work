@@ -106,6 +106,9 @@ describe("PostList", () => {
 
     it("投稿が0件の場合メッセージが表示される", async () => {
       vi.mocked(axiosInstance.get).mockImplementation((url) => {
+        if (url === "/api/v1/user") {
+          return Promise.resolve({ data: { has_seen_guide: true } } as any)
+        }
         if (url === "/api/v1/posts") return Promise.resolve({ data: [] } as any)
         return Promise.resolve({ data: [] } as any)
       })
@@ -150,6 +153,9 @@ describe("PostList", () => {
 
     it("タイトル検索で正しいパラメータでAPIが呼ばれ結果が表示される", async () => {
       vi.mocked(axiosInstance.get).mockImplementation((url, config: any) => {
+        if (url === "/api/v1/user") {
+          return Promise.resolve({ data: { has_seen_guide: true } } as any)
+        }
         if (url === "/api/v1/posts") {
           const params = config?.params ?? {}
           if (params.title === "テスト") {
@@ -178,6 +184,9 @@ describe("PostList", () => {
 
     it("本文検索で正しいパラメータでAPIが呼ばれ結果が表示される", async () => {
       vi.mocked(axiosInstance.get).mockImplementation((url, config: any) => {
+        if (url === "/api/v1/user") {
+          return Promise.resolve({ data: { has_seen_guide: true } } as any)
+        }
         if (url === "/api/v1/posts") {
           const params = config?.params ?? {}
           if (params.body === "テスト") {
@@ -234,6 +243,9 @@ describe("PostList", () => {
 
     it("タイトルと本文を両方入力して検索すると両方のパラメータでAPIが呼ばれる", async () => {
       vi.mocked(axiosInstance.get).mockImplementation((url, config: any) => {
+        if (url === "/api/v1/user") {
+          return Promise.resolve({ data: { has_seen_guide: true } } as any)
+        }
         if (url === "/api/v1/posts") {
           const params = config?.params ?? {}
           if (params.title === "テスト" && params.body === "テスト本文") {
