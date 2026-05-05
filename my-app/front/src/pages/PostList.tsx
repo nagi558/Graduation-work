@@ -1,19 +1,14 @@
-import { useEffect, useState, useRef } from "react"
+import { useEffect, useState } from "react"
 import { pairApi } from "@/lib/pairApi"
 import { MyPostList } from "@/components/posts/MyPostList"
 import { PartnerPostList } from "@/components/posts/PartnerPostList"
-import { GuideModal } from "@/components/ui/GuideModal"
 import { Toast } from "@/components/ui/Toast"
 import { useLocation } from "react-router-dom"
 
 export const PostList = () => {
   const [activeTab, setActiveTab] = useState<"mine" | "partner">("mine")
   const [isPaired, setIsPaired] = useState(false)
-  const [showGuide, setShowGuide] = useState(false)
   const [showToast, setShowToast] = useState(false)
-
-  const hasCheckedGuide = useRef(false)
-
   const location = useLocation()
 
   useEffect(() => {
@@ -27,25 +22,10 @@ export const PostList = () => {
   }, [])
 
   useEffect(() => {
-    if (hasCheckedGuide.current) return
-    hasCheckedGuide.current = true
-
-    const seen = localStorage.getItem("hasSeenGuide")
-    if (!seen) {
-      setShowGuide(true)
-    }
-  }, [])
-
-  useEffect(() => {
     if (location.state?.created) {
       setShowToast(true)
     }
   }, [location.state])
-
-  const handleCloseGuide = () => {
-    localStorage.setItem("hasSeenGuide", "true")
-    setShowGuide(false)
-  }
 
   return (
     <div className="bg-[#E8EEF1] pb-20">
@@ -84,8 +64,6 @@ export const PostList = () => {
           {activeTab === "partner" && <PartnerPostList />}
         </div>
       </div>
-
-      {showGuide ? <GuideModal onClose={handleCloseGuide} /> : null}
 
       {showToast && (
         <Toast
