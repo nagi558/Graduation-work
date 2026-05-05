@@ -14,6 +14,7 @@ export const Toast = ({ message, onClose }: Props) => {
         <span className="text-sm">{message}</span>
 
         <button
+          data-testid="toast-close"
           onClick={onClose}
           className="text-xs text-gray-300 px-2 py-1"
         >
