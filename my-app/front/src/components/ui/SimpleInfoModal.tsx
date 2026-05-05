@@ -23,7 +23,7 @@ export const SimpleInfoModal = ({ onClose }: Props) => {
     >
       <div className="bg-white/90 backdrop-blur rounded-2xl p-6 w-full max-w-md shadow-lg text-center">
         <h2 className="text-lg font-bold mb-4">
-          思いついた今が、残しどきです
+          「新規作成」から書いてみましょう
         </h2>
 
         <div className="text-sm whitespace-pre-line leading-relaxed mb-6">
@@ -31,7 +31,7 @@ export const SimpleInfoModal = ({ onClose }: Props) => {
 時間が経つと少しずつ薄れていきます。
 
 今のあなたの想いを、
-未来の子どもに残してみませんか？
+未来の子どもに残しませんか？
         </div>
 
         <div className="flex gap-3 justify-center">
