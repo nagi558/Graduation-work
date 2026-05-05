@@ -1,15 +1,15 @@
-import { render, screen } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
-import { MemoryRouter, Routes, Route } from 'react-router-dom'
-import { AuthProvider } from '@/context/AuthContext'
-import { PostNew } from '@/pages/PostNew'
-import { PostList } from '@/pages/PostList'
-import { CategoryManage } from '@/pages/CategoryManage'
-import axiosInstance from '@/lib/axios'
-import { pairApi } from '@/lib/pairApi'
+import { render, screen } from "@testing-library/react"
+import userEvent from "@testing-library/user-event"
+import { MemoryRouter, Routes, Route } from "react-router-dom"
+import { AuthProvider } from "@/context/AuthContext"
+import { PostNew } from "@/pages/PostNew"
+import { PostList } from "@/pages/PostList"
+import { CategoryManage } from "@/pages/CategoryManage"
+import axiosInstance from "@/lib/axios"
+import { pairApi } from "@/lib/pairApi"
 
-vi.mock('@/lib/axios')
-vi.mock('@/lib/pairApi')
+vi.mock("@/lib/axios")
+vi.mock("@/lib/pairApi")
 
 const mockGet = vi.mocked(axiosInstance.get)
 const mockPost = vi.mocked(axiosInstance.post)
@@ -17,130 +17,146 @@ const mockPost = vi.mocked(axiosInstance.post)
 const renderPostNew = () => {
   render(
     <AuthProvider>
-      <MemoryRouter initialEntries={['/posts/new']}>
+      <MemoryRouter initialEntries={["/posts/new"]}>
         <Routes>
           <Route path="/posts/new" element={<PostNew />} />
           <Route path="/posts" element={<PostList />} />
           <Route path="/categories/manage" element={<CategoryManage />} />
         </Routes>
       </MemoryRouter>
-    </AuthProvider>
+    </AuthProvider>,
   )
 }
 
-describe('PostNew', () => {
-
+describe("PostNew", () => {
   beforeEach(() => {
     vi.clearAllMocks()
 
-    localStorage.setItem('hasSeenGuide', 'true')
-
     vi.mocked(pairApi.getStatus).mockResolvedValue({
-      data: { paired: false, pending: false}
+      data: { paired: false, pending: false },
     } as any)
 
     mockGet.mockImplementation((url) => {
-      if (url === '/api/v1/categories') {
+      if (url === "/api/v1/user") {
+        return Promise.resolve({ data: { has_seen_guide: true } } as any)
+      }
+      if (url === "/api/v1/categories") {
         return Promise.resolve({
           data: [
-            { id: 1, name: 'テストカテゴリ' },
-            { id: 2, name: 'テストカテゴリ2' }
-          ]
+            { id: 1, name: "テストカテゴリ" },
+            { id: 2, name: "テストカテゴリ2" },
+          ],
         })
       }
 
-      if (url === '/api/v1/posts') {
+      if (url === "/api/v1/posts") {
         return Promise.resolve({
           data: [
             {
               id: 1,
-              title: 'テストタイトル',
-              body: 'テスト本文',
-              category: { id: 1, name: 'テストカテゴリ' },
+              title: "テストタイトル",
+              body: "テスト本文",
+              category: { id: 1, name: "テストカテゴリ" },
               can_view: false,
-            }
-          ]
+            },
+          ],
         })
       }
 
-      return Promise.reject(new Error('not mocked'))
-    })
-
-    mockPost.mockResolvedValue({
-      data: {
-        id: 1,
-        title: 'テストタイトル',
-        body: 'テスト本文',
-        category: { id: 1, name: 'テストカテゴリ' }
-      }
+      return Promise.reject(new Error("not mocked"))
     })
   })
 
-  it('Pair未接続の場合パートナーに見せるトグルが表示されない', async () => {
+  mockPost.mockResolvedValue({
+    data: {
+      id: 1,
+      title: "テストタイトル",
+      body: "テスト本文",
+      category: { id: 1, name: "テストカテゴリ" },
+    },
+  })
+
+  it("Pair未接続の場合パートナーに見せるトグルが表示されない", async () => {
     renderPostNew()
-    await screen.findByText('新規作成')
-    expect(screen.queryByText('パートナーに見せる')).not.toBeInTheDocument()
+    await screen.findByText("新規作成")
+    expect(screen.queryByText("パートナーに見せる")).not.toBeInTheDocument()
   })
 
-  it('can_viewをtrueにして投稿するとcan_view: trueが送信される', async () => {
+  it("can_viewをtrueにして投稿するとcan_view: trueが送信される", async () => {
     vi.mocked(pairApi.getStatus).mockResolvedValue({
-      data: { paired: true, pending: false, partner_name: 'パートナー'}
+      data: { paired: true, pending: false, partner_name: "パートナー" },
     } as any)
 
     const user = userEvent.setup()
     renderPostNew()
 
-    await user.type(screen.getByPlaceholderText('月1,000円でも投資に回す'), 'テストスタイル')
-    await user.click(await screen.findByRole('button', { name: 'パートナーに見せる' }))
-    await user.click(screen.getByRole('button', { name: '追加する' }))
+    await user.type(
+      screen.getByPlaceholderText("月1,000円でも投資に回す"),
+      "テストスタイル",
+    )
+    await user.click(
+      await screen.findByRole("button", { name: "パートナーに見せる" }),
+    )
+    await user.click(screen.getByRole("button", { name: "追加する" }))
 
     expect(axiosInstance.post).toHaveBeenCalledWith(
-      '/api/v1/posts',
+      "/api/v1/posts",
       expect.objectContaining({
-        post: expect.objectContaining({ can_view: true})
+        post: expect.objectContaining({ can_view: true }),
       }),
-      expect.any(Object)
+      expect.any(Object),
     )
   })
 
-  it('新規作成フォームが表示される', async () => {
+  it("新規作成フォームが表示される", async () => {
     renderPostNew()
-    expect(await screen.findByText('新規作成')).toBeInTheDocument()
-    expect(await screen.findByRole('button', { name: '追加する' })).toBeInTheDocument()
+    expect(await screen.findByText("新規作成")).toBeInTheDocument()
+    expect(
+      await screen.findByRole("button", { name: "追加する" }),
+    ).toBeInTheDocument()
   })
 
-  it('カテゴリ一覧が表示される', async () => {
+  it("カテゴリ一覧が表示される", async () => {
     renderPostNew()
     expect(await screen.findAllByText(/テストカテゴリ/)).toHaveLength(2)
   })
 
-  it('タイトルが空の場合エラーメッセージが表示される', async () => {
+  it("タイトルが空の場合エラーメッセージが表示される", async () => {
     const user = userEvent.setup()
     renderPostNew()
-    await user.click(await screen.findByRole('button', { name: '追加する' }))
-    expect(await screen.findByText('タイトルを入力してください')).toBeInTheDocument()
+    await user.click(await screen.findByRole("button", { name: "追加する" }))
+    expect(
+      await screen.findByText("タイトルを入力してください"),
+    ).toBeInTheDocument()
   })
 
-  it('正常に投稿を作成すると一覧画面に遷移する', async () => {
+  it("正常に投稿を作成すると一覧画面に遷移する", async () => {
     const user = userEvent.setup()
     renderPostNew()
 
-    await user.type(screen.getByPlaceholderText('月1,000円でも投資に回す'), 'テストタイトル')
-    await user.selectOptions(screen.getByRole('combobox'), '1')
     await user.type(
-      screen.getByPlaceholderText('投資は長く続けるほど複利が大きくなっていくので、早く始めるほど将来的なリターンも大きくなっていく（15年以上の長期投資を前提とする）'),
-      'テスト本文'
+      screen.getByPlaceholderText("月1,000円でも投資に回す"),
+      "テストタイトル",
+    )
+    await user.selectOptions(screen.getByRole("combobox"), "1")
+    await user.type(
+      screen.getByPlaceholderText(
+        "投資は長く続けるほど複利が大きくなっていくので、早く始めるほど将来的なリターンも大きくなっていく（15年以上の長期投資を前提とする）",
+      ),
+      "テスト本文",
     )
 
-    await user.click(screen.getByRole('button', { name: '追加する' }))
+    await user.click(screen.getByRole("button", { name: "追加する" }))
 
-    expect(await screen.findByText('テストタイトル')).toBeInTheDocument()
+    expect(await screen.findByText("テストタイトル")).toBeInTheDocument()
   })
 
-  it('カテゴリ編集ボタンをクリックするとカテゴリ管理画面に遷移する', async () => {
+  it("カテゴリ編集ボタンをクリックするとカテゴリ管理画面に遷移する", async () => {
     const user = userEvent.setup()
     renderPostNew()
-    await user.click(await screen.findByRole('button', { name: 'カテゴリ編集' }))
-    expect(await screen.findByText('カテゴリ管理')).toBeInTheDocument()
+    await user.click(
+      await screen.findByRole("button", { name: "カテゴリ編集" }),
+    )
+    expect(await screen.findByText("カテゴリ管理")).toBeInTheDocument()
   })
 })

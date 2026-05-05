@@ -41,7 +41,6 @@ export const GuideModal = ({ onClose }: Props) => {
   const isLast = step === contents.length - 1
 
   const handleClose = () => {
-    localStorage.setItem('hasSeenGuide', 'true')
     onClose()
   }
 

@@ -2,7 +2,7 @@ Rails.application.routes.draw do
 
   namespace :api do
     namespace :v1 do
-      
+
       resources :posts, only: [:index, :show, :create, :update, :destroy]
       resources :categories, only: [:index, :show, :create, :update, :destroy] do
         resources :posts, only: [:index], controller: 'category_posts'
@@ -21,6 +21,10 @@ Rails.application.routes.draw do
 
       namespace :auth do
         post 'google', to: 'google#create'
+      end
+
+      resource :user, only: [:show] do
+        patch :update_guide
       end
     end
   end

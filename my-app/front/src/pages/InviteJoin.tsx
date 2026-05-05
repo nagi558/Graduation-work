@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom'
 import { pairApi } from "@/lib/pairApi"
 import { Spinner } from "@/components/Spinner"
 
