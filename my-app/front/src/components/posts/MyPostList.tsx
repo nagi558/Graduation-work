@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react"
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom'
 import axiosInstance from "@/lib/axios"
 import type { Post } from "@/types"
 import { Spinner } from "../Spinner"
+import { SimpleInfoModal } from "../ui/SimpleInfoModal"
+import { GuideModal } from "../ui/GuideModal"
 
 type Props = {
   isPaired: boolean
@@ -11,10 +13,13 @@ type Props = {
 export const MyPostList = ({ isPaired }: Props) => {
   const [posts, setPosts] = useState<Post[]>([])
   const [error, setError] = useState<string | null>(null)
-  const [isFetching, setIsFetching] = useState(true)
+  const [isFetching, setIsFetching] = useState(false)
   const [titleQuery, setTitleQuery] = useState('')
   const [bodyQuery, setBodyQuery] = useState('')
   const [isSearching, setIsSearching] = useState(false)
+  const [showGuide, setShowGuide] = useState(false)
+  const [showInfoModal, setShowInfoModal] = useState(false)
+  const [hasFetched, setHasFetched] = useState(false)
   const navigate = useNavigate()
 
   const fetchPosts = async (title = '', body = '') => {
@@ -31,12 +36,33 @@ export const MyPostList = ({ isPaired }: Props) => {
       setError('投稿の取得に失敗しました')
     } finally {
       setIsFetching(false)
+      setHasFetched(true)
     }
   }
 
   useEffect(() => {
+    const hasSeenGuide = localStorage.getItem('hasSeenGuide') === 'true'
+    if (!hasSeenGuide) {
+      setShowGuide(true)
+      return
+    }
     fetchPosts()
   }, [])
+
+  const handleGuideClose = () => {
+    localStorage.setItem('hasSeenGuide', 'true')
+    setShowGuide(false)
+    fetchPosts()
+  }
+
+  useEffect(() => {
+    if (!hasFetched) return
+    if (isSearching) return
+
+    if (posts.length === 0) {
+      setShowInfoModal(true)
+    }
+  }, [hasFetched, isSearching, posts])
 
   const handleSearch = () => {
     setIsSearching(true)
@@ -66,6 +92,12 @@ export const MyPostList = ({ isPaired }: Props) => {
 
   return (
     <>
+      {showGuide && <GuideModal onClose={handleGuideClose} />}
+
+      {showInfoModal && (
+        <SimpleInfoModal onClose={() => setShowInfoModal(false)} />
+      )}
+
       <div className="flex justify-between items-center mb-3">
         <div />
         <button
@@ -142,11 +174,11 @@ export const MyPostList = ({ isPaired }: Props) => {
                   <span className="text-xs text-white bg-[#A0B9C6] px-2 py-1 rounded-full">
                     {post.category.name}
                   </span>
-                  {isPaired && post.can_view && (
-                    <span className="text-xs text-[#4f8196] border border-[#4f8196] px-2 py-1 rounded-full">
-                      共有中
-                    </span>
-                  )}
+{isPaired && post.can_view && (
+  <span className="text-xs text-[#4f8196] border border-[#4f8196] px-2 py-1 rounded-full">
+    共有中
+  </span>
+)}
                 </div>
                 <div className="text-gray-500 text-sm text-left">
                   {post.body}

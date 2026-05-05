@@ -8,6 +8,7 @@ import { PostUpdate } from '@/pages/PostUpdate'
 import axiosInstance from '@/lib/axios'
 import { pairApi } from '@/lib/pairApi'
 import { vi } from 'vitest'
+import { within } from '@testing-library/react'
 
 vi.mock('@/lib/axios')
 vi.mock('@/lib/pairApi')
@@ -45,15 +46,31 @@ const renderPostList = () => {
   )
 }
 
+const closeGuideIfExists = async (user: ReturnType<typeof userEvent.setup>) => {
+  const dialogs = screen.queryAllByRole('dialog')
+
+  if (dialogs.length > 0) {
+    const skip = within(dialogs[0]).queryByText('スキップ')
+    if (skip) {
+      await user.click(skip)
+      await waitFor(() => {
+        expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
+      })
+    }
+  }
+}
+
 describe('PostList', () => {
   afterEach(() => {
     vi.clearAllMocks()
   })
 
   beforeEach(() => {
-    vi.mocked(pairApi.getStatus).mockResolvedValue({
-      data: { paired: false }
-    } as any)
+  localStorage.setItem('hasSeenGuide', 'true')
+
+  vi.mocked(pairApi.getStatus).mockResolvedValue({
+    data: { paired: true }
+  } as any)
 
     vi.mocked(pairApi.getPartnerPosts).mockResolvedValue({
       data: mockPartnerPosts
@@ -235,6 +252,10 @@ describe('PostList', () => {
 
   describe('Pair機能', () => {
     it('Pair未接続の場合タブが表示されない', async () => {
+        vi.mocked(pairApi.getStatus).mockResolvedValueOnce({
+    data: { paired: false }
+  } as any)
+
       renderPostList()
       await screen.findByText('テストタイトル')
       expect(screen.queryByRole('button', { name: '自分の投稿' })).not.toBeInTheDocument()
@@ -242,9 +263,13 @@ describe('PostList', () => {
     })
 
     it('Pair状態取得APIが呼ばれる', async () => {
+      const user = userEvent.setup()
       renderPostList()
-      await screen.findByText('テストタイトル')
-      expect(pairApi.getStatus).toHaveBeenCalled()
+
+      await closeGuideIfExists(user)
+
+  expect(await screen.findByText('テストタイトル')).toBeInTheDocument()
+  expect(pairApi.getStatus).toHaveBeenCalled()
     })
 
     it('Pair接続済みの場合タブが表示される', async () => {
@@ -269,22 +294,30 @@ describe('PostList', () => {
       expect(pairApi.getPartnerPosts).toHaveBeenCalled()
     })
 
-    it('can_view=trueの投稿に共有中バッジが表示される', async () => {
-      vi.mocked(pairApi.getStatus).mockResolvedValue({
-        data: { paired: true, partner_name: 'パートナー' }
-      } as any)
-      vi.mocked(axiosInstance.get).mockImplementation((url) => {
-        if (url === '/api/v1/posts') {
-          return Promise.resolve({
-            data: [{ ...mockPosts[0], can_view: true }]
-          } as any)
-        }
-        return Promise.resolve({ data: [] } as any)
-      })
+it('can_view=trueの投稿に共有中バッジが表示される', async () => {
+    vi.mocked(pairApi.getStatus).mockResolvedValueOnce({
+    data: { paired: true }
+  } as any)
 
-      renderPostList()
-      expect(await screen.findByText('共有中')).toBeInTheDocument()
-    })
+  vi.mocked(axiosInstance.get).mockResolvedValueOnce({
+    data: [
+      {
+        id: 1,
+        title: 'テストタイトル',
+        body: 'テスト本文',
+        can_view: true, // ← ここだけtrue
+        category: { id: 1, name: 'テストカテゴリ' }
+      }
+    ]
+  } as any)
+  
+  const user = userEvent.setup()
+  renderPostList()
+
+  await closeGuideIfExists(user)
+
+  expect(await screen.findByText('共有中')).toBeInTheDocument()
+})
 
     it('パートナーの投稿タブには編集・削除ボタンが表示されない', async () => {
       vi.mocked(pairApi.getStatus).mockResolvedValue({
@@ -301,4 +334,153 @@ describe('PostList', () => {
       expect(screen.queryByRole('button', { name: '削除' })).not.toBeInTheDocument()
     })
   })
+
+describe('Guide,Info,Toast', () => {
+  beforeEach(() => {
+    vi.clearAllMocks()
+    localStorage.clear()
+  })
+
+  it('初回ユーザーはGuideModalが表示される', async () => {
+    renderPostList()
+
+    const dialogs = await screen.findAllByRole('dialog')
+
+    expect(dialogs.length).toBeGreaterThan(0)
+
+    expect(
+      within(dialogs[0]).getByText('未来の子どもに、今の想いを残そう')
+    ).toBeInTheDocument()
+  })
+
+  it('GuideModalを閉じるとlocalStorageに保存される', async () => {
+    const user = userEvent.setup()
+    renderPostList()
+
+    const dialogs = await screen.findAllByRole('dialog')
+    const skipButton = within(dialogs[0]).getByText('スキップ')
+
+    await user.click(skipButton)
+
+    expect(localStorage.getItem('hasSeenGuide')).toBe('true')
+  })
+
+  it('GuideModalを閉じると投稿取得が走る', async () => {
+    const user = userEvent.setup()
+    renderPostList()
+
+    const dialogs = await screen.findAllByRole('dialog')
+    const skipButton = within(dialogs[0]).getByText('スキップ')
+
+    await user.click(skipButton)
+
+    await waitFor(() => {
+      expect(axiosInstance.get).toHaveBeenCalledWith(
+        '/api/v1/posts',
+        expect.any(Object)
+      )
+    })
+  })
+
+  it('Guide済み & 投稿0件のときSimpleInfoModalが表示される', async () => {
+    localStorage.setItem('hasSeenGuide', 'true')
+
+    vi.mocked(axiosInstance.get).mockResolvedValue({ data: [] } as any)
+const user = userEvent.setup()
+    renderPostList()
+
+    await closeGuideIfExists(user)
+
+    expect(
+      await screen.findByText('思いついた今が、残しどきです')
+    ).toBeInTheDocument()
+  })
+
+  it('SimpleInfoModalの閉じるでModalが消える', async () => {
+    localStorage.setItem('hasSeenGuide', 'true')
+
+    vi.mocked(axiosInstance.get).mockResolvedValue({ data: [] } as any)
+
+    const user = userEvent.setup()
+    renderPostList()
+
+    await closeGuideIfExists(user)
+
+    const closeBtn = await screen.findByText('閉じる')
+    await user.click(closeBtn)
+
+    await waitFor(() => {
+      expect(
+        screen.queryByText('思いついた今が、残しどきです')
+      ).not.toBeInTheDocument()
+    })
+  })
+
+  it('「書いてみる」で新規投稿画面に遷移する', async () => {
+    localStorage.setItem('hasSeenGuide', 'true')
+
+    vi.mocked(axiosInstance.get).mockResolvedValue({ data: [] } as any)
+
+    const user = userEvent.setup()
+    renderPostList()
+
+     await closeGuideIfExists(user)
+
+    const btn = await screen.findByText('書いてみる')
+    await user.click(btn)
+
+    expect(await screen.findByText('新規作成')).toBeInTheDocument()
+  })
+
+  it('投稿作成後にToastが表示される', async () => {
+    localStorage.setItem('hasSeenGuide', 'true')
+
+    render(
+      <AuthProvider>
+        <MemoryRouter initialEntries={[{
+          pathname: '/posts',
+          state: { created: true }
+        }]}>
+          <Routes>
+            <Route path="/posts" element={<PostList />} />
+          </Routes>
+        </MemoryRouter>
+      </AuthProvider>
+    )
+
+    const toasts = await screen.findAllByText(
+      '記録を残しました。未来へのメッセージになります'
+    )
+
+    expect(toasts.length).toBeGreaterThan(0)
+  })
+
+  it('Toastは閉じるボタンで消える', async () => {
+    localStorage.setItem('hasSeenGuide', 'true')
+
+    const user = userEvent.setup()
+
+    render(
+      <AuthProvider>
+        <MemoryRouter initialEntries={[{
+          pathname: '/posts',
+          state: { created: true }
+        }]}>
+          <Routes>
+            <Route path='/posts' element={<PostList />} />
+          </Routes>
+        </MemoryRouter>
+      </AuthProvider>
+    )
+
+    const closeButtons = await screen.findAllByText('閉じる')
+    await user.click(closeButtons[0])
+
+    await waitFor(() => {
+      expect(
+        screen.queryByText('投稿を作成しました')
+      ).not.toBeInTheDocument()
+    })
+  })
+})
 })

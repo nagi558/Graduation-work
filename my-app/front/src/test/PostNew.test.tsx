@@ -31,6 +31,14 @@ const renderPostNew = () => {
 describe('PostNew', () => {
 
   beforeEach(() => {
+    vi.clearAllMocks()
+
+    localStorage.setItem('hasSeenGuide', 'true')
+
+    vi.mocked(pairApi.getStatus).mockResolvedValue({
+      data: { paired: false, pending: false}
+    } as any)
+
     mockGet.mockImplementation((url) => {
       if (url === '/api/v1/categories') {
         return Promise.resolve({
@@ -48,7 +56,8 @@ describe('PostNew', () => {
               id: 1,
               title: 'テストタイトル',
               body: 'テスト本文',
-              category: { id: 1, name: 'テストカテゴリ' }
+              category: { id: 1, name: 'テストカテゴリ' },
+              can_view: false,
             }
           ]
         })
@@ -66,10 +75,6 @@ describe('PostNew', () => {
       }
     })
   })
-
-  vi.mocked(pairApi.getStatus).mockResolvedValue({
-    data: { paired: false, pending: false }
-  } as any)
 
   it('Pair未接続の場合パートナーに見せるトグルが表示されない', async () => {
     renderPostNew()

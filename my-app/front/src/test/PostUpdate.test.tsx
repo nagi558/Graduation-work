@@ -39,6 +39,23 @@ describe('PostUpdate', () => {
       data: []
     } as any)
 
+    vi.mocked(axiosInstance.get).mockImplementation((url) => {
+      if (url === '/api/v1/posts') {
+        return Promise.resolve({
+          data: [
+            {
+              id: 1,
+              title: '更新タイトル',
+              body: '更新本文',
+              category: { id: 1, name: 'テストカテゴリ' },
+              can_view: false,
+            }
+          ]
+        } as any)
+      }
+    return Promise.resolve({ data: [] } as any)
+  })
+
     mockGet.mockImplementation((url) => {
       if (url === '/api/v1/categories') {
         return Promise.resolve({
@@ -126,6 +143,8 @@ describe('PostUpdate', () => {
   })
 
   it('正常に更新すると一覧画面に遷移する', async () => {
+    localStorage.setItem('hasSeenGuide', 'true')
+
     const user = userEvent.setup()
     renderPostUpdate()
 
