@@ -41,16 +41,19 @@ export const MyPostList = ({ isPaired }: Props) => {
   }
 
   useEffect(() => {
-    const hasSeenGuide = localStorage.getItem('hasSeenGuide') === 'true'
-    if (!hasSeenGuide) {
-      setShowGuide(true)
-      return
+    const checkGuide = async () => {
+      const response = await axiosInstance.get('/api/v1/user')
+      if (!response.data.has_seen_guide) {
+        setShowGuide(true)
+      } else {
+        fetchPosts()
+      }
     }
-    fetchPosts()
+    checkGuide()
   }, [])
 
-  const handleGuideClose = () => {
-    localStorage.setItem('hasSeenGuide', 'true')
+  const handleGuideClose = async () => {
+    await axiosInstance.patch('/api/v1/user/update_guide')
     setShowGuide(false)
     fetchPosts()
   }
