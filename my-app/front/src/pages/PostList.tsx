@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import { pairApi } from '@/lib/pairApi'
 import { MyPostList } from '@/components/posts/MyPostList'
 import { PartnerPostList } from '@/components/posts/PartnerPostList'
@@ -11,6 +11,8 @@ export const PostList = () => {
   const [isPaired, setIsPaired] = useState(false)
   const [showGuide, setShowGuide] = useState(false)
   const [showToast, setShowToast] = useState(false)
+
+  const hasCheckedGuide = useRef(false)
 
   const location = useLocation()
 
@@ -25,8 +27,13 @@ export const PostList = () => {
   }, [])
 
   useEffect(() => {
+    if (hasCheckedGuide.current) return
+    hasCheckedGuide.current = true
+
     const seen = localStorage.getItem('hasSeenGuide')
-    if (!seen) setShowGuide(true)
+    if (!seen) {
+      setShowGuide(true)
+    }
   }, [])
 
   useEffect(() => {
@@ -80,7 +87,10 @@ export const PostList = () => {
         </div>
       </div>
 
-      {showGuide && <GuideModal onClose={handleCloseGuide} />}
+      {showGuide ? (
+        <GuideModal onClose={handleCloseGuide} />
+      ) : null}
+
       {showToast && (
         <Toast
           message="記録を残しました。未来へのメッセージになります"

@@ -174,11 +174,11 @@ export const MyPostList = ({ isPaired }: Props) => {
                   <span className="text-xs text-white bg-[#A0B9C6] px-2 py-1 rounded-full">
                     {post.category.name}
                   </span>
-                  {isPaired && post.can_view && (
-                    <span className="text-xs text-[#4f8196] border border-[#4f8196] px-2 py-1 rounded-full">
-                      共有中
-                    </span>
-                  )}
+{isPaired && post.can_view && (
+  <span className="text-xs text-[#4f8196] border border-[#4f8196] px-2 py-1 rounded-full">
+    共有中
+  </span>
+)}
                 </div>
                 <div className="text-gray-500 text-sm text-left">
                   {post.body}
