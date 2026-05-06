@@ -8,16 +8,16 @@ RSpec.describe 'Api::V1::Auth::Google', type: :request do
     let(:id_token)      { 'valid_token' }
     let(:valid_payload) do
       {
-        'sub'   => google_uid,
+        'sub' => google_uid,
         'email' => email,
-        'name'  => name
+        'name' => name
       }
     end
 
     context '有効なIDトークンの場合' do
       before do
         allow(Google::Auth::IDTokens).to receive(:verify_oidc)
-          .with(id_token, aud: ENV['GOOGLE_CLIENT_ID'])
+          .with(id_token, aud: ENV.fetch('GOOGLE_CLIENT_ID', nil))
           .and_return(valid_payload)
       end
 
@@ -28,9 +28,9 @@ RSpec.describe 'Api::V1::Auth::Google', type: :request do
         end
 
         it 'ユーザーが作成される' do
-          expect {
+          expect do
             post '/api/v1/auth/google', params: { id_token: id_token }
-          }.to change(User, :count).by(1)
+          end.to change(User, :count).by(1)
         end
 
         it 'レスポンスヘッダーに必要なトークンが全て含まれる' do
@@ -42,13 +42,13 @@ RSpec.describe 'Api::V1::Auth::Google', type: :request do
 
         it 'レスポンスボディのdataキーが正しい構造を持つ' do
           post '/api/v1/auth/google', params: { id_token: id_token }
-          json = JSON.parse(response.body)
+          json = response.parsed_body
           expect(json['data'].keys).to match_array(%w[id email name])
         end
 
         it 'レスポンスボディにユーザー情報が正しく含まれる' do
           post '/api/v1/auth/google', params: { id_token: id_token }
-          json = JSON.parse(response.body)
+          json = response.parsed_body
           expect(json['data']['email']).to eq(email)
           expect(json['data']['name']).to eq(name)
           expect(json['data']['id']).to be_present
@@ -64,9 +64,9 @@ RSpec.describe 'Api::V1::Auth::Google', type: :request do
         end
 
         it '新しいユーザーを作成しない' do
-          expect {
+          expect do
             post '/api/v1/auth/google', params: { id_token: id_token }
-          }.not_to change(User, :count)
+          end.not_to change(User, :count)
         end
       end
     end
@@ -74,7 +74,7 @@ RSpec.describe 'Api::V1::Auth::Google', type: :request do
     context '無効なIDトークンの場合' do
       before do
         allow(Google::Auth::IDTokens).to receive(:verify_oidc)
-          .with('invalid_token', aud: ENV['GOOGLE_CLIENT_ID'])
+          .with('invalid_token', aud: ENV.fetch('GOOGLE_CLIENT_ID', nil))
           .and_raise(Google::Auth::IDTokens::VerificationError.new('invalid token'))
       end
 
@@ -85,19 +85,20 @@ RSpec.describe 'Api::V1::Auth::Google', type: :request do
 
       it 'エラーメッセージを返す' do
         post '/api/v1/auth/google', params: { id_token: 'invalid_token' }
-        json = JSON.parse(response.body)
+        json = response.parsed_body
         expect(json['message']).to eq('Googleトークンの検証に失敗しました')
       end
 
       it 'ユーザーが作成されない' do
-        expect {
+        expect do
           post '/api/v1/auth/google', params: { id_token: 'invalid_token' }
-        }.not_to change(User, :count)
+        end.not_to change(User, :count)
       end
 
       it 'エラーログが出力される' do
-        expect(Rails.logger).to receive(:error).with(/Google IDトークン検証エラー/)
+        allow(Rails.logger).to receive(:error)
         post '/api/v1/auth/google', params: { id_token: 'invalid_token' }
+        expect(Rails.logger).to have_received(:error).with(/Google IDトークン検証エラー/)
       end
     end
   end
