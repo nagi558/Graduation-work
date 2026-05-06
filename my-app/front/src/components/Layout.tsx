@@ -8,7 +8,7 @@ export const Layout = ({ children }: { children: ReactNode }) => {
       <header className="sticky top-0 z-50 bg-white shadow-sm flex-shrink-0">
         <Header />
       </header>
-      <main className="flex-1 overflow-y-auto">
+      <main className="overflow-y-auto">
         {children}
       </main>
       <Footer />
