@@ -3,7 +3,7 @@ class ContactMailer < ApplicationMailer
     @contact = contact
     mail(
       to: contact.email,
-      subject: '【紡ぐレター】お問い合わせを受け付けました'
+      subject: I18n.t('mailer.contact.confirmation_to_user.subject')
     )
   end
 
@@ -11,7 +11,7 @@ class ContactMailer < ApplicationMailer
     @contact = contact
     mail(
       to: ENV.fetch('ADMIN_EMAIL'),
-      subject: '【紡ぐレター】新しいお問い合わせが届きました'
+      subject: I18n.t('mailer.contact.notification_to_admin.subject')
     )
   end
 end

@@ -7,6 +7,6 @@ class CreatePostPermissions < ActiveRecord::Migration[7.2]
       t.timestamps
     end
 
-    add_index :post_permissions, [:post_id, :pair_id], unique: true
+    add_index :post_permissions, %i[post_id pair_id], unique: true
   end
 end

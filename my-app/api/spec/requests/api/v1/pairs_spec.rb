@@ -6,7 +6,7 @@ RSpec.describe 'Api::V1::Pairs', type: :request do
   let(:headers) { auth_headers(user) }
 
   def json
-    JSON.parse(response.body)
+    response.parsed_body
   end
 
   describe 'GET /api/v1/pair' do
@@ -15,7 +15,7 @@ RSpec.describe 'Api::V1::Pairs', type: :request do
         it 'paired: false を返す' do
           get '/api/v1/pair', headers: headers
           expect(response).to have_http_status(:ok)
-          expect(json['paired']).to eq(false)
+          expect(json['paired']).to be(false)
         end
       end
 
@@ -25,7 +25,7 @@ RSpec.describe 'Api::V1::Pairs', type: :request do
         it 'paired: true とパートナー名を返す' do
           get '/api/v1/pair', headers: headers
           expect(response).to have_http_status(:ok)
-          expect(json['paired']).to eq(true)
+          expect(json['paired']).to be(true)
           expect(json['partner_name']).to eq(partner.name)
         end
       end
@@ -38,8 +38,8 @@ RSpec.describe 'Api::V1::Pairs', type: :request do
       it 'pending: true を返す' do
         get '/api/v1/pair', headers: headers
         expect(response).to have_http_status(:ok)
-        expect(json['paired']).to eq(false)
-        expect(json['pending']).to eq(true)
+        expect(json['paired']).to be(false)
+        expect(json['pending']).to be(true)
       end
 
       it 'invitation_urlを返す' do
@@ -66,15 +66,15 @@ RSpec.describe 'Api::V1::Pairs', type: :request do
         end
 
         it 'Pairが作成される' do
-          expect {
+          expect do
             post '/api/v1/pair/invite', headers: headers
-          }.to change(Pair, :count).by(1)
+          end.to change(Pair, :count).by(1)
         end
 
         it 'PairMembershipが1つだけ作成される' do
-          expect {
+          expect do
             post '/api/v1/pair/invite', headers: headers
-          }.to change(PairMembership, :count).by(1)
+          end.to change(PairMembership, :count).by(1)
         end
       end
 
@@ -153,13 +153,13 @@ RSpec.describe 'Api::V1::Pairs', type: :request do
         it '200を返す' do
           post "/api/v1/pair/join/#{pair.invitation_token}", headers: headers
           expect(response).to have_http_status(:ok)
-          expect(json['paired']).to eq(true)
+          expect(json['paired']).to be(true)
         end
 
         it 'PairMembershipが1つだけ作成される' do
-          expect {
+          expect do
             post "/api/v1/pair/join/#{pair.invitation_token}", headers: headers
-          }.to change(PairMembership, :count).by(1)
+          end.to change(PairMembership, :count).by(1)
         end
 
         it 'invitation_tokenが無効化される' do
@@ -182,9 +182,9 @@ RSpec.describe 'Api::V1::Pairs', type: :request do
         end
 
         it 'PairMembershipが増えない' do
-          expect {
+          expect do
             post "/api/v1/pair/join/#{pair.invitation_token}", headers: headers
-          }.not_to change(PairMembership, :count)
+          end.not_to change(PairMembership, :count)
         end
       end
 
@@ -226,20 +226,20 @@ RSpec.describe 'Api::V1::Pairs', type: :request do
         end
 
         it 'Pairが削除される' do
-          expect {
+          expect do
             delete '/api/v1/pair', headers: headers
-          }.to change(Pair, :count).by(-1)
+          end.to change(Pair, :count).by(-1)
         end
 
         it '両方のPairMembershipが削除される' do
-          expect {
+          expect do
             delete '/api/v1/pair', headers: headers
-          }.to change(PairMembership, :count).by(-2)
+          end.to change(PairMembership, :count).by(-2)
         end
 
         it 'パートナー側のMembershipも削除される' do
           delete '/api/v1/pair', headers: headers
-          expect(PairMembership.exists?(user: partner)).to eq(false)
+          expect(PairMembership.exists?(user: partner)).to be(false)
         end
       end
 
@@ -261,9 +261,9 @@ RSpec.describe 'Api::V1::Pairs', type: :request do
       end
 
       it 'Pairが削除される' do
-        expect {
+        expect do
           delete '/api/v1/pair', headers: headers
-        }.to change(Pair, :count).by(-1)
+        end.to change(Pair, :count).by(-1)
       end
     end
 

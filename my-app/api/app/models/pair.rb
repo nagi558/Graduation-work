@@ -12,7 +12,7 @@ class Pair < ApplicationRecord
 
   def invitation_token_valid?
     invitation_token.present? &&
-    invitation_token_expires_at.present? &&
-    invitation_token_expires_at > Time.current
+      invitation_token_expires_at.present? &&
+      invitation_token_expires_at > Time.current
   end
 end

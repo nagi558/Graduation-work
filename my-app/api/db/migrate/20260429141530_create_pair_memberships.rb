@@ -6,7 +6,7 @@ class CreatePairMemberships < ActiveRecord::Migration[7.2]
       t.timestamps
     end
 
-    add_index :pair_memberships, [:pair_id, :user_id], unique: true
+    add_index :pair_memberships, %i[pair_id user_id], unique: true
     add_index :pair_memberships, :user_id, unique: true
   end
 end

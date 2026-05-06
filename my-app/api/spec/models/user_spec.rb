@@ -10,7 +10,7 @@ RSpec.describe User, type: :model do
       let!(:existing_user) { create(:user, :with_google, google_uid: google_uid, email: email) }
 
       it '既存のユーザーを返す' do
-        user = User.find_or_create_by_google(
+        user = described_class.find_or_create_by_google(
           google_uid: google_uid,
           email: email,
           name: name
@@ -19,13 +19,13 @@ RSpec.describe User, type: :model do
       end
 
       it '新しいユーザーを作成しない' do
-        expect {
-          User.find_or_create_by_google(
+        expect do
+          described_class.find_or_create_by_google(
             google_uid: google_uid,
             email: email,
             name: name
           )
-        }.not_to change(User, :count)
+        end.not_to change(described_class, :count)
       end
     end
 
@@ -33,7 +33,7 @@ RSpec.describe User, type: :model do
       let!(:existing_user) { create(:user, email: email) }
 
       it '既存のユーザーにgoogle_uidを紐付ける' do
-        user = User.find_or_create_by_google(
+        user = described_class.find_or_create_by_google(
           google_uid: google_uid,
           email: email,
           name: name
@@ -43,43 +43,43 @@ RSpec.describe User, type: :model do
       end
 
       it '新しいユーザーを作成しない' do
-        expect {
-          User.find_or_create_by_google(
+        expect do
+          described_class.find_or_create_by_google(
             google_uid: google_uid,
             email: email,
             name: name
           )
-        }.not_to change(User, :count)
+        end.not_to change(described_class, :count)
       end
 
       it 'update!が失敗した場合は例外が発生する' do
         allow(existing_user).to receive(:update!).and_raise(ActiveRecord::RecordInvalid)
-        allow(User).to receive(:find_by).with(google_uid: google_uid).and_return(nil)
-        allow(User).to receive(:find_by).with(email: email).and_return(existing_user)
+        allow(described_class).to receive(:find_by).with(google_uid: google_uid).and_return(nil)
+        allow(described_class).to receive(:find_by).with(email: email).and_return(existing_user)
 
-        expect {
-          User.find_or_create_by_google(
+        expect do
+          described_class.find_or_create_by_google(
             google_uid: google_uid,
             email: email,
             name: name
           )
-        }.to raise_error(ActiveRecord::RecordInvalid)
+        end.to raise_error(ActiveRecord::RecordInvalid)
       end
     end
 
     context '新規ユーザーの場合' do
       it '新しいユーザーを作成する' do
-        expect {
-          User.find_or_create_by_google(
+        expect do
+          described_class.find_or_create_by_google(
             google_uid: google_uid,
             email: email,
             name: name
           )
-        }.to change(User, :count).by(1)
+        end.to change(described_class, :count).by(1)
       end
 
       it '正しい属性でユーザーを作成する' do
-        user = User.find_or_create_by_google(
+        user = described_class.find_or_create_by_google(
           google_uid: google_uid,
           email: email,
           name: name
@@ -93,7 +93,7 @@ RSpec.describe User, type: :model do
     describe 'after_createコールバック' do
       it 'デフォルトカテゴリが作成される' do
         user = create(:user)
-        expect(user.categories.pluck(:name)).to match_array(['お金', '仕事', '生活'])
+        expect(user.categories.pluck(:name)).to match_array(%w[お金 仕事 生活])
       end
     end
   end

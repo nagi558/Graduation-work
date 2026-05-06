@@ -8,9 +8,9 @@
 Rails.application.config.middleware.insert_before 0, Rack::Cors do
   allow do
     origins ENV.fetch('FRONT_URL', 'http://localhost:5173').split(',')
-      resource "*",
-        headers: :any,
-        methods: [:get, :post, :put, :patch, :delete, :options],
-        expose: ['access-token', 'client', 'uid', 'token-type']
+    resource '*',
+             headers: :any,
+             methods: %i[get post put patch delete options],
+             expose: %w[access-token client uid token-type]
   end
 end

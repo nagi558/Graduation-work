@@ -1,0 +1,7 @@
+ja:
+  mailer:
+    contact:
+      confirmation_to_user:
+        subject: '【紡ぐレター】お問い合わせを受け付けました'
+      notification_to_admin:
+        subject: '【紡ぐレター】新しいお問い合わせが届きました'

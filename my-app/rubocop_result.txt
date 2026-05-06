@@ -1,0 +1,598 @@
+rubocop-rails extension supports plugin, specify `plugins: rubocop-rails` instead of `require: rubocop-rails` in /app/.rubocop.yml.
+For more information, see https://docs.rubocop.org/rubocop/plugin_migration_guide.html.
+rubocop-rspec extension supports plugin, specify `plugins: rubocop-rspec` instead of `require: rubocop-rspec` in /app/.rubocop.yml.
+For more information, see https://docs.rubocop.org/rubocop/plugin_migration_guide.html.
+Inspecting 64 files
+....C..CC.......C.......C.......C...C.....C........CCCCCCC......
+
+Offenses:
+
+app/controllers/api/v1/auth/google_controller.rb:7:9: C: Metrics/AbcSize: Assignment Branch Condition size for create is too high. [<3, 21, 3> 21.42/17]
+        def create ...
+        ^^^^^^^^^^
+app/controllers/api/v1/auth/google_controller.rb:7:9: C: Metrics/MethodLength: Method has too many lines. [21/10]
+        def create ...
+        ^^^^^^^^^^
+app/controllers/api/v1/contacts_controller.rb:4:7: C: Metrics/MethodLength: Method has too many lines. [12/10]
+      def create ...
+      ^^^^^^^^^^
+app/controllers/api/v1/pairs_controller.rb:34:7: C: Metrics/AbcSize: Assignment Branch Condition size for join is too high. [<1, 21, 4> 21.4/17]
+      def join ...
+      ^^^^^^^^
+app/controllers/api/v1/pairs_controller.rb:34:7: C: Metrics/MethodLength: Method has too many lines. [12/10]
+      def join ...
+      ^^^^^^^^
+app/controllers/api/v1/pairs_controller.rb:71:7: C: Metrics/MethodLength: Method has too many lines. [22/10]
+      def pair_json ...
+      ^^^^^^^^^^^^^
+app/mailers/contact_mailer.rb:6:16: C: Rails/I18nLocaleTexts: Move locale texts to the locale files in the config/locales directory.
+      subject: '【紡ぐレター】お問い合わせを受け付けました'
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+app/mailers/contact_mailer.rb:14:16: C: Rails/I18nLocaleTexts: Move locale texts to the locale files in the config/locales directory.
+      subject: '【紡ぐレター】新しいお問い合わせが届きました'
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+app/models/user.rb:13:3: C: Metrics/MethodLength: Method has too many lines. [15/10]
+  def self.find_or_create_by_google(google_uid:, email:, name:) ...
+  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+config/environments/production.rb:3:1: C: Metrics/BlockLength: Block has too many lines. [28/25]
+Rails.application.configure do ...
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+config/initializers/devise.rb:17:121: C: Layout/LineLength: Line is too long. [154/120]
+  # config.secret_key = 'b6fd7a11a6570a46c6686871dc7a2766a9eb78eaa578ad583e4846f7eb31606eaf74fe26e9c1efd51efa36968c89458258a2c034bc4f77d84eb163e49fd4cf62'
+                                                                                                                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+config/initializers/devise.rb:129:121: C: Layout/LineLength: Line is too long. [150/120]
+  # config.pepper = 'eb1c7f19b541cfd40c1e2d264fe685a3e9637adf9118bc0d485fc88d2f9a7922b976b64f28f567dff0a5465bf89d33cf59245b3c1def624996f4754d823faaf9'
+                                                                                                                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+config/routes.rb:1:1: C: Metrics/BlockLength: Block has too many lines. [28/25]
+Rails.application.routes.draw do ...
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+spec/models/user_spec.rb:9:13: C: RSpec/ContextWording: Context description should match /^when\b/, /^with\b/, or /^without\b/.
+    context '該当するgoogle_uidのユーザーが存在する場合' do
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+spec/models/user_spec.rb:12:7: C: RSpec/ExampleLength: Example has too many lines. [6/5]
+      it '既存のユーザーを返す' do ...
+      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+spec/models/user_spec.rb:21:7: C: RSpec/ExampleLength: Example has too many lines. [7/5]
+      it '新しいユーザーを作成しない' do ...
+      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+spec/models/user_spec.rb:32:13: C: RSpec/ContextWording: Context description should match /^when\b/, /^with\b/, or /^without\b/.
+    context 'メール登録済みのユーザーがGoogleでログインする場合' do
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+spec/models/user_spec.rb:35:7: C: RSpec/ExampleLength: Example has too many lines. [7/5]
+      it '既存のユーザーにgoogle_uidを紐付ける' do ...
+      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+spec/models/user_spec.rb:35:7: C: RSpec/MultipleExpectations: Example has too many expectations [2/1].
+      it '既存のユーザーにgoogle_uidを紐付ける' do
+      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+spec/models/user_spec.rb:45:7: C: RSpec/ExampleLength: Example has too many lines. [7/5]
+      it '新しいユーザーを作成しない' do ...
+      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+spec/models/user_spec.rb:55:7: C: RSpec/ExampleLength: Example has too many lines. [10/5]
+      it 'update!が失敗した場合は例外が発生する' do ...
+      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+spec/models/user_spec.rb:70:13: C: RSpec/ContextWording: Context description should match /^when\b/, /^with\b/, or /^without\b/.
+    context '新規ユーザーの場合' do
+            ^^^^^^^^^^^^^^^^^^^^
+spec/models/user_spec.rb:71:7: C: RSpec/ExampleLength: Example has too many lines. [7/5]
+      it '新しいユーザーを作成する' do ...
+      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+spec/models/user_spec.rb:81:7: C: RSpec/ExampleLength: Example has too many lines. [7/5]
+      it '正しい属性でユーザーを作成する' do ...
+      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+spec/models/user_spec.rb:81:7: C: RSpec/MultipleExpectations: Example has too many expectations [2/1].
+      it '正しい属性でユーザーを作成する' do
+      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+spec/requests/api/v1/categories_spec.rb:13:13: C: RSpec/ContextWording: Context description should match /^when\b/, /^with\b/, or /^without\b/.
+    context '認証済みの場合' do
+            ^^^^^^^^^^^^^^^^
+spec/requests/api/v1/categories_spec.rb:14:7: C: RSpec/MultipleExpectations: Example has too many expectations [4/1].
+      it '200を返しリストを返す' do
+      ^^^^^^^^^^^^^^^^^^^^^^^^^^
+spec/requests/api/v1/categories_spec.rb:23:13: C: RSpec/ContextWording: Context description should match /^when\b/, /^with\b/, or /^without\b/.
+    context '未認証の場合' do
+            ^^^^^^^^^^^^^^
+spec/requests/api/v1/categories_spec.rb:32:13: C: RSpec/ContextWording: Context description should match /^when\b/, /^with\b/, or /^without\b/.
+    context '認証済みの場合' do
+            ^^^^^^^^^^^^^^^^
+spec/requests/api/v1/categories_spec.rb:33:7: C: RSpec/ExampleLength: Example has too many lines. [7/5]
+      it '201を返しDBに保存される' do ...
+      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+spec/requests/api/v1/categories_spec.rb:33:7: C: RSpec/MultipleExpectations: Example has too many expectations [3/1].
+      it '201を返しDBに保存される' do
+      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+spec/requests/api/v1/categories_spec.rb:43:7: C: RSpec/NestedGroups: Maximum example group nesting exceeded [4/3].
+      context '無効なパラメータの場合' do
+      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+spec/requests/api/v1/categories_spec.rb:43:15: C: RSpec/ContextWording: Context description should match /^when\b/, /^with\b/, or /^without\b/.
+      context '無効なパラメータの場合' do
+              ^^^^^^^^^^^^^^^^^^^^^^^^
+spec/requests/api/v1/categories_spec.rb:53:13: C: RSpec/ContextWording: Context description should match /^when\b/, /^with\b/, or /^without\b/.
+    context '未認証の場合' do
+            ^^^^^^^^^^^^^^
+spec/requests/api/v1/categories_spec.rb:63:13: C: RSpec/ContextWording: Context description should match /^when\b/, /^with\b/, or /^without\b/.
+    context '認証済みの場合' do
+            ^^^^^^^^^^^^^^^^
+spec/requests/api/v1/categories_spec.rb:64:7: C: RSpec/MultipleExpectations: Example has too many expectations [2/1].
+      it '200を返しDBが更新される' do
+      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+spec/requests/api/v1/categories_spec.rb:72:7: C: RSpec/NestedGroups: Maximum example group nesting exceeded [4/3].
+      context '無効なパラメータの場合' do
+      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+spec/requests/api/v1/categories_spec.rb:72:15: C: RSpec/ContextWording: Context description should match /^when\b/, /^with\b/, or /^without\b/.
+      context '無効なパラメータの場合' do
+              ^^^^^^^^^^^^^^^^^^^^^^^^
+spec/requests/api/v1/categories_spec.rb:82:13: C: RSpec/ContextWording: Context description should match /^when\b/, /^with\b/, or /^without\b/.
+    context '未認証の場合' do
+            ^^^^^^^^^^^^^^
+spec/requests/api/v1/categories_spec.rb:90:13: C: RSpec/ContextWording: Context description should match /^when\b/, /^with\b/, or /^without\b/.
+    context '他のユーザーのカテゴリの場合' do
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+spec/requests/api/v1/categories_spec.rb:91:7: C: RSpec/ExampleLength: Example has too many lines. [6/5]
+      it '404を返す' do ...
+      ^^^^^^^^^^^^^^^^^
+spec/requests/api/v1/categories_spec.rb:103:13: C: RSpec/ContextWording: Context description should match /^when\b/, /^with\b/, or /^without\b/.
+    context '認証済みの場合' do
+            ^^^^^^^^^^^^^^^^
+spec/requests/api/v1/categories_spec.rb:104:7: C: RSpec/MultipleExpectations: Example has too many expectations [2/1].
+      it '200を返しDBから削除される' do
+      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+spec/requests/api/v1/categories_spec.rb:113:13: C: RSpec/ContextWording: Context description should match /^when\b/, /^with\b/, or /^without\b/.
+    context '未認証の場合' do
+            ^^^^^^^^^^^^^^
+spec/requests/api/v1/categories_spec.rb:120:13: C: RSpec/ContextWording: Context description should match /^when\b/, /^with\b/, or /^without\b/.
+    context '他のユーザーのカテゴリの場合' do
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+spec/requests/api/v1/contacts_spec.rb:9:13: C: RSpec/ContextWording: Context description should match /^when\b/, /^with\b/, or /^without\b/.
+    context '有効なパラメータの場合' do
+            ^^^^^^^^^^^^^^^^^^^^^^^^
+spec/requests/api/v1/contacts_spec.rb:10:7: C: RSpec/ExampleLength: Example has too many lines. [6/5]
+      it '201を返しDBに保存される' do ...
+      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+spec/requests/api/v1/contacts_spec.rb:10:7: C: RSpec/MultipleExpectations: Example has too many expectations [3/1].
+      it '201を返しDBに保存される' do
+      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+spec/requests/api/v1/contacts_spec.rb:27:13: C: RSpec/ContextWording: Context description should match /^when\b/, /^with\b/, or /^without\b/.
+    context '無効なパラメータの場合' do
+            ^^^^^^^^^^^^^^^^^^^^^^^^
+spec/requests/api/v1/contacts_spec.rb:28:7: C: RSpec/NestedGroups: Maximum example group nesting exceeded [4/3].
+      context 'メールアドレスが空の場合' do
+      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+spec/requests/api/v1/contacts_spec.rb:28:15: C: RSpec/ContextWording: Context description should match /^when\b/, /^with\b/, or /^without\b/.
+      context 'メールアドレスが空の場合' do
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^
+spec/requests/api/v1/contacts_spec.rb:29:9: C: RSpec/MultipleExpectations: Example has too many expectations [2/1].
+        it '422を返す' do
+        ^^^^^^^^^^^^^^
+spec/requests/api/v1/contacts_spec.rb:37:7: C: RSpec/NestedGroups: Maximum example group nesting exceeded [4/3].
+      context 'メールアドレスの形式が不正の場合' do
+      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+spec/requests/api/v1/contacts_spec.rb:37:15: C: RSpec/ContextWording: Context description should match /^when\b/, /^with\b/, or /^without\b/.
+      context 'メールアドレスの形式が不正の場合' do
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+spec/requests/api/v1/contacts_spec.rb:38:9: C: RSpec/MultipleExpectations: Example has too many expectations [2/1].
+        it '422を返す' do
+        ^^^^^^^^^^^^^^
+spec/requests/api/v1/contacts_spec.rb:46:7: C: RSpec/NestedGroups: Maximum example group nesting exceeded [4/3].
+      context '本文が空の場合' do
+      ^^^^^^^^^^^^^^^^^^^^^^^^
+spec/requests/api/v1/contacts_spec.rb:46:15: C: RSpec/ContextWording: Context description should match /^when\b/, /^with\b/, or /^without\b/.
+      context '本文が空の場合' do
+              ^^^^^^^^^^^^^^^^
+spec/requests/api/v1/contacts_spec.rb:47:9: C: RSpec/MultipleExpectations: Example has too many expectations [2/1].
+        it '422を返す' do
+        ^^^^^^^^^^^^^^
+spec/requests/api/v1/contacts_spec.rb:55:7: C: RSpec/NestedGroups: Maximum example group nesting exceeded [4/3].
+      context '本文が10文字未満の場合' do
+      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+spec/requests/api/v1/contacts_spec.rb:55:15: C: RSpec/ContextWording: Context description should match /^when\b/, /^with\b/, or /^without\b/.
+      context '本文が10文字未満の場合' do
+              ^^^^^^^^^^^^^^^^^^^^^^^^
+spec/requests/api/v1/contacts_spec.rb:56:9: C: RSpec/MultipleExpectations: Example has too many expectations [2/1].
+        it '422を返す' do
+        ^^^^^^^^^^^^^^
+spec/requests/api/v1/contacts_spec.rb:64:7: C: RSpec/NestedGroups: Maximum example group nesting exceeded [4/3].
+      context '本文が2000文字を超える場合' do
+      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+spec/requests/api/v1/contacts_spec.rb:64:15: C: RSpec/ContextWording: Context description should match /^when\b/, /^with\b/, or /^without\b/.
+      context '本文が2000文字を超える場合' do
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+spec/requests/api/v1/contacts_spec.rb:65:9: C: RSpec/MultipleExpectations: Example has too many expectations [2/1].
+        it '422を返す' do
+        ^^^^^^^^^^^^^^
+spec/requests/api/v1/pairs_spec.rb:13:13: C: RSpec/ContextWording: Context description should match /^when\b/, /^with\b/, or /^without\b/.
+    context '認証済みの場合' do
+            ^^^^^^^^^^^^^^^^
+spec/requests/api/v1/pairs_spec.rb:14:7: C: RSpec/NestedGroups: Maximum example group nesting exceeded [4/3].
+      context 'Pair未接続の場合' do
+      ^^^^^^^^^^^^^^^^^^^^^^^^^^
+spec/requests/api/v1/pairs_spec.rb:14:15: C: RSpec/ContextWording: Context description should match /^when\b/, /^with\b/, or /^without\b/.
+      context 'Pair未接続の場合' do
+              ^^^^^^^^^^^^^^^^^^
+spec/requests/api/v1/pairs_spec.rb:15:9: C: RSpec/MultipleExpectations: Example has too many expectations [2/1].
+        it 'paired: false を返す' do
+        ^^^^^^^^^^^^^^^^^^^^^^^^^
+spec/requests/api/v1/pairs_spec.rb:22:7: C: RSpec/NestedGroups: Maximum example group nesting exceeded [4/3].
+      context 'Pair接続済みの場合' do
+      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+spec/requests/api/v1/pairs_spec.rb:22:15: C: RSpec/ContextWording: Context description should match /^when\b/, /^with\b/, or /^without\b/.
+      context 'Pair接続済みの場合' do
+              ^^^^^^^^^^^^^^^^^^^^
+spec/requests/api/v1/pairs_spec.rb:23:9: C: RSpec/LetSetup: Do not use let! to setup objects not referenced in tests.
+        let!(:pair) { create(:pair, :with_members, owner: user, member: partner) }
+        ^^^^^^^^^^^
+spec/requests/api/v1/pairs_spec.rb:25:9: C: RSpec/MultipleExpectations: Example has too many expectations [3/1].
+        it 'paired: true とパートナー名を返す' do
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+spec/requests/api/v1/pairs_spec.rb:34:13: C: RSpec/ContextWording: Context description should match /^when\b/, /^with\b/, or /^without\b/.
+    context 'Pair招待中（pending）の場合' do
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+spec/requests/api/v1/pairs_spec.rb:36:7: C: RSpec/LetSetup: Do not use let! to setup objects not referenced in tests.
+      let!(:_membership) { create(:pair_membership, pair: pair, user: user) }
+      ^^^^^^^^^^^^^^^^^^
+spec/requests/api/v1/pairs_spec.rb:38:7: C: RSpec/MultipleExpectations: Example has too many expectations [3/1].
+      it 'pending: true を返す' do
+      ^^^^^^^^^^^^^^^^^^^^^^^^^
+spec/requests/api/v1/pairs_spec.rb:51:13: C: RSpec/ContextWording: Context description should match /^when\b/, /^with\b/, or /^without\b/.
+    context '未認証の場合' do
+            ^^^^^^^^^^^^^^
+spec/requests/api/v1/pairs_spec.rb:60:13: C: RSpec/ContextWording: Context description should match /^when\b/, /^with\b/, or /^without\b/.
+    context '認証済みの場合' do
+            ^^^^^^^^^^^^^^^^
+spec/requests/api/v1/pairs_spec.rb:61:7: C: RSpec/NestedGroups: Maximum example group nesting exceeded [4/3].
+      context 'Pair未接続の場合' do
+      ^^^^^^^^^^^^^^^^^^^^^^^^^^
+spec/requests/api/v1/pairs_spec.rb:61:15: C: RSpec/ContextWording: Context description should match /^when\b/, /^with\b/, or /^without\b/.
+      context 'Pair未接続の場合' do
+              ^^^^^^^^^^^^^^^^^^
+spec/requests/api/v1/pairs_spec.rb:62:9: C: RSpec/MultipleExpectations: Example has too many expectations [2/1].
+        it '招待URLを返す' do
+        ^^^^^^^^^^^^^^^^^^
+spec/requests/api/v1/pairs_spec.rb:81:7: C: RSpec/NestedGroups: Maximum example group nesting exceeded [4/3].
+      context 'Pair接続済みの場合' do
+      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+spec/requests/api/v1/pairs_spec.rb:81:15: C: RSpec/ContextWording: Context description should match /^when\b/, /^with\b/, or /^without\b/.
+      context 'Pair接続済みの場合' do
+              ^^^^^^^^^^^^^^^^^^^^
+spec/requests/api/v1/pairs_spec.rb:82:9: C: RSpec/LetSetup: Do not use let! to setup objects not referenced in tests.
+        let!(:pair) { create(:pair, :with_members, owner: user, member: partner) }
+        ^^^^^^^^^^^
+spec/requests/api/v1/pairs_spec.rb:84:9: C: RSpec/MultipleExpectations: Example has too many expectations [2/1].
+        it '422を返す' do
+        ^^^^^^^^^^^^^^
+spec/requests/api/v1/pairs_spec.rb:92:13: C: RSpec/ContextWording: Context description should match /^when\b/, /^with\b/, or /^without\b/.
+    context '未認証の場合' do
+            ^^^^^^^^^^^^^^
+spec/requests/api/v1/pairs_spec.rb:102:5: C: RSpec/LetSetup: Do not use let! to setup objects not referenced in tests.
+    let!(:_membership) { create(:pair_membership, pair: pair, user: partner) }
+    ^^^^^^^^^^^^^^^^^^
+spec/requests/api/v1/pairs_spec.rb:104:13: C: RSpec/ContextWording: Context description should match /^when\b/, /^with\b/, or /^without\b/.
+    context '認証済みの場合' do
+            ^^^^^^^^^^^^^^^^
+spec/requests/api/v1/pairs_spec.rb:105:7: C: RSpec/NestedGroups: Maximum example group nesting exceeded [4/3].
+      context '有効なトークンの場合' do
+      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+spec/requests/api/v1/pairs_spec.rb:105:15: C: RSpec/ContextWording: Context description should match /^when\b/, /^with\b/, or /^without\b/.
+      context '有効なトークンの場合' do
+              ^^^^^^^^^^^^^^^^^^^^^^
+spec/requests/api/v1/pairs_spec.rb:106:9: C: RSpec/MultipleExpectations: Example has too many expectations [2/1].
+        it '200とパートナー名を返す' do
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+spec/requests/api/v1/pairs_spec.rb:113:7: C: RSpec/NestedGroups: Maximum example group nesting exceeded [4/3].
+      context '存在しないトークンの場合' do
+      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+spec/requests/api/v1/pairs_spec.rb:113:15: C: RSpec/ContextWording: Context description should match /^when\b/, /^with\b/, or /^without\b/.
+      context '存在しないトークンの場合' do
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^
+spec/requests/api/v1/pairs_spec.rb:120:7: C: RSpec/NestedGroups: Maximum example group nesting exceeded [4/3].
+      context '期限切れのトークンの場合' do
+      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+spec/requests/api/v1/pairs_spec.rb:120:15: C: RSpec/ContextWording: Context description should match /^when\b/, /^with\b/, or /^without\b/.
+      context '期限切れのトークンの場合' do
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^
+spec/requests/api/v1/pairs_spec.rb:129:7: C: RSpec/NestedGroups: Maximum example group nesting exceeded [4/3].
+      context '自分が発行したトークンの場合' do
+      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+spec/requests/api/v1/pairs_spec.rb:129:15: C: RSpec/ContextWording: Context description should match /^when\b/, /^with\b/, or /^without\b/.
+      context '自分が発行したトークンの場合' do
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+spec/requests/api/v1/pairs_spec.rb:139:13: C: RSpec/ContextWording: Context description should match /^when\b/, /^with\b/, or /^without\b/.
+    context '未認証の場合' do
+            ^^^^^^^^^^^^^^
+spec/requests/api/v1/pairs_spec.rb:149:5: C: RSpec/LetSetup: Do not use let! to setup objects not referenced in tests.
+    let!(:_membership) { create(:pair_membership, pair: pair, user: partner) }
+    ^^^^^^^^^^^^^^^^^^
+spec/requests/api/v1/pairs_spec.rb:151:13: C: RSpec/ContextWording: Context description should match /^when\b/, /^with\b/, or /^without\b/.
+    context '認証済みの場合' do
+            ^^^^^^^^^^^^^^^^
+spec/requests/api/v1/pairs_spec.rb:152:7: C: RSpec/NestedGroups: Maximum example group nesting exceeded [4/3].
+      context '有効なトークンの場合' do
+      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+spec/requests/api/v1/pairs_spec.rb:152:15: C: RSpec/ContextWording: Context description should match /^when\b/, /^with\b/, or /^without\b/.
+      context '有効なトークンの場合' do
+              ^^^^^^^^^^^^^^^^^^^^^^
+spec/requests/api/v1/pairs_spec.rb:153:9: C: RSpec/MultipleExpectations: Example has too many expectations [2/1].
+        it '200を返す' do
+        ^^^^^^^^^^^^^^
+spec/requests/api/v1/pairs_spec.rb:176:7: C: RSpec/MultipleMemoizedHelpers: Example group has too many memoized helpers [6/5]
+      context 'Pair接続済みの場合' do ...
+      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+spec/requests/api/v1/pairs_spec.rb:176:7: C: RSpec/NestedGroups: Maximum example group nesting exceeded [4/3].
+      context 'Pair接続済みの場合' do
+      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+spec/requests/api/v1/pairs_spec.rb:176:15: C: RSpec/ContextWording: Context description should match /^when\b/, /^with\b/, or /^without\b/.
+      context 'Pair接続済みの場合' do
+              ^^^^^^^^^^^^^^^^^^^^
+spec/requests/api/v1/pairs_spec.rb:177:9: C: RSpec/LetSetup: Do not use let! to setup objects not referenced in tests.
+        let!(:_existing_pair) { create(:pair, :with_members, owner: user, member: create(:user)) }
+        ^^^^^^^^^^^^^^^^^^^^^
+spec/requests/api/v1/pairs_spec.rb:191:7: C: RSpec/NestedGroups: Maximum example group nesting exceeded [4/3].
+      context '自分が発行したトークンの場合' do
+      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+spec/requests/api/v1/pairs_spec.rb:191:15: C: RSpec/ContextWording: Context description should match /^when\b/, /^with\b/, or /^without\b/.
+      context '自分が発行したトークンの場合' do
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+spec/requests/api/v1/pairs_spec.rb:200:7: C: RSpec/NestedGroups: Maximum example group nesting exceeded [4/3].
+      context '期限切れのトークンの場合' do
+      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+spec/requests/api/v1/pairs_spec.rb:200:15: C: RSpec/ContextWording: Context description should match /^when\b/, /^with\b/, or /^without\b/.
+      context '期限切れのトークンの場合' do
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^
+spec/requests/api/v1/pairs_spec.rb:210:13: C: RSpec/ContextWording: Context description should match /^when\b/, /^with\b/, or /^without\b/.
+    context '未認証の場合' do
+            ^^^^^^^^^^^^^^
+spec/requests/api/v1/pairs_spec.rb:219:13: C: RSpec/ContextWording: Context description should match /^when\b/, /^with\b/, or /^without\b/.
+    context '認証済みの場合' do
+            ^^^^^^^^^^^^^^^^
+spec/requests/api/v1/pairs_spec.rb:220:7: C: RSpec/NestedGroups: Maximum example group nesting exceeded [4/3].
+      context 'Pair接続済みの場合' do
+      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+spec/requests/api/v1/pairs_spec.rb:220:15: C: RSpec/ContextWording: Context description should match /^when\b/, /^with\b/, or /^without\b/.
+      context 'Pair接続済みの場合' do
+              ^^^^^^^^^^^^^^^^^^^^
+spec/requests/api/v1/pairs_spec.rb:221:9: C: RSpec/LetSetup: Do not use let! to setup objects not referenced in tests.
+        let!(:pair) { create(:pair, :with_members, owner: user, member: partner) }
+        ^^^^^^^^^^^
+spec/requests/api/v1/pairs_spec.rb:246:7: C: RSpec/NestedGroups: Maximum example group nesting exceeded [4/3].
+      context 'Pair未接続の場合' do
+      ^^^^^^^^^^^^^^^^^^^^^^^^^^
+spec/requests/api/v1/pairs_spec.rb:246:15: C: RSpec/ContextWording: Context description should match /^when\b/, /^with\b/, or /^without\b/.
+      context 'Pair未接続の場合' do
+              ^^^^^^^^^^^^^^^^^^
+spec/requests/api/v1/pairs_spec.rb:254:13: C: RSpec/ContextWording: Context description should match /^when\b/, /^with\b/, or /^without\b/.
+    context 'Pair招待中（pending）の場合' do
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+spec/requests/api/v1/pairs_spec.rb:256:7: C: RSpec/LetSetup: Do not use let! to setup objects not referenced in tests.
+      let!(:_membership) { create(:pair_membership, pair: pair, user: user) }
+      ^^^^^^^^^^^^^^^^^^
+spec/requests/api/v1/pairs_spec.rb:270:13: C: RSpec/ContextWording: Context description should match /^when\b/, /^with\b/, or /^without\b/.
+    context '未認証の場合' do
+            ^^^^^^^^^^^^^^
+spec/requests/api/v1/partner/posts_spec.rb:3:1: C: RSpec/MultipleMemoizedHelpers: Example group has too many memoized helpers [6/5]
+RSpec.describe 'Api::V1::Partner::Posts', type: :request do ...
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+spec/requests/api/v1/partner/posts_spec.rb:15:3: C: RSpec/MultipleMemoizedHelpers: Example group has too many memoized helpers [8/5]
+  describe 'GET /api/v1/partner/posts' do ...
+  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+spec/requests/api/v1/partner/posts_spec.rb:27:5: C: RSpec/MultipleMemoizedHelpers: Example group has too many memoized helpers [8/5]
+    context '認証済みかつPair接続済みの場合' do ...
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+spec/requests/api/v1/partner/posts_spec.rb:27:13: C: RSpec/ContextWording: Context description should match /^when\b/, /^with\b/, or /^without\b/.
+    context '認証済みかつPair接続済みの場合' do
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+spec/requests/api/v1/partner/posts_spec.rb:33:7: C: RSpec/MultipleExpectations: Example has too many expectations [2/1].
+      it 'can_view=trueの投稿のみ返す' do
+      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+spec/requests/api/v1/partner/posts_spec.rb:40:7: C: RSpec/ExampleLength: Example has too many lines. [6/5]
+      it '自分自身の投稿は含まれない' do ...
+      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+spec/requests/api/v1/partner/posts_spec.rb:50:7: C: RSpec/ExampleLength: Example has too many lines. [7/5]
+      it '別のPairの投稿は含まれない' do ...
+      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+spec/requests/api/v1/partner/posts_spec.rb:62:5: C: RSpec/MultipleMemoizedHelpers: Example group has too many memoized helpers [10/5]
+    context 'Pair未接続の場合' do ...
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+spec/requests/api/v1/partner/posts_spec.rb:62:13: C: RSpec/ContextWording: Context description should match /^when\b/, /^with\b/, or /^without\b/.
+    context 'Pair未接続の場合' do
+            ^^^^^^^^^^^^^^^^^^
+spec/requests/api/v1/partner/posts_spec.rb:72:5: C: RSpec/MultipleMemoizedHelpers: Example group has too many memoized helpers [8/5]
+    context '未認証の場合' do ...
+    ^^^^^^^^^^^^^^^^^^^^^^^^^
+spec/requests/api/v1/partner/posts_spec.rb:72:13: C: RSpec/ContextWording: Context description should match /^when\b/, /^with\b/, or /^without\b/.
+    context '未認証の場合' do
+            ^^^^^^^^^^^^^^
+spec/requests/api/v1/partner/posts_spec.rb:80:3: C: RSpec/MultipleMemoizedHelpers: Example group has too many memoized helpers [8/5]
+  describe 'GET /api/v1/partner/posts/:id' do ...
+  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+spec/requests/api/v1/partner/posts_spec.rb:92:5: C: RSpec/MultipleMemoizedHelpers: Example group has too many memoized helpers [8/5]
+    context '認証済みかつPair接続済みの場合' do ...
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+spec/requests/api/v1/partner/posts_spec.rb:92:13: C: RSpec/ContextWording: Context description should match /^when\b/, /^with\b/, or /^without\b/.
+    context '認証済みかつPair接続済みの場合' do
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+spec/requests/api/v1/partner/posts_spec.rb:112:7: C: RSpec/ExampleLength: Example has too many lines. [6/5]
+      it '別Pairの投稿を叩いた場合は403を返す' do ...
+      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+spec/requests/api/v1/partner/posts_spec.rb:123:5: C: RSpec/MultipleMemoizedHelpers: Example group has too many memoized helpers [8/5]
+    context '未認証の場合' do ...
+    ^^^^^^^^^^^^^^^^^^^^^^^^^
+spec/requests/api/v1/partner/posts_spec.rb:123:13: C: RSpec/ContextWording: Context description should match /^when\b/, /^with\b/, or /^without\b/.
+    context '未認証の場合' do
+            ^^^^^^^^^^^^^^
+spec/requests/api/v1/posts_spec.rb:16:13: C: RSpec/ContextWording: Context description should match /^when\b/, /^with\b/, or /^without\b/.
+    context '認証済みの場合' do
+            ^^^^^^^^^^^^^^^^
+spec/requests/api/v1/posts_spec.rb:17:7: C: RSpec/MultipleExpectations: Example has too many expectations [2/1].
+      it '全件返す' do
+      ^^^^^^^^^^^^^
+spec/requests/api/v1/posts_spec.rb:23:7: C: RSpec/MultipleMemoizedHelpers: Example group has too many memoized helpers [7/5]
+      context 'タイトル検索' do ...
+      ^^^^^^^^^^^^^^^^^^^^^^^^^
+spec/requests/api/v1/posts_spec.rb:23:7: C: RSpec/NestedGroups: Maximum example group nesting exceeded [4/3].
+      context 'タイトル検索' do
+      ^^^^^^^^^^^^^^^^^^^^^^
+spec/requests/api/v1/posts_spec.rb:23:15: C: RSpec/ContextWording: Context description should match /^when\b/, /^with\b/, or /^without\b/.
+      context 'タイトル検索' do
+              ^^^^^^^^^^^^^^
+spec/requests/api/v1/posts_spec.rb:24:9: C: RSpec/LetSetup: Do not use let! to setup objects not referenced in tests.
+        let!(:matched_post) { create(:post, user: user, category: category, title: '一致するタイトル') }
+        ^^^^^^^^^^^^^^^^^^^
+spec/requests/api/v1/posts_spec.rb:25:9: C: RSpec/LetSetup: Do not use let! to setup objects not referenced in tests.
+        let!(:unmatched_post) { create(:post, user: user, category: category, title: '関係ないタイトル') }
+        ^^^^^^^^^^^^^^^^^^^^^
+spec/requests/api/v1/posts_spec.rb:27:9: C: RSpec/MultipleExpectations: Example has too many expectations [3/1].
+        it '部分一致する投稿のみ返す' do
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+spec/requests/api/v1/posts_spec.rb:35:9: C: RSpec/MultipleExpectations: Example has too many expectations [2/1].
+        it '検索結果が0件の場合は空配列を返す' do
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+spec/requests/api/v1/posts_spec.rb:42:7: C: RSpec/MultipleMemoizedHelpers: Example group has too many memoized helpers [7/5]
+      context '本文検索' do ...
+      ^^^^^^^^^^^^^^^^^^^^^
+spec/requests/api/v1/posts_spec.rb:42:7: C: RSpec/NestedGroups: Maximum example group nesting exceeded [4/3].
+      context '本文検索' do
+      ^^^^^^^^^^^^^^^^^^
+spec/requests/api/v1/posts_spec.rb:42:15: C: RSpec/ContextWording: Context description should match /^when\b/, /^with\b/, or /^without\b/.
+      context '本文検索' do
+              ^^^^^^^^^^
+spec/requests/api/v1/posts_spec.rb:43:9: C: RSpec/LetSetup: Do not use let! to setup objects not referenced in tests.
+        let!(:matched_post) { create(:post, user: user, category: category, body: '一致する本文') }
+        ^^^^^^^^^^^^^^^^^^^
+spec/requests/api/v1/posts_spec.rb:44:9: C: RSpec/LetSetup: Do not use let! to setup objects not referenced in tests.
+        let!(:unmatched_post) { create(:post, user: user, category: category, body: '関係ない本文') }
+        ^^^^^^^^^^^^^^^^^^^^^
+spec/requests/api/v1/posts_spec.rb:46:9: C: RSpec/MultipleExpectations: Example has too many expectations [3/1].
+        it '部分一致する投稿のみ返す' do
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+spec/requests/api/v1/posts_spec.rb:54:9: C: RSpec/MultipleExpectations: Example has too many expectations [2/1].
+        it '検索結果が0件の場合は空配列を返す' do
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+spec/requests/api/v1/posts_spec.rb:61:7: C: RSpec/MultipleMemoizedHelpers: Example group has too many memoized helpers [8/5]
+      context 'タイトルと本文の両方を検索' do ...
+      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+spec/requests/api/v1/posts_spec.rb:61:7: C: RSpec/NestedGroups: Maximum example group nesting exceeded [4/3].
+      context 'タイトルと本文の両方を検索' do
+      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+spec/requests/api/v1/posts_spec.rb:61:15: C: RSpec/ContextWording: Context description should match /^when\b/, /^with\b/, or /^without\b/.
+      context 'タイトルと本文の両方を検索' do
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+spec/requests/api/v1/posts_spec.rb:63:9: C: RSpec/LetSetup: Do not use let! to setup objects not referenced in tests.
+        let!(:title_only)   { create(:post, user: user, category: category, title: '一致タイトル', body: '関係ない本文') }
+        ^^^^^^^^^^^^^^^^^
+spec/requests/api/v1/posts_spec.rb:64:9: C: RSpec/LetSetup: Do not use let! to setup objects not referenced in tests.
+        let!(:body_only)    { create(:post, user: user, category: category, title: '関係ないタイトル', body: '一致本文') }
+        ^^^^^^^^^^^^^^^^
+spec/requests/api/v1/posts_spec.rb:66:9: C: RSpec/MultipleExpectations: Example has too many expectations [2/1].
+        it 'タイトルと本文の両方に一致する投稿のみ返す (AND検索)' do
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+spec/requests/api/v1/posts_spec.rb:74:7: C: RSpec/NestedGroups: Maximum example group nesting exceeded [4/3].
+      context 'SQLインジェクション対策' do
+      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+spec/requests/api/v1/posts_spec.rb:74:15: C: RSpec/ContextWording: Context description should match /^when\b/, /^with\b/, or /^without\b/.
+      context 'SQLインジェクション対策' do
+              ^^^^^^^^^^^^^^^^^^^^^^^^^
+spec/requests/api/v1/posts_spec.rb:75:9: C: RSpec/MultipleExpectations: Example has too many expectations [3/1].
+        it '%を含む検索でも例外が起きず全件返す' do
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+spec/requests/api/v1/posts_spec.rb:83:9: C: RSpec/MultipleExpectations: Example has too many expectations [3/1].
+        it '_を含む検索でも例外が起きず全件返す' do
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+spec/requests/api/v1/posts_spec.rb:93:13: C: RSpec/ContextWording: Context description should match /^when\b/, /^with\b/, or /^without\b/.
+    context '未認証の場合' do
+            ^^^^^^^^^^^^^^
+spec/requests/api/v1/posts_spec.rb:94:7: C: RSpec/MultipleExpectations: Example has too many expectations [2/1].
+      it '401を返す' do
+      ^^^^^^^^^^^^^^
+spec/requests/api/v1/posts_spec.rb:103:13: C: RSpec/ContextWording: Context description should match /^when\b/, /^with\b/, or /^without\b/.
+    context '認証済みの場合' do
+            ^^^^^^^^^^^^^^^^
+spec/requests/api/v1/posts_spec.rb:104:7: C: RSpec/ExampleLength: Example has too many lines. [7/5]
+      it '201を返しDBに保存される' do ...
+      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+spec/requests/api/v1/posts_spec.rb:104:7: C: RSpec/MultipleExpectations: Example has too many expectations [3/1].
+      it '201を返しDBに保存される' do
+      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+spec/requests/api/v1/posts_spec.rb:114:7: C: RSpec/NestedGroups: Maximum example group nesting exceeded [4/3].
+      context '無効なパラメータの場合' do
+      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+spec/requests/api/v1/posts_spec.rb:114:15: C: RSpec/ContextWording: Context description should match /^when\b/, /^with\b/, or /^without\b/.
+      context '無効なパラメータの場合' do
+              ^^^^^^^^^^^^^^^^^^^^^^^^
+spec/requests/api/v1/posts_spec.rb:124:13: C: RSpec/ContextWording: Context description should match /^when\b/, /^with\b/, or /^without\b/.
+    context '未認証の場合' do
+            ^^^^^^^^^^^^^^
+spec/requests/api/v1/posts_spec.rb:134:13: C: RSpec/ContextWording: Context description should match /^when\b/, /^with\b/, or /^without\b/.
+    context '認証済みの場合' do
+            ^^^^^^^^^^^^^^^^
+spec/requests/api/v1/posts_spec.rb:135:7: C: RSpec/MultipleExpectations: Example has too many expectations [2/1].
+      it '200を返しDBが更新される' do
+      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+spec/requests/api/v1/posts_spec.rb:143:7: C: RSpec/NestedGroups: Maximum example group nesting exceeded [4/3].
+      context '無効なパラメータの場合' do
+      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+spec/requests/api/v1/posts_spec.rb:143:15: C: RSpec/ContextWording: Context description should match /^when\b/, /^with\b/, or /^without\b/.
+      context '無効なパラメータの場合' do
+              ^^^^^^^^^^^^^^^^^^^^^^^^
+spec/requests/api/v1/posts_spec.rb:153:13: C: RSpec/ContextWording: Context description should match /^when\b/, /^with\b/, or /^without\b/.
+    context '未認証の場合' do
+            ^^^^^^^^^^^^^^
+spec/requests/api/v1/posts_spec.rb:161:13: C: RSpec/ContextWording: Context description should match /^when\b/, /^with\b/, or /^without\b/.
+    context '他のユーザーの投稿の場合' do
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^
+spec/requests/api/v1/posts_spec.rb:162:7: C: RSpec/ExampleLength: Example has too many lines. [6/5]
+      it '404を返す' do ...
+      ^^^^^^^^^^^^^^^^^
+spec/requests/api/v1/posts_spec.rb:174:13: C: RSpec/ContextWording: Context description should match /^when\b/, /^with\b/, or /^without\b/.
+    context '認証済みの場合' do
+            ^^^^^^^^^^^^^^^^
+spec/requests/api/v1/posts_spec.rb:175:7: C: RSpec/MultipleExpectations: Example has too many expectations [2/1].
+      it '200を返しDBから削除される' do
+      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+spec/requests/api/v1/posts_spec.rb:184:13: C: RSpec/ContextWording: Context description should match /^when\b/, /^with\b/, or /^without\b/.
+    context '未認証の場合' do
+            ^^^^^^^^^^^^^^
+spec/requests/api/v1/posts_spec.rb:191:13: C: RSpec/ContextWording: Context description should match /^when\b/, /^with\b/, or /^without\b/.
+    context '他のユーザーの投稿の場合' do
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^
+spec/requests/auth/google_spec.rb:17:13: C: RSpec/ContextWording: Context description should match /^when\b/, /^with\b/, or /^without\b/.
+    context '有効なIDトークンの場合' do
+            ^^^^^^^^^^^^^^^^^^^^^^^^
+spec/requests/auth/google_spec.rb:24:7: C: RSpec/NestedGroups: Maximum example group nesting exceeded [4/3].
+      context '新規ユーザーの場合' do
+      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+spec/requests/auth/google_spec.rb:24:15: C: RSpec/ContextWording: Context description should match /^when\b/, /^with\b/, or /^without\b/.
+      context '新規ユーザーの場合' do
+              ^^^^^^^^^^^^^^^^^^^^
+spec/requests/auth/google_spec.rb:36:9: C: RSpec/MultipleExpectations: Example has too many expectations [3/1].
+        it 'レスポンスヘッダーに必要なトークンが全て含まれる' do
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+spec/requests/auth/google_spec.rb:49:9: C: RSpec/MultipleExpectations: Example has too many expectations [3/1].
+        it 'レスポンスボディにユーザー情報が正しく含まれる' do
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+spec/requests/auth/google_spec.rb:58:7: C: RSpec/MultipleMemoizedHelpers: Example group has too many memoized helpers [6/5]
+      context '既存ユーザーの場合' do ...
+      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+spec/requests/auth/google_spec.rb:58:7: C: RSpec/NestedGroups: Maximum example group nesting exceeded [4/3].
+      context '既存ユーザーの場合' do
+      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+spec/requests/auth/google_spec.rb:58:15: C: RSpec/ContextWording: Context description should match /^when\b/, /^with\b/, or /^without\b/.
+      context '既存ユーザーの場合' do
+              ^^^^^^^^^^^^^^^^^^^^
+spec/requests/auth/google_spec.rb:59:9: C: RSpec/LetSetup: Do not use let! to setup objects not referenced in tests.
+        let!(:existing_user) { create(:user, :with_google, google_uid: google_uid, email: email) }
+        ^^^^^^^^^^^^^^^^^^^^
+spec/requests/auth/google_spec.rb:74:13: C: RSpec/ContextWording: Context description should match /^when\b/, /^with\b/, or /^without\b/.
+    context '無効なIDトークンの場合' do
+            ^^^^^^^^^^^^^^^^^^^^^^^^
+spec/requests/auth/google_spec.rb:99:33: C: RSpec/MessageSpies: Prefer have_received for setting message expectations. Setup Rails.logger as a spy using allow or instance_spy.
+        expect(Rails.logger).to receive(:error).with(/Google IDトークン検証エラー/)
+                                ^^^^^^^
+
+64 files inspected, 193 offenses detected
+
+Tip: Based on detected gems, the following RuboCop extension libraries might be helpful:
+  * rubocop-factory_bot (https://rubygems.org/gems/rubocop-factory_bot)
+  * rubocop-rspec_rails (https://rubygems.org/gems/rubocop-rspec_rails)
+
+You can opt out of this message by adding the following to your config (see https://docs.rubocop.org/rubocop/extensions.html#extension-suggestions for more options):
+  AllCops:
+    SuggestExtensions: false
