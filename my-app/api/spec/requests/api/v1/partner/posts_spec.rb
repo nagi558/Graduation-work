@@ -9,7 +9,7 @@ RSpec.describe 'Api::V1::Partner::Posts', type: :request do
   let!(:pair)            { create(:pair, :with_members, owner: user, member: partner) }
 
   def json
-    JSON.parse(response.body)
+    response.parsed_body
   end
 
   describe 'GET /api/v1/partner/posts' do
@@ -32,7 +32,7 @@ RSpec.describe 'Api::V1::Partner::Posts', type: :request do
 
       it 'can_view=trueの投稿のみ返す' do
         get '/api/v1/partner/posts', headers: headers
-        ids = json.map { |p| p['id'] }
+        ids = json.pluck('id')
         expect(ids).to include(visible_post.id)
         expect(ids).not_to include(hidden_post.id)
       end
@@ -43,7 +43,7 @@ RSpec.describe 'Api::V1::Partner::Posts', type: :request do
         create(:post_permission, post: my_post, pair: pair, can_view: true)
 
         get '/api/v1/partner/posts', headers: headers
-        ids = json.map { |p| p['id'] }
+        ids = json.pluck('id')
         expect(ids).not_to include(my_post.id)
       end
 
@@ -54,7 +54,7 @@ RSpec.describe 'Api::V1::Partner::Posts', type: :request do
         create(:post_permission, post: other_post, pair: other_pair, can_view: true)
 
         get '/api/v1/partner/posts', headers: headers
-        ids = json.map { |p| p['id'] }
+        ids = json.pluck('id')
         expect(ids).not_to include(other_post.id)
       end
     end
