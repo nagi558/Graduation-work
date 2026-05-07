@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom"
 import axiosInstance from "@/lib/axios"
 import { useParams } from "react-router-dom"
 import { Spinner } from "@/components/Spinner"
+import axios from "axios"
 
 export const CategoryUpdate = () => {
   const [name, setName] = useState("")
@@ -24,17 +25,23 @@ export const CategoryUpdate = () => {
   }
 
   useEffect(() => {
+    const controller = new AbortController()
     const fetchCategories = async () => {
       try {
-        const response = await axiosInstance.get(`/api/v1/categories/${id}`)
+        const response = await axiosInstance.get(`/api/v1/categories/${id}`, {
+          signal: controller.signal,
+        })
         setName(response.data.name)
-      } catch {
+      } catch (e) {
+        if (axios.isCancel(e)) return
+        console.error(e)
         setError("カテゴリの取得に失敗しました")
       } finally {
         setIsFetching(false)
       }
     }
     fetchCategories()
+    return () => controller.abort()
   }, [id])
 
   if (isFetching) {
@@ -69,7 +76,8 @@ export const CategoryUpdate = () => {
       )
 
       navigate("/categories/manage")
-    } catch {
+    } catch (e) {
+      console.error(e)
       setError("カテゴリを編集できませんでした")
       window.scrollTo({ top: 0, behavior: "smooth" })
     } finally {

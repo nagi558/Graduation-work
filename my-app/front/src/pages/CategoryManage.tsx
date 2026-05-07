@@ -1,8 +1,9 @@
-import { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
-import axiosInstance from '@/lib/axios'
-import type { Category } from '@/types'
-import { Spinner } from '@/components/Spinner'
+import { useEffect, useState } from "react"
+import { useNavigate } from "react-router-dom"
+import axiosInstance from "@/lib/axios"
+import type { Category } from "@/types"
+import { Spinner } from "@/components/Spinner"
+import axios from "axios"
 
 export const CategoryManage = () => {
   const [categories, setCategories] = useState<Category[]>([])
@@ -14,35 +15,39 @@ export const CategoryManage = () => {
   const navigate = useNavigate()
 
   useEffect(() => {
+    const controller = new AbortController()
     const fetchCategories = async () => {
       try {
-        const response = await axiosInstance.get('/api/v1/categories')
+        const response = await axiosInstance.get("/api/v1/categories", {
+          signal: controller.signal,
+        })
         setCategories(response.data)
-      } catch {
-        setError('カテゴリの取得に失敗しました')
+      } catch (e) {
+        if (axios.isCancel(e)) return
+        console.error(e)
+        setError("カテゴリの取得に失敗しました")
       } finally {
         setIsFetching(false)
       }
     }
     fetchCategories()
+    return () => controller.abort()
   }, [])
 
   const handleDelete = async (categoryId: number) => {
-    if (!confirm('削除しますか？')) return
-
+    if (!confirm("削除しますか？")) return
     setDeletingId(categoryId)
-
     try {
       await axiosInstance.delete(`/api/v1/categories/${categoryId}`, {
-        skipGlobalError: true
+        skipGlobalError: true,
       })
-
       setCategories((prev) =>
-        prev.filter((category) => category.id !== categoryId)
+        prev.filter((category) => category.id !== categoryId),
       )
-    } catch {
-      setError('削除できませんでした')
-      window.scrollTo({ top: 0, behavior: 'smooth' })
+    } catch (e) {
+      console.error(e)
+      setError("削除できませんでした")
+      window.scrollTo({ top: 0, behavior: "smooth" })
     } finally {
       setDeletingId(null)
     }
@@ -51,7 +56,7 @@ export const CategoryManage = () => {
   if (isFetching) {
     return (
       <div className="min-h-screen flex justify-center items-center bg-[#E8EEF1]">
-        <Spinner size='lg' />
+        <Spinner size="lg" />
       </div>
     )
   }
@@ -60,14 +65,13 @@ export const CategoryManage = () => {
     <div className="min-h-full bg-[#E8EEF1] pb-20">
       <div className="max-w-4xl mx-auto pt-6 px-4">
         <div className="bg-white rounded-2xl shadow-sm p-6">
-
           {/* タイトルと新規作成ボタン */}
           <div className="flex justify-between items-center mb-3">
             <h1 className="text-[38px] font-bold tracking-normal text-[#444444] text-center mb-8 font-sans pt-7">
               カテゴリ管理
             </h1>
             <button
-              onClick={() => navigate('/categories/new')}
+              onClick={() => navigate("/categories/new")}
               className="bg-[#4f8196] hover:bg-[#80949e] text-white text-sm font-bold py-2 px-4 rounded-xl shadow transition duration-200"
             >
               新規作成
@@ -102,7 +106,9 @@ export const CategoryManage = () => {
                   {/* 修正・削除ボタン */}
                   <div className="flex gap-2 ml-4">
                     <button
-                      onClick={() => navigate(`/categories/${category.id}/edit`)}
+                      onClick={() =>
+                        navigate(`/categories/${category.id}/edit`)
+                      }
                       className="text-sm text-[#4f8196] border border-[#4f8196] px-3 py-1 rounded-lg hover:bg-[#4f8196] hover:text-white transition duration-200"
                       disabled={deletingId === category.id}
                     >
@@ -115,9 +121,9 @@ export const CategoryManage = () => {
                       disabled={deletingId === category.id}
                     >
                       {deletingId === category.id ? (
-                        <Spinner size='sm' />
+                        <Spinner size="sm" />
                       ) : (
-                        '削除'
+                        "削除"
                       )}
                     </button>
                   </div>

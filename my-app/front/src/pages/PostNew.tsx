@@ -1,13 +1,14 @@
-import { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
-import axiosInstance from '@/lib/axios'
-import { pairApi } from '@/lib/pairApi'
-import type { Category } from '@/types'
-import { Spinner } from '@/components/Spinner'
+import { useEffect, useState } from "react"
+import { useNavigate } from "react-router-dom"
+import axiosInstance from "@/lib/axios"
+import { pairApi } from "@/lib/pairApi"
+import type { Category } from "@/types"
+import { Spinner } from "@/components/Spinner"
+import axios from "axios"
 
 export const PostNew = () => {
-  const [title, setTitle] = useState('')
-  const [body, setBody] =useState('')
+  const [title, setTitle] = useState("")
+  const [body, setBody] = useState("")
   const [categoryId, setCategoryId] = useState<number | null>(null)
   const [categories, setCategories] = useState<Category[]>([])
   const [canView, setCanView] = useState(false)
@@ -19,7 +20,7 @@ export const PostNew = () => {
 
   const validateForm = (): boolean => {
     if (title.trim() === "") {
-      setError('タイトルを入力してください')
+      setError("タイトルを入力してください")
       return false
     }
 
@@ -27,24 +28,31 @@ export const PostNew = () => {
   }
 
   useEffect(() => {
+    const controller = new AbortController()
     const fetchCategories = async () => {
       try {
-        const response = await axiosInstance.get('/api/v1/categories')
+        const response = await axiosInstance.get("/api/v1/categories", {
+          signal: controller.signal,
+        })
         setCategories(response.data)
-      } catch {
-        setError('カテゴリの取得に失敗しました')
+      } catch (e) {
+        if (axios.isCancel(e)) return
+        console.error(e)
+        setError("カテゴリの取得に失敗しました")
       }
     }
     const fetchPairStatus = async () => {
       try {
-        const res = await pairApi.getStatus()
+        const res = await pairApi.getStatus({ signal: controller.signal })
         setIsPaired(res.data.paired)
-      } catch {
-        console.error('Pair状態の取得に失敗しました')
+      } catch (e) {
+        if (axios.isCancel(e)) return
+        console.error(e)
       }
     }
     fetchCategories()
     fetchPairStatus()
+    return () => controller.abort()
   }, [])
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -54,20 +62,24 @@ export const PostNew = () => {
     setIsSubmitting(true)
 
     try {
-      await axiosInstance.post('/api/v1/posts', {
-        post: {
-          title,
-          body,
-          category_id: categoryId,
-          can_view: canView,
-        }
-      }, { skipGlobalError: true })
+      await axiosInstance.post(
+        "/api/v1/posts",
+        {
+          post: {
+            title,
+            body,
+            category_id: categoryId,
+            can_view: canView,
+          },
+        },
+        { skipGlobalError: true },
+      )
 
-      navigate('/posts')
-
-    } catch {
-      setError('投稿を作成できませんでした')
-      window.scrollTo({ top: 0, behavior: 'smooth' })
+      navigate("/posts")
+    } catch (e) {
+      console.error(e)
+      setError("投稿を作成できませんでした")
+      window.scrollTo({ top: 0, behavior: "smooth" })
     } finally {
       setIsSubmitting(false)
     }
@@ -76,7 +88,6 @@ export const PostNew = () => {
   return (
     <div className="min-h-full bg-[#E8EEF1] pt-6 py-6">
       <div className="max-w-2xl mx-auto px-4">
-
         {error && (
           <div className="mb-4 p-3 bg-red-100 border-red-400 text-red-700 rounded">
             {error}
@@ -85,7 +96,6 @@ export const PostNew = () => {
 
         <div className="bg-white rounded-2xl shadow-sm p-10">
           <form onSubmit={handleSubmit} className="space-y-4">
-
             <h1 className="text-[38px] font-bold tracking-normal text-[#444444] text-center mb-8 font-sans pt-7">
               新規作成
             </h1>
@@ -110,7 +120,7 @@ export const PostNew = () => {
               </label>
               <div className="flex items-center gap-14">
                 <select
-                  value={categoryId ?? ''}
+                  value={categoryId ?? ""}
                   onChange={(e) => setCategoryId(Number(e.target.value))}
                   className="w-3/4 px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#A0B9C6] bg-white"
                 >
@@ -123,7 +133,7 @@ export const PostNew = () => {
                 </select>
                 <button
                   type="button"
-                  onClick={() => navigate('/categories/manage')}
+                  onClick={() => navigate("/categories/manage")}
                   className="text-sm font-bold text-white bg-[#4f8196] hover:bg-[#80949e] px-4 py-2 rounded-lg whitespace-nowrap"
                   disabled={isSubmitting}
                 >
@@ -147,38 +157,45 @@ export const PostNew = () => {
             </div>
 
             {isPaired && (
-              <div className='flex items-center justify-between py-3 border-t border-gray-100'>
+              <div className="flex items-center justify-between py-3 border-t border-gray-100">
                 <div>
-                  <div className='text-sm font-medium text-gray-700'>パートナーに見せる</div>
-                  <div className='text-xs text-gray-400'>オンにするとパートナーが閲覧できます</div>
+                  <div className="text-sm font-medium text-gray-700">
+                    パートナーに見せる
+                  </div>
+                  <div className="text-xs text-gray-400">
+                    オンにするとパートナーが閲覧できます
+                  </div>
                 </div>
                 <button
-                  type='button'
-                  aria-label='パートナーに見せる'
+                  type="button"
+                  aria-label="パートナーに見せる"
                   onClick={() => setCanView((prev) => !prev)}
-                  style={{ minHeight: 'unset', lineHeight: '1' }}
+                  style={{ minHeight: "unset", lineHeight: "1" }}
                   className={`relative w-12 h-6 rounded-full transition-colors duration-200 overflow-hidden ${
-                    canView ? 'bg-[#4f8196]' : 'bg-gray-200'
+                    canView ? "bg-[#4f8196]" : "bg-gray-200"
                   }`}
                 >
                   <span
                     className="absolute top-1 left-1 w-4 h-4 bg-white rounded-full shadow transition-transform duration-200"
-                    style={{ transform: canView ? 'translateX(24px)' : 'translateX(0px)' }}
+                    style={{
+                      transform: canView
+                        ? "translateX(24px)"
+                        : "translateX(0px)",
+                    }}
                   />
                 </button>
               </div>
             )}
 
-              <div className="flex justify-end">
-                <button
-                  type="submit"
-                  disabled={isSubmitting}
-                  className="text-sm font-bold text-white bg-[#4f8196] hover:bg-[#80949e] disabled:bg-gray-400 px-7 py-2 rounded-lg shadow transition duration-200"
-                >
-                  {isSubmitting ? <Spinner size="sm" /> : '追加する'}
-                </button>
-              </div>
-
+            <div className="flex justify-end">
+              <button
+                type="submit"
+                disabled={isSubmitting}
+                className="text-sm font-bold text-white bg-[#4f8196] hover:bg-[#80949e] disabled:bg-gray-400 px-7 py-2 rounded-lg shadow transition duration-200"
+              >
+                {isSubmitting ? <Spinner size="sm" /> : "追加する"}
+              </button>
+            </div>
           </form>
         </div>
       </div>
