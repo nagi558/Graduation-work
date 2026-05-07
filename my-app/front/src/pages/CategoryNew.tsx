@@ -1,10 +1,10 @@
-import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
-import axiosInstance from '@/lib/axios'
-import { Spinner } from '@/components/Spinner'
+import { useState } from "react"
+import { useNavigate } from "react-router-dom"
+import axiosInstance from "@/lib/axios"
+import { Spinner } from "@/components/Spinner"
 
 export const CategoryNew = () => {
-  const [name, setName] = useState('')
+  const [name, setName] = useState("")
   const [error, setError] = useState<string | null>(null)
   const [isSubmitting, setIsSubmitting] = useState(false)
 
@@ -12,7 +12,7 @@ export const CategoryNew = () => {
 
   const validateForm = (): boolean => {
     if (name.trim() === "") {
-      setError('カテゴリを入力してください')
+      setError("カテゴリを入力してください")
       return false
     }
 
@@ -23,35 +23,37 @@ export const CategoryNew = () => {
     e.preventDefault()
     setError(null)
 
-    if(!validateForm()) {
+    if (!validateForm()) {
       return
     }
 
     setIsSubmitting(true)
-    
+
     try {
-      await axiosInstance.post('/api/v1/categories', {
-        category: {
-          name
-        }
-      }, {
-        skipGlobalError: true
-      })
+      await axiosInstance.post(
+        "/api/v1/categories",
+        {
+          category: {
+            name,
+          },
+        },
+        {
+          skipGlobalError: true,
+        },
+      )
 
-      navigate('/categories/manage')
-
+      navigate("/categories/manage")
     } catch {
-      setError('カテゴリを作成できませんでした')
-      window.scrollTo({ top: 0, behavior: 'smooth' })
+      setError("カテゴリを作成できませんでした")
+      window.scrollTo({ top: 0, behavior: "smooth" })
     } finally {
       setIsSubmitting(false)
     }
   }
 
   return (
-    <div className="h-full bg-[#E8EEF1] flex items-start justify-center pt-30">
+    <div className="min-h-screen bg-[#E8EEF1] flex items-start justify-center pt-30">
       <div className="w-full max-w-2xl px-4">
-        
         {error && (
           <div className="mb-4 p-3 bg-red-100 border-red-400 text-red-700 rounded">
             {error}
@@ -60,7 +62,6 @@ export const CategoryNew = () => {
 
         <div className="bg-white rounded-2xl shadow-sm p-10">
           <form onSubmit={handleSubmit} className="space-y-4">
-
             <h1 className="text-[38px] font-bold tracking-normal text-[#444444] text-center mb-8 font-sans pt-7">
               新規作成
             </h1>
@@ -85,7 +86,7 @@ export const CategoryNew = () => {
                 disabled={isSubmitting}
                 className="text-sm font-bold text-white bg-[#4f8196] hover:bg-[#80949e] disabled:bg-gray-400 px-7 py-2 rounded-lg shadow transition duration-200"
               >
-                {isSubmitting ? <Spinner size="sm" /> : '追加する'}
+                {isSubmitting ? <Spinner size="sm" /> : "追加する"}
               </button>
             </div>
           </form>
