@@ -177,7 +177,7 @@ export const MyPostList = ({ isPaired }: Props) => {
               {posts.map((post) => (
                 <div
                   key={post.id}
-                  className="bg-white rounded-2xl shadow-lg p-5 flex justify-between items-start"
+                  className="bg-white rounded-2xl shadow-sm p-5 flex justify-between items-start"
                 >
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2 mb-3">
