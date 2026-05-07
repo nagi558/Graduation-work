@@ -49,7 +49,7 @@ export const CategoryList = () => {
                 <div
                   key={category.id}
                   onClick={() => handleClick(category.id)}
-                  className="cursor-pointer bg-white rounded-xl shadow-md p-4 hover:bg-[#f4f8fa] transition duration-200"
+                  className="cursor-pointer bg-white rounded-xl shadow-sm p-4 hover:bg-[#f4f8fa] transition duration-200"
                 >
                   <p className="text-gray-800 font-semibold text-lg">
                     {category.name}
