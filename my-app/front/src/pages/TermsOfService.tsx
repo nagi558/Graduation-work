@@ -1,11 +1,11 @@
-import { useNavigate } from 'react-router-dom'
+import { useNavigate } from "react-router-dom"
 
 export const TermsOfService = () => {
   const navigate = useNavigate()
 
   return (
-    <div className="h-full bg-[#E8EEF1] flex items-start justify-center pt-20 pb-20">
-      <div className="w-full max-w-2xl px-4">
+    <div className="min-h-screen bg-[#E8EEF1] pb-20">
+      <div className="max-w-2xl mx-auto pt-10 px-4">
         <div className="bg-white rounded-2xl shadow-sm p-8">
           <button
             onClick={() => navigate(-1)}
@@ -16,14 +16,16 @@ export const TermsOfService = () => {
 
           <h1 className="text-2xl font-bold text-[#444444] mb-8">利用規約</h1>
 
-          <div className="text-sm text-gray-600 space-y-6 leading-relaxed">
+          <div className="text-sm text-gray-600 space-y-6 leading-relaxed [&_h2]:text-[#444444]">
             <p>
               この利用規約（以下「本規約」）は、「紡ぐレター」（以下「本サービス」）の利用条件を定めるものです。
               ユーザーの皆さまには、本規約に同意いただいた上で本サービスをご利用いただきます。
             </p>
 
             <section>
-              <h2 className="text-base font-bold text-[#444444] mb-2">第1条（適用）</h2>
+              <h2 className="text-base font-bold text-[#444444] mb-2">
+                第1条（適用）
+              </h2>
               <p>
                 本規約は、ユーザーと本サービス運営者（以下「運営者」）との間の本サービスの利用に関わる一切の関係に適用されます。
                 運営者は本サービスに関し、本規約のほか、ご利用にあたってのルール等、各種の定め（以下「個別規定」）をすることがあります。
@@ -33,7 +35,9 @@ export const TermsOfService = () => {
             </section>
 
             <section>
-              <h2 className="text-base font-bold text-[#444444] mb-2">第2条（利用登録）</h2>
+              <h2 className="text-base font-bold text-[#444444] mb-2">
+                第2条（利用登録）
+              </h2>
               <p>
                 本サービスにおいては、登録希望者が本規約に同意の上、運営者の定める方法によって利用登録を申請し、
                 運営者がこれを承認することによって、利用登録が完了するものとします。
@@ -48,7 +52,9 @@ export const TermsOfService = () => {
             </section>
 
             <section>
-              <h2 className="text-base font-bold text-[#444444] mb-2">第3条（ユーザーIDおよびパスワードの管理）</h2>
+              <h2 className="text-base font-bold text-[#444444] mb-2">
+                第3条（ユーザーIDおよびパスワードの管理）
+              </h2>
               <p>
                 ユーザーは、自己の責任において、本サービスのユーザーIDおよびパスワードを適切に管理するものとします。
                 ユーザーは、いかなる場合にも、ユーザーIDおよびパスワードを第三者に譲渡または貸与し、もしくは第三者と共用することはできません。
@@ -59,29 +65,43 @@ export const TermsOfService = () => {
             </section>
 
             <section>
-              <h2 className="text-base font-bold text-[#444444] mb-2">第4条（禁止事項）</h2>
-              <p>ユーザーは、本サービスの利用にあたり、以下の行為をしてはなりません。</p>
+              <h2 className="text-base font-bold text-[#444444] mb-2">
+                第4条（禁止事項）
+              </h2>
+              <p>
+                ユーザーは、本サービスの利用にあたり、以下の行為をしてはなりません。
+              </p>
               <ul className="list-disc list-inside mt-2 space-y-1 pl-2">
                 <li>法令または公序良俗に違反する行為</li>
                 <li>犯罪行為に関連する行為</li>
-                <li>運営者、本サービスの他のユーザー、またはその他第三者のサーバーまたはネットワークの機能を破壊したり、妨害したりする行為</li>
+                <li>
+                  運営者、本サービスの他のユーザー、またはその他第三者のサーバーまたはネットワークの機能を破壊したり、妨害したりする行為
+                </li>
                 <li>運営者のサービスの運営を妨害するおそれのある行為</li>
                 <li>他のユーザーに関する個人情報等を収集または蓄積する行為</li>
                 <li>不正アクセスをし、またはこれを試みる行為</li>
                 <li>他のユーザーに成りすます行為</li>
-                <li>本サービスに関連して、反社会的勢力に対して直接または間接に利益を供与する行為</li>
+                <li>
+                  本サービスに関連して、反社会的勢力に対して直接または間接に利益を供与する行為
+                </li>
                 <li>その他、運営者が不適切と判断する行為</li>
               </ul>
             </section>
 
             <section>
-              <h2 className="text-base font-bold text-[#444444] mb-2">第5条（本サービスの提供の停止等）</h2>
+              <h2 className="text-base font-bold text-[#444444] mb-2">
+                第5条（本サービスの提供の停止等）
+              </h2>
               <p>
                 運営者は、以下のいずれかの事由があると判断した場合、ユーザーに事前に通知することなく本サービスの全部または一部の提供を停止または中断することができるものとします。
               </p>
               <ul className="list-disc list-inside mt-2 space-y-1 pl-2">
-                <li>本サービスにかかるコンピュータシステムの保守点検または更新を行う場合</li>
-                <li>地震、落雷、火災、停電または天災などの不可抗力により、本サービスの提供が困難となった場合</li>
+                <li>
+                  本サービスにかかるコンピュータシステムの保守点検または更新を行う場合
+                </li>
+                <li>
+                  地震、落雷、火災、停電または天災などの不可抗力により、本サービスの提供が困難となった場合
+                </li>
                 <li>コンピュータまたは通信回線等が事故により停止した場合</li>
                 <li>その他、運営者が本サービスの提供が困難と判断した場合</li>
               </ul>
@@ -91,19 +111,25 @@ export const TermsOfService = () => {
             </section>
 
             <section>
-              <h2 className="text-base font-bold text-[#444444] mb-2">第6条（利用制限および登録抹消）</h2>
+              <h2 className="text-base font-bold text-[#444444] mb-2">
+                第6条（利用制限および登録抹消）
+              </h2>
               <p>
                 運営者は、ユーザーが以下のいずれかに該当する場合には、事前の通知なく、ユーザーに対して本サービスの全部もしくは一部の利用を制限し、またはユーザーとしての登録を抹消することができるものとします。
               </p>
               <ul className="list-disc list-inside mt-2 space-y-1 pl-2">
                 <li>本規約のいずれかの条項に違反した場合</li>
                 <li>登録事項に虚偽の事実があることが判明した場合</li>
-                <li>その他、運営者が本サービスの利用を適当でないと判断した場合</li>
+                <li>
+                  その他、運営者が本サービスの利用を適当でないと判断した場合
+                </li>
               </ul>
             </section>
 
             <section>
-              <h2 className="text-base font-bold text-[#444444] mb-2">第7条（免責事項）</h2>
+              <h2 className="text-base font-bold text-[#444444] mb-2">
+                第7条（免責事項）
+              </h2>
               <p>
                 運営者の債務不履行責任は、運営者の故意または重過失によらない場合には免責されるものとします。
                 運営者は、本サービスに関して、ユーザーと他のユーザーまたは第三者との間において生じた取引、連絡または紛争等について一切責任を負いません。
@@ -111,20 +137,26 @@ export const TermsOfService = () => {
             </section>
 
             <section>
-              <h2 className="text-base font-bold text-[#444444] mb-2">第8条（サービス内容の変更等）</h2>
+              <h2 className="text-base font-bold text-[#444444] mb-2">
+                第8条（サービス内容の変更等）
+              </h2>
               <p>
                 運営者は、ユーザーへの事前の告知をもって、本サービスの内容を変更、追加または廃止することがあり、ユーザーはこれを承諾するものとします。
               </p>
             </section>
 
             <section>
-              <h2 className="text-base font-bold text-[#444444] mb-2">第9条（利用規約の変更）</h2>
+              <h2 className="text-base font-bold text-[#444444] mb-2">
+                第9条（利用規約の変更）
+              </h2>
               <p>
                 運営者は以下の場合には、ユーザーの個別の同意を要せず、本規約を変更することができるものとします。
               </p>
               <ul className="list-disc list-inside mt-2 space-y-1 pl-2">
                 <li>本規約の変更がユーザーの一般の利益に適合する場合</li>
-                <li>本規約の変更が本サービス利用契約の目的に反せず、かつ、変更の必要性、変更後の内容の相当性その他の変更に係る事情に照らして合理的なものである場合</li>
+                <li>
+                  本規約の変更が本サービス利用契約の目的に反せず、かつ、変更の必要性、変更後の内容の相当性その他の変更に係る事情に照らして合理的なものである場合
+                </li>
               </ul>
               <p className="mt-2">
                 運営者はユーザーに対し、前項による本規約の変更にあたり、事前に、本規約を変更する旨および変更後の本規約の内容ならびにその効力発生時期を通知します。
@@ -132,7 +164,9 @@ export const TermsOfService = () => {
             </section>
 
             <section>
-              <h2 className="text-base font-bold text-[#444444] mb-2">第10条（準拠法・裁判管轄）</h2>
+              <h2 className="text-base font-bold text-[#444444] mb-2">
+                第10条（準拠法・裁判管轄）
+              </h2>
               <p>
                 本規約の解釈にあたっては、日本法を準拠法とします。
                 本サービスに関して紛争が生じた場合には、運営者の所在地を管轄する裁判所を専属的合意管轄とします。

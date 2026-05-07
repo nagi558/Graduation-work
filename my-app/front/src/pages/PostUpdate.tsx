@@ -107,8 +107,8 @@ export const PostUpdate = () => {
   }
 
   return (
-    <div className="min-h-screen bg-[#E8EEF1] pb-20">
-      <div className="max-w-2xl mx-auto pt-4 px-4">
+    <div className="min-h-full bg-[#E8EEF1] pt-6 py-6">
+      <div className="max-w-2xl mx-auto px-4">
 
         {error && (
           <div className="mb-4 p-3 bg-red-100 border-red-400 text-red-700 rounded">
@@ -124,7 +124,7 @@ export const PostUpdate = () => {
             </h1>
 
             <div>
-              <label className="block text-lg font-medium text-gray-700 mb-1 text-left">
+              <label className="block text-sm font-medium text-gray-700 mb-1 text-left">
                 伝えたいこと
               </label>
               <input
@@ -137,7 +137,7 @@ export const PostUpdate = () => {
             </div>
 
             <div>
-              <label className="block text-lg font-medium text-gray-700 mb-1 text-left">
+              <label className="block text-sm font-medium text-gray-700 mb-1 text-left">
                 カテゴリ
               </label>
               <div className="flex items-center gap-14">
@@ -166,7 +166,7 @@ export const PostUpdate = () => {
             </div>
 
             <div>
-              <label className="block text-lg font-medium text-gray-700 mb-1 text-left">
+              <label className="block text-sm font-medium text-gray-700 mb-1 text-left">
                 詳細
               </label>
               <textarea
@@ -175,7 +175,7 @@ export const PostUpdate = () => {
                 onChange={(e) => setBody(e.target.value)}
                 className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#A0B9C6] resize-none"
                 disabled={isSubmitting}
-                rows={6}
+                rows={4}
               />
             </div>
 

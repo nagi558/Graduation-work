@@ -45,7 +45,7 @@ export const InviteJoin = () => {
   }
 
   return (
-    <div className="min-h-screen bg-[#E8EEF1] flex items-center justify-center">
+    <div className="min-h-full bg-[#E8EEF1] flex items-center justify-center">
       <div className="bg-white rounded-2xl shadow-sm p-10 max-w-sm w-full text-center space-y-6">
         {error ? (
           <>

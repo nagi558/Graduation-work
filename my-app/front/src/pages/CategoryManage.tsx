@@ -57,10 +57,8 @@ export const CategoryManage = () => {
   }
 
   return (
-    <div className="min-h-screen bg-[#E8EEF1] pb-20">
-
-      {/* メインコンテンツ */}
-      <div className="max-w-4xl mx-auto pt-1 px-4">
+    <div className="min-h-full bg-[#E8EEF1] pb-20">
+      <div className="max-w-4xl mx-auto pt-6 px-4">
         <div className="bg-white rounded-2xl shadow-sm p-6">
 
           {/* タイトルと新規作成ボタン */}

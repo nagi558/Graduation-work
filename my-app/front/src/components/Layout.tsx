@@ -1,6 +1,6 @@
-import { Header } from './Header'
-import { Footer } from './Footer'
-import type { ReactNode } from 'react'
+import { Header } from "./Header"
+import { Footer } from "./Footer"
+import type { ReactNode } from "react"
 
 export const Layout = ({ children }: { children: ReactNode }) => {
   return (
@@ -8,10 +8,10 @@ export const Layout = ({ children }: { children: ReactNode }) => {
       <header className="sticky top-0 z-50 bg-white shadow-sm flex-shrink-0">
         <Header />
       </header>
-      <main className="overflow-y-auto">
+      <main className="flex-1 overflow-y-auto" id="main-scroll">
         {children}
       </main>
       <Footer />
-    </div>
+      </div>
   )
 }
