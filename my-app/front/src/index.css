@@ -296,10 +296,6 @@ textarea {
   touch-action: manipulation;
 }
 
-html, body {
-  overscroll-behavior: none;
-}
-
 #main-scroll {
   transform: translateZ(0);
 }
