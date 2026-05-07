@@ -49,7 +49,6 @@ export default function App() {
         <BrowserRouter>
           <ScrollToTop />
           <UnauthorizedHandler />
-          <UnauthorizedHandler />
 
           <ErrorBanner />
 
