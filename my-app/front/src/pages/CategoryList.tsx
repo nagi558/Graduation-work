@@ -1,7 +1,8 @@
-import { useEffect, useState } from 'react'
-import type { Category } from '@/types'
-import { useNavigate } from 'react-router-dom'
-import axiosInstance from '@/lib/axios'
+import { useEffect, useState } from "react"
+import type { Category } from "@/types"
+import { useNavigate } from "react-router-dom"
+import axiosInstance from "@/lib/axios"
+import axios from 'axios'
 
 export const CategoryList = () => {
   const [categories, setCategories] = useState<Category[]>([])
@@ -9,15 +10,21 @@ export const CategoryList = () => {
   const navigate = useNavigate()
 
   useEffect(() => {
+    const controller = new AbortController()
     const fetchCategories = async () => {
       try {
-        const response = await axiosInstance.get('/api/v1/categories')
+        const response = await axiosInstance.get("/api/v1/categories", {
+          signal: controller.signal,
+        })
         setCategories(response.data)
-      } catch {
-        setError('カテゴリの取得に失敗しました')
+      } catch (e) {
+        if (axios.isCancel(e)) return
+        console.error(e)
+        setError("カテゴリの取得に失敗しました")
       }
     }
     fetchCategories()
+    return () => controller.abort()
   }, [])
 
   const handleClick = (categoryId: number) => {
@@ -41,7 +48,9 @@ export const CategoryList = () => {
           {categories.length === 0 ? (
             <div className="text-center text-gray-400 mt-20">
               <p>まだカテゴリがありません</p>
-              <p className="text-sm mt-2">投稿作成時にカテゴリを追加してみましょう</p>
+              <p className="text-sm mt-2">
+                投稿作成時にカテゴリを追加してみましょう
+              </p>
             </div>
           ) : (
             <div className="flex flex-col gap-3">

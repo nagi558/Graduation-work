@@ -43,7 +43,8 @@ export const CategoryNew = () => {
       )
 
       navigate("/categories/manage")
-    } catch {
+    } catch (e) {
+      console.error(e)
       setError("カテゴリを作成できませんでした")
       window.scrollTo({ top: 0, behavior: "smooth" })
     } finally {

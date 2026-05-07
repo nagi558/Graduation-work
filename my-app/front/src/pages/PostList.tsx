@@ -4,6 +4,7 @@ import { MyPostList } from "@/components/posts/MyPostList"
 import { PartnerPostList } from "@/components/posts/PartnerPostList"
 import { Toast } from "@/components/ui/Toast"
 import { useLocation } from "react-router-dom"
+import axios from 'axios'
 
 export const PostList = () => {
   const [activeTab, setActiveTab] = useState<"mine" | "partner">("mine")
@@ -12,13 +13,18 @@ export const PostList = () => {
   const location = useLocation()
 
   useEffect(() => {
+    const controller = new AbortController()
     const fetchPairStatus = async () => {
       try {
-        const res = await pairApi.getStatus()
+        const res = await pairApi.getStatus({ signal: controller.signal })
         setIsPaired(res.data.paired)
-      } catch {}
+      } catch (e) {
+        if (axios.isCancel(e)) return
+        console.error(e)
+      }
     }
     fetchPairStatus()
+    return () => controller.abort()
   }, [])
 
   useEffect(() => {

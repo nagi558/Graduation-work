@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react"
 import { pairApi } from "@/lib/pairApi"
-import type { PairStatus } from '@/types'
+import type { PairStatus } from "@/types"
 import { Spinner } from "../Spinner"
+import axios from "axios"
 
 export const PairStatusCard = () => {
   const [status, setStatus] = useState<PairStatus | null>(null)
@@ -12,20 +13,24 @@ export const PairStatusCard = () => {
   const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
+    const controller = new AbortController()
     const fetchStatus = async () => {
       try {
-        const res = await pairApi.getStatus()
+        const res = await pairApi.getStatus({ signal: controller.signal })
         setStatus(res.data)
         if (res.data.invitation_url) {
           setInviteUrl(res.data.invitation_url)
         }
-      } catch {
-        setError('状態の取得に失敗しました')
+      } catch (e) {
+        if (axios.isCancel(e)) return
+        console.error(e)
+        setError("状態の取得に失敗しました")
       } finally {
         setIsFetching(false)
       }
     }
     fetchStatus()
+    return () => controller.abort()
   }, [])
 
   const handleInvite = async () => {
@@ -38,8 +43,9 @@ export const PairStatusCard = () => {
       if (statusRes.data.invitation_url) {
         setInviteUrl(statusRes.data.invitation_url)
       }
-    } catch {
-      setError('招待URLの発行に失敗しました')
+    } catch (e) {
+      console.error(e)
+      setError("招待URLの発行に失敗しました")
     } finally {
       setIsLoading(false)
     }
@@ -53,13 +59,14 @@ export const PairStatusCard = () => {
   }
 
   const handleDisconnect = async () => {
-    if (!confirm('パートナー接続を解除しますか？')) return
+    if (!confirm("パートナー接続を解除しますか？")) return
     try {
       await pairApi.destroy()
       setStatus({ paired: false, pending: false })
       setInviteUrl(null)
-    } catch {
-      setError('解除に失敗しました')
+    } catch (e) {
+      console.error(e)
+      setError("解除に失敗しました")
     }
   }
 
@@ -80,7 +87,10 @@ export const PairStatusCard = () => {
           <div className="flex items-center gap-2">
             <span className="w-2 h-2 rounded-full bg-green-400 inline-block" />
             <span className="text-sm text-gray-600">
-              <span className="font-bold text-[#444444]">{status.partner_name}</span> さんと接続中
+              <span className="font-bold text-[#444444]">
+                {status.partner_name}
+              </span>{" "}
+              さんと接続中
             </span>
           </div>
           <button
@@ -91,15 +101,18 @@ export const PairStatusCard = () => {
           </button>
         </div>
       ) : status?.pending ? (
-
         <div className="space-y-3">
           <div className="flex items-center gap-2">
             <span className="w-2 h-2 rounded-full bg-yellow-400 inline-block" />
-            <span className="text-sm text-gray-400">招待中（相手の承認待ち）</span>
+            <span className="text-sm text-gray-400">
+              招待中（相手の承認待ち）
+            </span>
           </div>
           {inviteUrl && (
             <div className="space-y-2">
-              <div className="text-xs text gray-500">パートナーにこのURLを送ってください（24時間有効）</div>
+              <div className="text-xs text gray-500">
+                パートナーにこのURLを送ってください（24時間有効）
+              </div>
               <div className="flex gap-2">
                 <input
                   type="text"
@@ -111,7 +124,7 @@ export const PairStatusCard = () => {
                   onClick={handleCopy}
                   className="flex-1 text-xs border border-gray-200 rounded-lg px-3 py-2 bg-gray-50"
                 >
-                  {copied ? 'コピー済み' : 'コピー'}
+                  {copied ? "コピー済み" : "コピー"}
                 </button>
               </div>
             </div>
@@ -124,7 +137,6 @@ export const PairStatusCard = () => {
           </button>
         </div>
       ) : (
-
         <div className="space-y-2">
           <div className="flex items-center gap-2">
             <span className="w-2 h-2 rounded-full bg-gray-300 inline-block" />
@@ -132,7 +144,9 @@ export const PairStatusCard = () => {
           </div>
           {inviteUrl ? (
             <div className="space-y-2">
-              <div className="text-xs text-gray-500">パートナーにこのURLを送ってください（24時間有効）</div>
+              <div className="text-xs text-gray-500">
+                パートナーにこのURLを送ってください（24時間有効）
+              </div>
               <div className="flex gap-2">
                 <input
                   type="text"
@@ -144,7 +158,7 @@ export const PairStatusCard = () => {
                   onClick={handleCopy}
                   className="text-sm font-bold text-white bg-[#4f8196] hover:bg-[#80949e] px-3 py-2 rounded-lg transition duration-200"
                 >
-                  {copied ? 'コピー済み' : 'コピー'}
+                  {copied ? "コピー済み" : "コピー"}
                 </button>
               </div>
             </div>
@@ -154,7 +168,7 @@ export const PairStatusCard = () => {
               disabled={isLoading}
               className="text-sm font-bold text-white bg-[#4f8196] hover:bg-[#80949e] disabled:bg-gray-400 px-4 py-2 rounded-lg transition duration-200"
             >
-              {isLoading ? <Spinner size="sm" /> : '招待URLを発行する'}
+              {isLoading ? <Spinner size="sm" /> : "招待URLを発行する"}
             </button>
           )}
         </div>

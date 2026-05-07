@@ -5,6 +5,7 @@ import type { Post } from "@/types"
 import { Spinner } from "../Spinner"
 import { SimpleInfoModal } from "../ui/SimpleInfoModal"
 import { GuideModal } from "../ui/GuideModal"
+import axios from "axios"
 
 type Props = {
   isPaired: boolean
@@ -22,7 +23,7 @@ export const MyPostList = ({ isPaired }: Props) => {
   const [hasFetched, setHasFetched] = useState(false)
   const navigate = useNavigate()
 
-  const fetchPosts = async (title = "", body = "") => {
+  const fetchPosts = async (title = "", body = "", signal?: AbortSignal) => {
     setIsFetching(true)
     try {
       const response = await axiosInstance.get("/api/v1/posts", {
@@ -30,12 +31,15 @@ export const MyPostList = ({ isPaired }: Props) => {
           ...(title && { title }),
           ...(body && { body }),
         },
+        signal,
       })
       setPosts(response.data)
       if (response.data.length > 0) {
         setShowInfoModal(false)
       }
-    } catch {
+    } catch (e) {
+      if (axios.isCancel(e)) return
+      console.error(e)
       setError("投稿の取得に失敗しました")
     } finally {
       setIsFetching(false)
@@ -44,15 +48,24 @@ export const MyPostList = ({ isPaired }: Props) => {
   }
 
   useEffect(() => {
+    const controller = new AbortController()
     const checkGuide = async () => {
-      const response = await axiosInstance.get("/api/v1/user")
-      if (!response.data.has_seen_guide) {
-        setShowGuide(true)
-      } else {
-        fetchPosts()
+      try {
+        const response = await axiosInstance.get("/api/v1/user", {
+          signal: controller.signal,
+        })
+        if (!response.data.has_seen_guide) {
+          setShowGuide(true)
+        } else {
+          fetchPosts()
+        }
+      } catch (e) {
+        if (axios.isCancel(e)) return
+        console.error(e)
       }
     }
     checkGuide()
+    return () => controller.abort()
   }, [])
 
   const handleGuideClose = async () => {
