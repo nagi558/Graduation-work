@@ -82,7 +82,7 @@ export const Register = () => {
   }
 
   return (
-    <div className='min-h-full flex flex-col items-center py-10 bg-[#E8EEF1]'>
+    <div className='min-h-full flex flex-col items-center py-6 bg-[#E8EEF1]'>
       <div className="w-full max-w-md bg-white rounded-2xl shadow-md p-10">
         <h1 className="text-[38px] font-bold tracking-normal text-[#444444] text-center mb-8 font-sans pt-7">
           新規登録
