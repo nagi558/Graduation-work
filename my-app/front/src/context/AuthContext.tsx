@@ -16,15 +16,15 @@ const AuthContext = createContext<AuthContextType>({
 })
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false)
+  const [isLoggedIn, setIsLoggedIn] = useState(() => {
+  const token = localStorage.getItem('access-token')
+  return !!(token && token.length > 0)
+  })
+
   const [isLoading, setIsLoading] = useState(true)
 
   // ページ読み込み時にlocalStorageを確認
   useEffect(() => {
-    const token = localStorage.getItem('access-token')
-    if (token && token.length > 0) {
-      setIsLoggedIn(true)
-    }
     setIsLoading(false)
   }, [])
 
