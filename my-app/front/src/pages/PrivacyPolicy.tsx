@@ -5,7 +5,7 @@ export const PrivacyPolicy = () => {
 
   return (
     <div className="min-h-full bg-[#E8EEF1] pb-20">
-      <div className="max-w-2xl mx-auto pt-6 px-4">
+      <div className="max-w-2xl mx-auto pt-10 px-4">
         <div className="bg-white rounded-2xl shadow-sm p-8">
           <button
             onClick={() => navigate(-1)}

@@ -62,8 +62,8 @@ export const Contact = () => {
 
   if (isCompleted) {
     return (
-      <div className="min-h-screen bg-[#E8EEF1] pb-20">
-        <div className="max-w-2xl mx-auto pt-10 px-4">
+      <div className="min-h-full bg-[#E8EEF1] pt-6 py-6">
+        <div className="max-w-2xl mx-auto px-4">
           <div className="bg-white rounded-2xl shadow-sm p-10 text-center space-y-4">
             <div className="text-lg font -medium text-[#444444]">
               お問い合わせが完了しました。
@@ -83,7 +83,7 @@ export const Contact = () => {
   }
 
   return (
-    <div className="min-h-screen bg-[#E8EEF1] pb-20">
+    <div className="min-h-full bg-[#E8EEF1] pt-6 py-6">
       <div className="max-w-2xl mx-auto pt-4 px-4">
 
         {error && (
@@ -100,7 +100,7 @@ export const Contact = () => {
             </h1>
 
             <div>
-              <label className="block text-lg font-medium text-gray-700 mb-1 text-left">
+              <label className="block text-sm font-medium text-gray-700 mb-1 text-left">
                 メールアドレス
               </label>
               <input
@@ -114,7 +114,7 @@ export const Contact = () => {
             </div>
 
             <div>
-              <label className="block text-lg font-medium text-gray-700 mb-1 text-left">
+              <label className="block text-sm font-medium text-gray-700 mb-1 text-left">
                 お問い合わせ内容
               </label>
               <textarea
@@ -139,7 +139,6 @@ export const Contact = () => {
                 {isSubmitting ? <Spinner size="sm" /> : '送信する'}
               </button>
             </div>
-            
           </form>
         </div>
       </div>
