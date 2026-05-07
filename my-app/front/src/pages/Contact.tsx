@@ -62,8 +62,8 @@ export const Contact = () => {
 
   if (isCompleted) {
     return (
-      <div className="h-full bg-[#E8EEF1] flex items-start justify-center pt-20">
-        <div className="w-full max-w-2xl px-4">
+      <div className="min-h-screen bg-[#E8EEF1] pb-20">
+        <div className="max-w-2xl mx-auto pt-10 px-4">
           <div className="bg-white rounded-2xl shadow-sm p-10 text-center space-y-4">
             <div className="text-lg font -medium text-[#444444]">
               お問い合わせが完了しました。

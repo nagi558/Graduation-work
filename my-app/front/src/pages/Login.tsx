@@ -1,104 +1,92 @@
-import React, { useState } from 'react'
-import { useNavigate, useLocation } from 'react-router-dom'
-import axiosInstance from '@/lib/axios'
-import { useAuth } from '@/context/AuthContext'
-import { Spinner } from '@/components/Spinner'
-import GoogleLoginButton from '@/components/GoogleLoginButton'
+import React, { useState } from "react"
+import { useNavigate, useLocation } from "react-router-dom"
+import axiosInstance from "@/lib/axios"
+import { useAuth } from "@/context/AuthContext"
+import { Spinner } from "@/components/Spinner"
+import GoogleLoginButton from "@/components/GoogleLoginButton"
 
 export const Login = () => {
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
+  const [email, setEmail] = useState("")
+  const [password, setPassword] = useState("")
   const [error, setError] = useState<string | null>(null)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const { login } = useAuth()
 
   const navigate = useNavigate()
   const location = useLocation()
-  const from = (location.state as { from?: Location })?.from ?? '/posts'
+  const from = (location.state as { from?: Location })?.from ?? "/posts"
 
   const validateForm = (): boolean => {
-    // メールアドレスの空チェック
     if (email === "") {
-      setError('メールアドレスを入力してください')
+      setError("メールアドレスを入力してください")
       return false
     }
 
-    // パスワードの空チェック
     if (password === "") {
-      setError('パスワードを入力してください')
+      setError("パスワードを入力してください")
       return false
     }
 
-    // メールアドレスの形式チェック
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
     if (!emailRegex.test(email)) {
-      setError('有効なメールアドレスを入力してください')
+      setError("有効なメールアドレスを入力してください")
       return false
     }
 
     return true
   }
 
-  // フォーム送信
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setError(null)
 
-    // バリデーション実行
     if (!validateForm()) {
       return
     }
 
     try {
-    // ローディングかいし
-    setIsSubmitting(true)
+      setIsSubmitting(true)
 
-    // APIリクエスト
-    const response = await axiosInstance.post('/auth/sign_in', {
-      email,
-      password
-    })
+      const response = await axiosInstance.post("/auth/sign_in", {
+        email,
+        password,
+      })
 
-    // 成功時の処理
-    const accessToken = response.headers['access-token'] as string ?? ''
-    const client = response.headers['client'] as string ?? ''
-    const uid = response.headers['uid'] as string ?? ''
+      const accessToken = (response.headers["access-token"] as string) ?? ""
+      const client = (response.headers["client"] as string) ?? ""
+      const uid = (response.headers["uid"] as string) ?? ""
 
-    localStorage.setItem('access-token', accessToken)
-    localStorage.setItem('client', client)
-    localStorage.setItem('uid', uid)
-    login()
-    navigate(from)
-
+      localStorage.setItem("access-token", accessToken)
+      localStorage.setItem("client", client)
+      localStorage.setItem("uid", uid)
+      login()
+      navigate(from)
     } catch (err: any) {
-        setError("メールアドレスまたはパスワードが正しくありません")
+      setError("メールアドレスまたはパスワードが正しくありません")
     } finally {
       setIsSubmitting(false)
     }
   }
 
   return (
-    <div className='h-full flex flex-col items-center justify-center bg-[#E8EEF1]'>
+    <div className="min-h-full flex flex-col items-center py-10 bg-[#E8EEF1]">
       <div className="w-full max-w-md bg-white rounded-2xl shadow-md p-10">
-
-        {/* タイトル */}
         <h1 className="text-[38px] font-bold tracking-normal text-[#444444] text-center mb-8 font-sans pt-7">
           ログイン
         </h1>
 
-        {/* エラーメッセージ */}
         {error && (
           <div className="mb-4 p-3 bg-red-100 border-red-400 text-red-700 rounded">
             {error}
           </div>
         )}
 
-        {/* 登録フォーム */}
         <form onSubmit={handleSubmit} className="space-y-4">
-
-        {/* メール入力 */}
           <div>
-            <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1 text-left">
+            <label
+              htmlFor="email"
+              className="block text-sm font-medium text-gray-700 mb-1 text-left"
+            >
               メールアドレス
             </label>
             <input
@@ -111,9 +99,11 @@ export const Login = () => {
             />
           </div>
 
-          {/* パスワード入力 */}
           <div>
-            <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1 text-left">
+            <label
+              htmlFor="password"
+              className="block text-sm font-medium text-gray-700 mb-1 text-left"
+            >
               パスワード
             </label>
             <input
@@ -126,26 +116,21 @@ export const Login = () => {
             />
           </div>
 
-          {/* パスワードを忘れた方 */}
           <p className="text-right mt-3 text-sm">
             <span
-              onClick={() => navigate('/forgot-password')}
-              className="text-gray-500 underline cursor-pointer ml-1 hover:text-[#4f8196]">
+              onClick={() => navigate("/forgot-password")}
+              className="text-gray-500 underline cursor-pointer ml-1 hover:text-[#4f8196]"
+            >
               パスワードを忘れた方はこちら
             </span>
           </p>
 
-          {/* ログイン */}
           <button
             type="submit"
             disabled={isSubmitting}
             className="w-full bg-[#4f8196] hover:bg-[#80949e] disabled:bg-gray-400 text-white font-bold py-3 px-4 rounded-xl shadow-lg transition duration-200 mt-2"
           >
-            {isSubmitting ? (
-              <Spinner size="sm" />
-            ): (
-              "ログイン"
-            )}
+            {isSubmitting ? <Spinner size="sm" /> : "ログイン"}
           </button>
         </form>
 
@@ -156,14 +141,12 @@ export const Login = () => {
         </div>
 
         <GoogleLoginButton />
-
       </div>
 
-      {/* 新規登録画面へ誘導 */}
       <p className="!mt-4 text-sm text-gray-500 text-center">
         はじめての方は
         <span
-          onClick={() => navigate('/register')}
+          onClick={() => navigate("/register")}
           className="text-gray-500 underline cursor-pointer ml-1 hover:text-[#4f8196]"
         >
           こちら

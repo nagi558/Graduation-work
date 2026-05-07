@@ -4,7 +4,7 @@ export const ForgotPasswordSent = () => {
   const navigate = useNavigate()
 
   return (
-    <div className='min-h-screen flex flex-col items-center pt-8 bg-[#E8EEF1]'>
+    <div className='min-h-full flex flex-col items-center pt-8 bg-[#E8EEF1]'>
       <div className="w-full max-w-md bg-white rounded-2xl shadow-md p-10 text-center">
         <div className="text-5xl mb-6">✉️</div>
         <h1 className="text-[28px] font-bold text-[#444444] mb-4 font-sans">

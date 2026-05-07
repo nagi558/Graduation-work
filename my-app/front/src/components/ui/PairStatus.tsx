@@ -109,7 +109,7 @@ export const PairStatusCard = () => {
                 />
                 <button
                   onClick={handleCopy}
-                  className="text-sm font-bold text-white bg-[#4f8196] hover:bg-[#80949e] px-3 py-2 rounded-lg transition duration-200"
+                  className="flex-1 text-xs border border-gray-200 rounded-lg px-3 py-2 bg-gray-50"
                 >
                   {copied ? 'コピー済み' : 'コピー'}
                 </button>

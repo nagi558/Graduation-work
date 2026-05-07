@@ -16,25 +16,21 @@ export const Register = () => {
   const navigate = useNavigate()
 
   const validateForm = (): boolean => {
-    // 必須項目チェック
     if (!nickname || !email || !password || !password_confirmation) {
       setError('すべての項目を入力してください')
       return false
     }
 
-    // パスワードの長さをチェック
     if (password.length < 6) {
       setError('パスワードは6文字以上で入力してください')
       return false
     }
 
-    // パスワードの一致確認
     if (password !== password_confirmation) {
       setError("パスワードが一致しません")
       return false
     }
 
-    // メール形式チェック
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
     if (!emailRegex.test(email)) {
       setError('有効なメールアドレスを入力してください')
@@ -44,12 +40,10 @@ export const Register = () => {
     return true
   }
 
-  // フォーム送信
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setError(null)
 
-    // バリデーション
     if (!validateForm()) {
       return
     }
@@ -57,7 +51,6 @@ export const Register = () => {
     setIsSubmitting(true)
 
     try {
-      // APIリクエスト
       const response = await axiosInstance.post('/auth', {
         nickname,
         email,
@@ -78,7 +71,6 @@ export const Register = () => {
       navigate("/posts")
 
     } catch (err) {
-      // エラー処理
       if (err instanceof Error) {
         setError(err.message)
       } else {
@@ -90,24 +82,19 @@ export const Register = () => {
   }
 
   return (
-    <div className='min-h-screen flex flex-col items-center pt-8 bg-[#E8EEF1]'>
+    <div className='min-h-full flex flex-col items-center py-10 bg-[#E8EEF1]'>
       <div className="w-full max-w-md bg-white rounded-2xl shadow-md p-10">
-
-        {/* タイトル */}
         <h1 className="text-[38px] font-bold tracking-normal text-[#444444] text-center mb-8 font-sans pt-7">
           新規登録
         </h1>
 
-        {/* エラーメッセージ */}
         {error && (
           <div className="mb-4 p-3 bg-red-100 border-red-400 text-red-700 rounded">
             {error}
           </div>
         )}
 
-        {/* 登録フォーム */}
         <form onSubmit={handleSubmit} className="space-y-4">
-          {/* ニックネーム入力 */}
           <div>
             <label htmlFor="nickname" className="block text-sm font-medium text-gray-700 mb-1 text-left">
               ニックネーム
@@ -123,7 +110,6 @@ export const Register = () => {
             />
           </div>
 
-          {/* メール入力 */}
           <div>
             <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1 text-left">
               メールアドレス
@@ -139,7 +125,6 @@ export const Register = () => {
             />
           </div>
 
-          {/* パスワード入力 */}
           <div>
             <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1 text-left">
               パスワード
@@ -155,7 +140,6 @@ export const Register = () => {
             />
           </div>
 
-          {/* パスワード確認入力 */}
           <div>
             <label htmlFor="password_confirmation" className="block text-sm font-medium text-gray-700 mb-1 text-left">
               パスワード（確認）
@@ -171,7 +155,6 @@ export const Register = () => {
             />
           </div>
 
-          {/* 登録ボタン */}
           <button
             type="submit"
             disabled={isSubmitting}
@@ -182,7 +165,6 @@ export const Register = () => {
         </form>
       </div>
 
-      {/* ログインページへのリンク */}
       <p className="!mt-4 text-sm text-gray-500 text-center">
         既に登録済みの方は
         <span

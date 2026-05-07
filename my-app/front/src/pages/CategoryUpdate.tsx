@@ -78,7 +78,7 @@ export const CategoryUpdate = () => {
   }
 
   return (
-    <div className="min-h-screen bg-[#E8EEF1] flex items-start justify-center pt-30">
+    <div className="min-h-full bg-[#E8EEF1] flex items-start justify-center pt-30">
       <div className="w-full max-w-2xl px-4">
         {error && (
           <div className="mb-4 p-3 bg-red-100 border-red-400 text-red-700 rounded">
