@@ -115,24 +115,26 @@ export const MyPostList = ({ isPaired }: Props) => {
         </div>
       )}
 
-      <div className="flex gap-2 mb-2">
-        <input
-          type="text"
-          placeholder="タイトル検索"
-          value={titleQuery}
-          onChange={(e) => setTitleQuery(e.target.value)}
-          className="flex-1 border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#4f8196]"
-        />
-        <input
-          type="text"
-          placeholder="本文検索"
-          value={bodyQuery}
-          onChange={(e) => setBodyQuery(e.target.value)}
-          className="flex-1 border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#4f8196]"
-        />
+      <div className="flex flex-col sm:flex-row gap-2 mb-2">
+        <div className="flex gap-2 flex-1">
+          <input
+            type="text"
+            placeholder="タイトル検索"
+            value={titleQuery}
+            onChange={(e) => setTitleQuery(e.target.value)}
+            className="flex-1 min-w-0 border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#4f8196]"
+          />
+          <input
+            type="text"
+            placeholder="本文検索"
+            value={bodyQuery}
+            onChange={(e) => setBodyQuery(e.target.value)}
+            className="flex-1 min-w-0 border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#4f8196]"
+          />
+        </div>
         <button
           onClick={handleSearch}
-          className="bg-[#4f8196] hover:bg-[#80949e] text-white text-sm font-bold py-2 px-4 rounded-xl shadow transition duration-200"
+          className="bg-[#4f8196] hover:bg-[#80949e] text-white text-sm font-bold py-2 px-4 rounded-xl shadow transition duration-200 sm:w-auto w-full"
         >
           検索
         </button>
