@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useEffect, useState, useRef } from "react"
 import { useNavigate } from "react-router-dom"
 import axiosInstance from "@/lib/axios"
 import type { Post } from "@/types"
@@ -24,6 +24,8 @@ export const MyPostList = ({ isPaired }: Props) => {
   const [hasFetched, setHasFetched] = useState(false)
   const navigate = useNavigate()
   const { hasSeenGuide, updateHasSeenGuide } = useAuth()
+const initializedRef = useRef(false)
+
 
   const fetchPosts = async (title = "", body = "", signal?: AbortSignal) => {
     setIsFetching(true)
@@ -49,13 +51,17 @@ export const MyPostList = ({ isPaired }: Props) => {
     }
   }
 
-  useEffect(() => {
-    if (!hasSeenGuide) {
-      setShowGuide(true)
-    } else {
-      fetchPosts()
-    }
-  }, [hasSeenGuide])
+
+useEffect(() => {
+  if (initializedRef.current) return
+  initializedRef.current = true
+  if (!hasSeenGuide) {
+    setShowGuide(true)
+  } else {
+    fetchPosts()
+  }
+}, [hasSeenGuide])
+
 
   const handleGuideClose = async () => {
     axiosInstance.patch("/api/v1/user/update_guide")
