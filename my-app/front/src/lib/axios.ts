@@ -1,12 +1,12 @@
-import axios from 'axios'
-import { tokenStorage } from './tokenStorage'
+import axios from "axios"
+import { tokenStorage } from "./tokenStorage"
 
 const axiosInstance = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || 'http://localhost:3000',
+  baseURL: import.meta.env.VITE_API_URL || "http://localhost:3000",
   headers: {
-    'Content-Type': 'application/json'
+    "Content-Type": "application/json",
   },
-  timeout: 30000
+  timeout: 30000,
 })
 
 axiosInstance.interceptors.request.use(
@@ -14,21 +14,21 @@ axiosInstance.interceptors.request.use(
     const { accessToken, client, uid } = tokenStorage.get()
 
     if (accessToken && client && uid) {
-      config.headers['access-token'] = accessToken
-      config.headers['client'] = client
-      config.headers['uid'] = uid
+      config.headers["access-token"] = accessToken
+      config.headers["client"] = client
+      config.headers["uid"] = uid
     }
 
     return config
   },
-  (error) => Promise.reject(error)
+  (error) => Promise.reject(error),
 )
 
 axiosInstance.interceptors.response.use(
   (response) => {
-    const accessToken = response.headers['access-token']
-    const client = response.headers['client']
-    const uid = response.headers['uid']
+    const accessToken = response.headers["access-token"]
+    const client = response.headers["client"]
+    const uid = response.headers["uid"]
 
     if (accessToken && client && uid) {
       tokenStorage.set({ accessToken, client, uid })
@@ -37,18 +37,22 @@ axiosInstance.interceptors.response.use(
     return response
   },
   (error) => {
+    if (axios.isCancel(error)) {
+      return Promise.reject(error)
+    }
+
     const status = error.response?.status
     const skipGlobalError = error.config?.skipGlobalError
 
     if (status === 401) {
-      const url = error.config?.url || ''
-      if (url.includes('/auth/sign_in') || url.includes('/auth')) {
+      const url = error.config?.url || ""
+      if (url.includes("/auth/sign_in") || url.includes("/auth")) {
         return Promise.reject(error)
       }
       tokenStorage.clear()
 
-      if (window.location.pathname !== '/login') {
-        window.dispatchEvent(new CustomEvent('auth:unauthorized'))
+      if (window.location.pathname !== "/login") {
+        window.dispatchEvent(new CustomEvent("auth:unauthorized"))
       }
     }
 
@@ -57,27 +61,31 @@ axiosInstance.interceptors.response.use(
     }
 
     if (!error.response) {
-      console.error('Network Error:', error)
+      console.error("Network Error:", error)
 
-      window.dispatchEvent(new CustomEvent('api:error', {
-        detail: { message: 'ネットワークエラーが発生しました'}
-      }))
+      window.dispatchEvent(
+        new CustomEvent("api:error", {
+          detail: { message: "ネットワークエラーが発生しました" },
+        }),
+      )
 
       return Promise.reject(error)
     }
 
     if (status >= 500) {
-      console.error('Server Error:', error.response)
+      console.error("Server Error:", error.response)
 
-      window.dispatchEvent(new CustomEvent('api:error', {
-        detail: {
-          message: 'サーバーエラーが発生しました',
-          status
-        }
-      }))
+      window.dispatchEvent(
+        new CustomEvent("api:error", {
+          detail: {
+            message: "サーバーエラーが発生しました",
+            status,
+          },
+        }),
+      )
     }
     return Promise.reject(error)
-  }
+  },
 )
 
 export default axiosInstance
