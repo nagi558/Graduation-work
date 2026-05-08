@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useEffect, useState, useRef } from "react"
 import { useNavigate } from "react-router-dom"
 import axiosInstance from "@/lib/axios"
 import type { Post } from "@/types"
@@ -6,6 +6,7 @@ import { Spinner } from "../Spinner"
 import { SimpleInfoModal } from "../ui/SimpleInfoModal"
 import { GuideModal } from "../ui/GuideModal"
 import axios from "axios"
+import { useAuth } from "@/context/AuthContext"
 
 type Props = {
   isPaired: boolean
@@ -22,6 +23,9 @@ export const MyPostList = ({ isPaired }: Props) => {
   const [showInfoModal, setShowInfoModal] = useState(false)
   const [hasFetched, setHasFetched] = useState(false)
   const navigate = useNavigate()
+  const { hasSeenGuide, updateHasSeenGuide } = useAuth()
+const initializedRef = useRef(false)
+
 
   const fetchPosts = async (title = "", body = "", signal?: AbortSignal) => {
     setIsFetching(true)
@@ -47,29 +51,21 @@ export const MyPostList = ({ isPaired }: Props) => {
     }
   }
 
-  useEffect(() => {
-    const controller = new AbortController()
-    const checkGuide = async () => {
-      try {
-        const response = await axiosInstance.get("/api/v1/user", {
-          signal: controller.signal,
-        })
-        if (!response.data.has_seen_guide) {
-          setShowGuide(true)
-        } else {
-          fetchPosts()
-        }
-      } catch (e) {
-        if (axios.isCancel(e)) return
-        console.error(e)
-      }
-    }
-    checkGuide()
-    return () => controller.abort()
-  }, [])
+
+useEffect(() => {
+  if (initializedRef.current) return
+  initializedRef.current = true
+  if (!hasSeenGuide) {
+    setShowGuide(true)
+  } else {
+    fetchPosts()
+  }
+}, [hasSeenGuide])
+
 
   const handleGuideClose = async () => {
     axiosInstance.patch("/api/v1/user/update_guide")
+    updateHasSeenGuide()
     setShowGuide(false)
     setShowInfoModal(true)
     fetchPosts()
