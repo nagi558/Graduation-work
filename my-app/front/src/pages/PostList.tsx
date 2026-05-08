@@ -1,31 +1,15 @@
 import { useEffect, useState } from "react"
-import { pairApi } from "@/lib/pairApi"
+import { useAuth } from "@/context/AuthContext"
 import { MyPostList } from "@/components/posts/MyPostList"
 import { PartnerPostList } from "@/components/posts/PartnerPostList"
 import { Toast } from "@/components/ui/Toast"
 import { useLocation } from "react-router-dom"
-import axios from 'axios'
 
 export const PostList = () => {
   const [activeTab, setActiveTab] = useState<"mine" | "partner">("mine")
-  const [isPaired, setIsPaired] = useState(false)
+  const { isPaired } = useAuth()
   const [showToast, setShowToast] = useState(false)
   const location = useLocation()
-
-  useEffect(() => {
-    const controller = new AbortController()
-    const fetchPairStatus = async () => {
-      try {
-        const res = await pairApi.getStatus({ signal: controller.signal })
-        setIsPaired(res.data.paired)
-      } catch (e) {
-        if (axios.isCancel(e)) return
-        console.error(e)
-      }
-    }
-    fetchPairStatus()
-    return () => controller.abort()
-  }, [])
 
   useEffect(() => {
     if (location.state?.created) {

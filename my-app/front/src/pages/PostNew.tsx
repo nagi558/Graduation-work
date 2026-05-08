@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import axiosInstance from "@/lib/axios"
-import { pairApi } from "@/lib/pairApi"
 import type { Category } from "@/types"
 import { Spinner } from "@/components/Spinner"
+import { useAuth } from "@/context/AuthContext"
 import axios from "axios"
 
 export const PostNew = () => {
@@ -12,9 +12,9 @@ export const PostNew = () => {
   const [categoryId, setCategoryId] = useState<number | null>(null)
   const [categories, setCategories] = useState<Category[]>([])
   const [canView, setCanView] = useState(false)
-  const [isPaired, setIsPaired] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const { isPaired } = useAuth()
 
   const navigate = useNavigate()
 
@@ -41,17 +41,7 @@ export const PostNew = () => {
         setError("カテゴリの取得に失敗しました")
       }
     }
-    const fetchPairStatus = async () => {
-      try {
-        const res = await pairApi.getStatus({ signal: controller.signal })
-        setIsPaired(res.data.paired)
-      } catch (e) {
-        if (axios.isCancel(e)) return
-        console.error(e)
-      }
-    }
     fetchCategories()
-    fetchPairStatus()
     return () => controller.abort()
   }, [])
 
