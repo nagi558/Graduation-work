@@ -6,6 +6,7 @@ import { Spinner } from "../Spinner"
 import { SimpleInfoModal } from "../ui/SimpleInfoModal"
 import { GuideModal } from "../ui/GuideModal"
 import axios from "axios"
+import { useAuth } from "@/context/AuthContext"
 
 type Props = {
   isPaired: boolean
@@ -22,6 +23,7 @@ export const MyPostList = ({ isPaired }: Props) => {
   const [showInfoModal, setShowInfoModal] = useState(false)
   const [hasFetched, setHasFetched] = useState(false)
   const navigate = useNavigate()
+  const { hasSeenGuide, updateHasSeenGuide } = useAuth()
 
   const fetchPosts = async (title = "", body = "", signal?: AbortSignal) => {
     setIsFetching(true)
@@ -48,28 +50,16 @@ export const MyPostList = ({ isPaired }: Props) => {
   }
 
   useEffect(() => {
-    const controller = new AbortController()
-    const checkGuide = async () => {
-      try {
-        const response = await axiosInstance.get("/api/v1/user", {
-          signal: controller.signal,
-        })
-        if (!response.data.has_seen_guide) {
-          setShowGuide(true)
-        } else {
-          fetchPosts()
-        }
-      } catch (e) {
-        if (axios.isCancel(e)) return
-        console.error(e)
-      }
+    if (!hasSeenGuide) {
+      setShowGuide(true)
+    } else {
+      fetchPosts()
     }
-    checkGuide()
-    return () => controller.abort()
-  }, [])
+  }, [hasSeenGuide])
 
   const handleGuideClose = async () => {
     axiosInstance.patch("/api/v1/user/update_guide")
+    updateHasSeenGuide()
     setShowGuide(false)
     setShowInfoModal(true)
     fetchPosts()
