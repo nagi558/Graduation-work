@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react"
 import { useNavigate, useParams } from "react-router-dom"
 import axiosInstance from "@/lib/axios"
-import { pairApi } from "@/lib/pairApi"
 import type { Category } from "@/types"
 import { Spinner } from "@/components/Spinner"
 import axios from "axios"
+import { useAuth } from "@/context/AuthContext"
 
 export const PostUpdate = () => {
   const [title, setTitle] = useState("")
@@ -12,10 +12,11 @@ export const PostUpdate = () => {
   const [categoryId, setCategoryId] = useState<number | null>(null)
   const [categories, setCategories] = useState<Category[]>([])
   const [canView, setCanView] = useState(false)
-  const [isPaired, setIsPaired] = useState(false)
+
   const [error, setError] = useState<string | null>(null)
   const [isFetching, setIsFetching] = useState(true)
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const { isPaired } = useAuth()
 
   const { id } = useParams()
   const navigate = useNavigate()
@@ -60,18 +61,10 @@ export const PostUpdate = () => {
         setIsFetching(false)
       }
     }
-    const fetchPairStatus = async () => {
-      try {
-        const res = await pairApi.getStatus({ signal: controller.signal })
-        setIsPaired(res.data.paired)
-      } catch (e) {
-        if (axios.isCancel(e)) return
-        console.error(e)
-      }
-    }
+
     fetchCategories()
     fetchPost()
-    fetchPairStatus()
+
     return () => controller.abort()
   }, [id])
 
