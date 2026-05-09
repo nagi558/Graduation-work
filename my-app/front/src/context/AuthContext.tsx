@@ -7,6 +7,7 @@ import axiosInstance from "@/lib/axios"
 type AuthContextType = {
   isLoggedIn: boolean
   isLoading: boolean
+  isReady: boolean
   isPaired: boolean
   hasSeenGuide: boolean
   login: () => void
@@ -17,6 +18,7 @@ type AuthContextType = {
 const AuthContext = createContext<AuthContextType>({
   isLoggedIn: false,
   isLoading: true,
+  isReady: false,
   isPaired: false,
   hasSeenGuide: false,
   login: () => {},
@@ -30,29 +32,34 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     return !!(token && token.length > 0)
   })
   const [isLoading, setIsLoading] = useState(true)
+  const [isReady, setIsReady] = useState(false)
   const [isPaired, setIsPaired] = useState(false)
   const [hasSeenGuide, setHasSeenGuide] = useState(false)
 
   useEffect(() => {
-    setIsLoading(false)
-  }, [])
-
-  useEffect(() => {
-    if (!isLoggedIn) return
-    const controller = new AbortController()
-    const fetchUserData = async () => {
-      try {
-        const [pairRes, userRes] = await Promise.all([
-          pairApi.getStatus({ signal: controller.signal }),
-          axiosInstance.get("/api/v1/user", { signal: controller.signal }),
-        ])
-        setIsPaired(pairRes.data.paired)
-        setHasSeenGuide(userRes.data.has_seen_guide)
-      } catch (e) {
-        if (axios.isCancel(e)) return
-        console.error(e)
-      }
+    if (!isLoggedIn) {
+      setIsLoading(false)
+      setIsReady(false)
+      return
     }
+    const controller = new AbortController()
+const fetchUserData = async () => {
+  try {
+    const [pairRes, userRes] = await Promise.all([
+      pairApi.getStatus({ signal: controller.signal }),
+      axiosInstance.get("/api/v1/user", { signal: controller.signal }),
+    ])
+    setIsPaired(pairRes.data.paired)
+    setHasSeenGuide(userRes.data.has_seen_guide)
+    setIsLoading(false)
+    setIsReady(true)
+  } catch (e) {
+    if (axios.isCancel(e)) return
+    console.error(e)
+    setIsLoading(false)
+    setIsReady(true)
+  }
+}
     fetchUserData()
     return () => controller.abort()
   }, [isLoggedIn])
@@ -63,6 +70,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const logout = () => {
     setIsLoggedIn(false)
+    setIsReady(false)
     setIsPaired(false)
     localStorage.removeItem("access-token")
     localStorage.removeItem("client")
@@ -78,6 +86,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       value={{
         isLoggedIn,
         isLoading,
+        isReady,
         isPaired,
         hasSeenGuide,
         login,
