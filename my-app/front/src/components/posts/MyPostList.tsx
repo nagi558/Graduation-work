@@ -23,9 +23,8 @@ export const MyPostList = ({ isPaired }: Props) => {
   const [showInfoModal, setShowInfoModal] = useState(false)
   const [hasFetched, setHasFetched] = useState(false)
   const navigate = useNavigate()
-  const { hasSeenGuide, updateHasSeenGuide } = useAuth()
-const initializedRef = useRef(false)
-
+  const { hasSeenGuide, updateHasSeenGuide, isLoading } = useAuth()
+  const initializedRef = useRef(false)
 
   const fetchPosts = async (title = "", body = "", signal?: AbortSignal) => {
     setIsFetching(true)
@@ -51,17 +50,16 @@ const initializedRef = useRef(false)
     }
   }
 
-
-useEffect(() => {
-  if (initializedRef.current) return
-  initializedRef.current = true
-  if (!hasSeenGuide) {
-    setShowGuide(true)
-  } else {
-    fetchPosts()
-  }
-}, [hasSeenGuide])
-
+  useEffect(() => {
+    if (isLoading) return
+    if (initializedRef.current) return
+    initializedRef.current = true
+    if (!hasSeenGuide) {
+      setShowGuide(true)
+    } else {
+      fetchPosts()
+    }
+  }, [isLoading, hasSeenGuide])
 
   const handleGuideClose = async () => {
     axiosInstance.patch("/api/v1/user/update_guide")
