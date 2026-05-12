@@ -48,6 +48,45 @@
 
 ---
 
+## 機能詳細
+
+### ログイン
+<img width="1921" height="963" alt="スクリーンショット 2026-05-12 9 13 07" src="https://github.com/user-attachments/assets/cde7ea2c-42b0-4b97-aa79-46f47d92816b" />
+
+新規登録したメールアドレス or Gmailでのログインが可能です
+
+### 「伝えたいこと」一覧
+<img width="1920" height="966" alt="スクリーンショット 2026-05-12 9 13 52" src="https://github.com/user-attachments/assets/bbf97f77-2e3b-4397-a3e7-14800211d645" />
+
+当アプリのメイン機能です。ここに自分が投稿した「伝えたいこと」が追加されていきます。検索機能では、タイトルと本文それぞれで検索を行うことが可能です。
+
+### 「伝えたいこと」新規作成
+<img width="1922" height="965" alt="スクリーンショット 2026-05-12 9 14 15" src="https://github.com/user-attachments/assets/e64e3e9a-ec54-49da-ad10-daecb34b4e37" />
+
+ここから「伝えたいこと」を作成していきます。「伝えたいこと」はカテゴリごとに分類をしておくことができます。
+
+### カテゴリ管理
+https://github.com/user-attachments/assets/66c6233f-2148-4262-91b9-352c22b0cbd6
+
+カテゴリは自身の好みに合わせて編集と新規作成が可能です。
+
+### カテゴリ別「伝えたいこと」一覧
+https://github.com/user-attachments/assets/3e6a133b-f3f4-4a4b-a5ae-8ce309c4ec4d
+
+自身で振り分けたカテゴリ別に「伝えたいこと」を確認することが可能です。
+
+### パートナー連携
+https://github.com/user-attachments/assets/f0017adf-946a-4dfa-8147-76504f7a5c2d
+
+パートナーとの連携を行うことでパートナーの許可した「伝えたいこと」を閲覧することが可能です。パートナー招待は発行したURLの共有のみで行えます。
+
+### パートナーの投稿確認
+https://github.com/user-attachments/assets/8a90bcdb-2702-4066-8199-15002094394a
+
+パートナーとの連携後は「パートナーの投稿」ページが出来上がり、投稿を見ることが可能です。
+
+---
+
 ## 技術スタック
 
 ### フロントエンド
