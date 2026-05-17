@@ -47,18 +47,11 @@ export const Login = () => {
     try {
       setIsSubmitting(true)
 
-      const response = await axiosInstance.post("/auth/sign_in", {
+      await axiosInstance.post("/auth/sign_in", {
         email,
         password,
       })
 
-      const accessToken = (response.headers["access-token"] as string) ?? ""
-      const client = (response.headers["client"] as string) ?? ""
-      const uid = (response.headers["uid"] as string) ?? ""
-
-      localStorage.setItem("access-token", accessToken)
-      localStorage.setItem("client", client)
-      localStorage.setItem("uid", uid)
       login()
       navigate(from)
     } catch (err: any) {
