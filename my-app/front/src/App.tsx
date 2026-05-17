@@ -34,7 +34,9 @@ const UnauthorizedHandler = () => {
   const navigate = useNavigate()
 
   useEffect(() => {
-    const handler = () => navigate("/login")
+    const handler = () => {
+      navigate("/login")
+    }
     window.addEventListener("auth:unauthorized", handler)
     return () => window.removeEventListener("auth:unauthorized", handler)
   }, [navigate])
