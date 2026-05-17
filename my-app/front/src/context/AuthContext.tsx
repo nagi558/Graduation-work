@@ -3,6 +3,7 @@ import type { ReactNode } from "react"
 import { pairApi } from "@/lib/pairApi"
 import axios from "axios"
 import axiosInstance from "@/lib/axios"
+import { tokenStorage } from "@/lib/tokenStorage"
 
 type AuthContextType = {
   isLoggedIn: boolean
@@ -27,54 +28,52 @@ const AuthContext = createContext<AuthContextType>({
 })
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
-  const [isLoggedIn, setIsLoggedIn] = useState(() => {
-    const token = localStorage.getItem("access-token")
-    return !!(token && token.length > 0)
-  })
+  const [isLoggedIn, setIsLoggedIn] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
   const [isReady, setIsReady] = useState(false)
   const [isPaired, setIsPaired] = useState(false)
   const [hasSeenGuide, setHasSeenGuide] = useState(false)
 
   useEffect(() => {
-    if (!isLoggedIn) {
-      setIsLoading(false)
-      setIsReady(false)
-      return
-    }
     const controller = new AbortController()
-const fetchUserData = async () => {
-  try {
-    const [pairRes, userRes] = await Promise.all([
-      pairApi.getStatus({ signal: controller.signal }),
-      axiosInstance.get("/api/v1/user", { signal: controller.signal }),
-    ])
-    setIsPaired(pairRes.data.paired)
-    setHasSeenGuide(userRes.data.has_seen_guide)
-    setIsLoading(false)
-    setIsReady(true)
-  } catch (e) {
-    if (axios.isCancel(e)) return
-    console.error(e)
-    setIsLoading(false)
-    setIsReady(true)
-  }
-}
-    fetchUserData()
-    return () => controller.abort()
-  }, [isLoggedIn])
+    let cancelled = false
+
+    const checkAuth = async () => {
+      try {
+        const [pairRes, userRes] = await Promise.all([
+          pairApi.getStatus({ signal: controller.signal }),
+          axiosInstance.get("/api/v1/user", { signal: controller.signal }),
+        ])
+        if (cancelled) return
+        setIsLoggedIn(true)
+        setIsPaired(pairRes.data.paired)
+        setHasSeenGuide(userRes.data.has_seen_guide)
+      } catch (e) {
+        if (cancelled) return
+        if (axios.isCancel(e)) return
+        setIsLoggedIn(false)
+      } finally {
+        setIsLoading(false)
+        setIsReady(true)
+      }
+    }
+
+    checkAuth()
+    return () => {
+      cancelled = true
+      controller.abort()}
+  }, [])
 
   const login = () => {
     setIsLoggedIn(true)
+    setIsReady(true)
   }
 
   const logout = () => {
     setIsLoggedIn(false)
     setIsReady(false)
     setIsPaired(false)
-    localStorage.removeItem("access-token")
-    localStorage.removeItem("client")
-    localStorage.removeItem("uid")
+    tokenStorage.clear()
   }
 
   const updateHasSeenGuide = () => {
