@@ -162,7 +162,6 @@ https://github.com/user-attachments/assets/8a90bcdb-2702-4066-8199-15002094394a
 git clone https://github.com/nagi558/Letters_to_be_spun
 cd backend
 bundle install
-cp .env.example .env
 ```
 
 `.env` を開き、各値を設定してください。
@@ -185,7 +184,6 @@ rails s
 ```bash
 cd frontend
 npm install
-cp .env.example .env
 ```
 
 `.env` を開き、各値を設定してください。
