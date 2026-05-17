@@ -35,4 +35,18 @@ class ApplicationController < ActionController::API
     request.headers['client'] = token_data['client']
     request.headers['uid'] = token_data['uid']
   end
+
+  def write_auth_cookie(token)
+  cookies[:auth_tokens] = {
+    value:     token.to_json,
+    httponly:  true,
+    secure:    Rails.env.production?,
+    same_site: :lax,
+    expires:   2.weeks.from_now
+  }
+end
+
+def delete_auth_cookie
+  cookies.delete(:auth_tokens)
+end
 end

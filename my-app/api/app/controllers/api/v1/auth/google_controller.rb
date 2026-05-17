@@ -22,6 +22,7 @@ module Api
         def render_success(user)
           token = user.create_new_auth_token
           response.headers.merge!(token)
+          write_auth_cookie(token)
           render json: { data: { id: user.id, email: user.email, name: user.name } }, status: :ok
         end
 

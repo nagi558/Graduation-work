@@ -11,7 +11,7 @@ type AuthContextType = {
   isReady: boolean
   isPaired: boolean
   hasSeenGuide: boolean
-  login: () => void
+  login: (hasSeenGuide?: boolean) => void
   logout: () => void
   updateHasSeenGuide: () => void
 }
@@ -64,10 +64,13 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       controller.abort()}
   }, [])
 
-  const login = () => {
-    setIsLoggedIn(true)
-    setIsReady(true)
+const login = (hasSeenGuide?: boolean) => {
+  setIsLoggedIn(true)
+  if (hasSeenGuide !== undefined) {
+    setHasSeenGuide(hasSeenGuide)
   }
+  setIsReady(true)
+}
 
   const logout = () => {
     setIsLoggedIn(false)

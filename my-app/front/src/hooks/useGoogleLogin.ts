@@ -8,32 +8,36 @@ export const useGoogleLogin = () => {
   const { login } = useAuth()
   const navigate = useNavigate()
   const location = useLocation()
-  const from = (location.state as { from?: string })?.from ?? '/posts'
+  const from = (location.state as { from?: string })?.from ?? "/posts"
 
-  const handleCredentialResponse = useCallback(async (response: { credential: string }) => {
-    try {
-      const res = await axiosInstance.post('/api/v1/auth/google', {
-        id_token: response.credential
-      })
+  const handleCredentialResponse = useCallback(
+    async (response: { credential: string }) => {
+      try {
+        const res = await axiosInstance.post("/api/v1/auth/google", {
+          id_token: response.credential,
+        })
 
-      const accessToken = res.headers['access-token']
-      const client      = res.headers['client']
-      const uid         = res.headers['uid']
+        const accessToken = res.headers["access-token"]
+        const client = res.headers["client"]
+        const uid = res.headers["uid"]
 
-      if (accessToken && client && uid) {
-        tokenStorage.set({ accessToken, client, uid })
-        login()
-        navigate(from)
+        if (accessToken && client && uid) {
+          tokenStorage.set({ accessToken, client, uid })
+          const userRes = await axiosInstance.get("/api/v1/user")
+          login(userRes.data.has_seen_guide)
+          navigate(from)
+        }
+      } catch (error) {
+        console.error("Googleログイン失敗:", error)
       }
-    } catch (error) {
-      console.error('Googleログイン失敗:', error)
-    }
-  }, [login, navigate, from])
+    },
+    [login, navigate, from],
+  )
 
   const initializeGoogleLogin = useCallback(() => {
     window.google?.accounts.id.initialize({
       client_id: import.meta.env.VITE_GOOGLE_CLIENT_ID,
-      callback: handleCredentialResponse
+      callback: handleCredentialResponse,
     })
   }, [handleCredentialResponse])
 
