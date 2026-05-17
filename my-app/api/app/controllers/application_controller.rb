@@ -37,16 +37,16 @@ class ApplicationController < ActionController::API
   end
 
   def write_auth_cookie(token)
-  cookies[:auth_tokens] = {
-    value:     token.to_json,
-    httponly:  true,
-    secure:    true,
-    same_site: :none,
-    expires:   2.weeks.from_now
-  }
-end
+    cookies[:auth_tokens] = {
+      value: token.to_json,
+      httponly: true,
+      secure: true,
+      same_site: :none,
+      expires: 2.weeks.from_now
+    }
+  end
 
-def delete_auth_cookie
-  cookies.delete(:auth_tokens)
-end
+  def delete_auth_cookie
+    cookies.delete(:auth_tokens)
+  end
 end
