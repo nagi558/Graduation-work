@@ -7,6 +7,7 @@ const axiosInstance = axios.create({
     "Content-Type": "application/json",
   },
   timeout: 30000,
+  withCredentials: true,
 })
 
 axiosInstance.interceptors.request.use(
