@@ -40,8 +40,8 @@ class ApplicationController < ActionController::API
   cookies[:auth_tokens] = {
     value:     token.to_json,
     httponly:  true,
-    secure:    Rails.env.production?,
-    same_site: :lax,
+    secure:    true,
+    same_site: :none,
     expires:   2.weeks.from_now
   }
 end
