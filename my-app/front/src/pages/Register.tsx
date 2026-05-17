@@ -51,20 +51,12 @@ export const Register = () => {
     setIsSubmitting(true)
 
     try {
-      const response = await axiosInstance.post('/auth', {
+      await axiosInstance.post('/auth', {
         nickname,
         email,
         password,
         password_confirmation
       })
-
-      const accessToken = response.headers['access-token'] as string ?? ''
-      const client = response.headers['client'] as string ?? ''
-      const uid = response.headers['uid'] as string ?? ''
-
-      localStorage.setItem('access-token', accessToken)
-      localStorage.setItem('client', client)
-      localStorage.setItem('uid', uid)
 
       login()
       alert('アカウントが作成されました')

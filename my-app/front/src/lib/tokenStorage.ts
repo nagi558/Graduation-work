@@ -1,25 +1,29 @@
-import type { AuthTokens, ValidAuthTokens } from '@/types'
+import type { AuthTokens, ValidAuthTokens } from "@/types"
+
+let memoryTokens: AuthTokens = {
+  accessToken: null,
+  client: null,
+  uid: null,
+}
 
 export const tokenStorage = {
   get(): AuthTokens {
-    return {
-      accessToken: localStorage.getItem('access-token'),
-      client: localStorage.getItem('client'),
-      uid: localStorage.getItem('uid')
-    }
+    return memoryTokens
   },
 
   set(tokens: ValidAuthTokens): void {
-    const { accessToken, client, uid } = tokens
-
-    localStorage.setItem('access-token', accessToken)
-    localStorage.setItem('client', client)
-    localStorage.setItem('uid', uid)
+    memoryTokens = tokens
   },
 
   clear(): void {
-    localStorage.removeItem('access-token')
-    localStorage.removeItem('client')
-    localStorage.removeItem('uid')
-  }
+    memoryTokens = { accessToken: null, client: null, uid: null }
+  },
+
+  hasTokens(): boolean {
+    return !!(
+      memoryTokens.accessToken &&
+      memoryTokens.client &&
+      memoryTokens.uid
+    )
+  },
 }
